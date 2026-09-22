@@ -1,60 +1,2331 @@
 {
-  "questions": [
+  "version": "1.1.0",
+  "exam": "CompTIA A+ Core 2 (220-1202)",
+  "modules": [
     {
-      "id": 1,
-      "domain": "1.0",
-      "question": "En tekniker vill konfigurera en Windows 11-dator så att den automatiskt startar om vid ett systemfel (BSOD) istället för att stanna på felskärmen. Var i systeminställningarna görs detta?",
-      "options": [
-        "System Configuration (msconfig)",
-        "Advanced System Settings -> Startup and Recovery",
-        "Device Manager -> System Devices",
-        "Task Scheduler"
-      ],
-      "correct": 1,
-      "explanation": "I 'Advanced System Settings' under fliken 'Advanced' hittar du 'Startup and Recovery' där du kan ställa in hur systemet ska agera vid systemfel."
+      "id": 11,
+      "title": "Managing Support Procedures",
+      "lessons": [
+        "11A Documentation",
+        "11B Professional Communication",
+        "11C Types of Operating Systems"
+      ]
     },
     {
-      "id": 2,
-      "domain": "2.0",
-      "question": "Vilken typ av attack innebär att en angripare placerar sig mellan två parter utan deras vetskap för att avlyssna eller modifiera datatrafik?",
-      "options": [
-        "Phishing",
-        "Man-in-the-Middle (MitM)",
-        "Social Engineering",
-        "DDoS"
-      ],
-      "correct": 1,
-      "explanation": "En Man-in-the-Middle (MitM) attack sker när angriparen i hemlighet fångar upp och eventuellt ändrar kommunikationen mellan två system."
+      "id": 12,
+      "title": "Configuring Windows",
+      "lessons": [
+        "12A Windows User Settings",
+        "12B Windows System Settings",
+        "12C Install and Configure Applications",
+        "12D Cloud-Based Applications"
+      ]
     },
     {
-      "id": 3,
-      "domain": "3.0",
-      "question": "En användare rapporterar att deras Windows-dator är extremt långsam. I Aktivitetshanteraren (Task Manager) ser du att diskanvändningen ligger på 100%. Vad bör du göra som första felsökningssteg?",
-      "options": [
-        "Byta ut moderkortet",
-        "Identifiera vilken process som läser/skriver mest till disken",
-        "Ominstallera Windows direkt",
-        "Inaktivera Windows Firewall"
-      ],
-      "correct": 1,
-      "explanation": "Sortera processerna i Aktivitetshanteraren efter diskanvändning för att se vilken specifik applikation eller tjänst som belastar disken."
+      "id": 13,
+      "title": "Managing Windows",
+      "lessons": [
+        "13A Use Management Consoles",
+        "13B Command-Line Tools",
+        "13C Windows Networking"
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Supporting Windows",
+      "lessons": [
+        "14A Troubleshoot Windows Networking",
+        "14B Remote Access Technologies",
+        "14C Performance and Troubleshooting Tools",
+        "14D Troubleshoot Windows OS Problems"
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Securing Windows",
+      "lessons": [
+        "15A Logical Security Concepts",
+        "15B Windows Security Settings",
+        "15C Windows Shares"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Installing Operating Systems",
+      "lessons": [
+        "16A Windows Editions",
+        "16B OS Installations and Upgrades"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Supporting Other OS",
+      "lessons": [
+        "17A Linux Features",
+        "17B Package and Network Management",
+        "17C macOS Features"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Configuring SOHO Network Security",
+      "lessons": [
+        "18A Attacks, Threats, and Vulnerabilities",
+        "18B Wireless Security Protocols",
+        "18C SOHO Router Security",
+        "18D Additional Security Measures"
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Managing Security Settings",
+      "lessons": [
+        "19A Account Security",
+        "19B Workstation Security",
+        "19C Browser Security",
+        "19D Troubleshoot Workstation Security"
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Supporting Mobile Software",
+      "lessons": [
+        "20A Mobile OS Security",
+        "20B Troubleshoot Mobile OS and App Software",
+        "20C Troubleshoot Mobile OS and App Security"
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Using Data Security",
+      "lessons": [
+        "21A Data Backup and Recovery",
+        "21B Data Handling Best Practices",
+        "21C Artificial Intelligence"
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Implementing Operational Procedures",
+      "lessons": [
+        "22A Change and Inventory Management",
+        "22B Common Safety and Environmental Procedures",
+        "22C Scripting Basics"
+      ]
     }
   ],
-  "flashcards": [
+  "questions": [
     {
-      "category": "Kommandon",
-      "front": "sfc /scannow",
-      "back": "Går igenom alla skyddade systemfiler och ersätter skadade eller felaktiga filer med en korrekt kopia."
+      "id": "c2-001",
+      "module": 11,
+      "lesson": "11A Documentation",
+      "question": "Which item belongs in the description/progress information of a support ticket?",
+      "options": [
+        "A list of unrelated vendors",
+        "The issue description and progress notes",
+        "The technician's favorite software",
+        "The office's floor color"
+      ],
+      "answer": 1,
+      "explanation": "The objectives identify issue description, progress notes, and issue resolution as clear, concise ticket communication.",
+      "difficulty": "Easy",
+      "tags": [
+        "ticketing"
+      ]
     },
     {
-      "category": "Säkerhet",
-      "front": "Principle of Least Privilege",
-      "back": "Konceptet att användare endast ska ges de behörigheter som krävs för att utföra sitt arbete, varken mer eller mindre."
+      "id": "c2-002",
+      "module": 11,
+      "lesson": "11A Documentation",
+      "question": "Which system is used to track hardware, software, licensing, and asset lifecycle information?",
+      "options": [
+        "Recovery partition",
+        "Configuration management database (CMDB)",
+        "Task Scheduler",
+        "Screen saver"
+      ],
+      "answer": 1,
+      "explanation": "The Student Guide describes a CMDB as a place to track assets and can include software, licensing, and lifecycle information.",
+      "difficulty": "Easy",
+      "tags": [
+        "asset-management"
+      ]
     },
     {
-      "category": "Portar",
-      "front": "RDP (Remote Desktop Protocol)",
-      "back": "Port 3389"
+      "id": "c2-003",
+      "module": 11,
+      "lesson": "11B Professional Communication",
+      "question": "A customer is upset and raising their voice. Which response matches the documented professional approach?",
+      "options": [
+        "Argue until the customer accepts the technician's view",
+        "Assume the customer caused the problem",
+        "Dismiss the issue as unimportant",
+        "Remain calm, actively listen, and focus on positive actions"
+      ],
+      "answer": 3,
+      "explanation": "The guide says not to argue or dismiss the issue, to avoid judgment, and to actively listen while moving toward resolution.",
+      "difficulty": "Medium",
+      "tags": [
+        "communication"
+      ]
+    },
+    {
+      "id": "c2-004",
+      "module": 11,
+      "lesson": "11B Professional Communication",
+      "question": "Which communication practice is specifically recommended when technical jargon may confuse a customer?",
+      "options": [
+        "Avoid clarifying customer statements",
+        "Only communicate through undocumented verbal instructions",
+        "Use as many acronyms as possible",
+        "Use proper language and avoid jargon, acronyms, and slang when applicable"
+      ],
+      "answer": 3,
+      "explanation": "The Core 2 objectives explicitly call for proper language and avoiding jargon, acronyms, and slang when applicable.",
+      "difficulty": "Easy",
+      "tags": [
+        "communication"
+      ]
+    },
+    {
+      "id": "c2-005",
+      "module": 11,
+      "lesson": "11C Types of Operating Systems",
+      "question": "Which operating system is categorized as a mobile OS in the Core 2 objectives?",
+      "options": [
+        "Android",
+        "Chrome OS",
+        "Linux desktop",
+        "Windows Server"
+      ],
+      "answer": 0,
+      "explanation": "The objectives list iPadOS, iOS, and Android under mobile operating systems.",
+      "difficulty": "Easy",
+      "tags": [
+        "os-types"
+      ]
+    },
+    {
+      "id": "c2-006",
+      "module": 11,
+      "lesson": "11C Types of Operating Systems",
+      "question": "Which filesystem is listed in the Core 2 objectives as an Apple filesystem?",
+      "options": [
+        "XFS",
+        "NTFS",
+        "APFS",
+        "ext4"
+      ],
+      "answer": 2,
+      "explanation": "Apple File System (APFS) is explicitly listed among the filesystem types in the objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "filesystems"
+      ]
+    },
+    {
+      "id": "c2-007",
+      "module": 12,
+      "lesson": "12A Windows User Settings",
+      "question": "A user says the laptop should enter a power-saving state when the lid is closed. Which Windows setting category should be checked?",
+      "options": [
+        "File Explorer Options",
+        "Power Options",
+        "Devices and Printers",
+        "Indexing Options"
+      ],
+      "answer": 1,
+      "explanation": "The Windows settings objectives include Power Options, including what happens when closing the lid.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-settings"
+      ]
+    },
+    {
+      "id": "c2-008",
+      "module": 12,
+      "lesson": "12A Windows User Settings",
+      "question": "Which Windows setting controls whether hidden files are displayed in File Explorer?",
+      "options": [
+        "Sound",
+        "Gaming",
+        "File Explorer Options",
+        "Mail"
+      ],
+      "answer": 2,
+      "explanation": "The objectives list File Explorer Options with View hidden files and Hide extensions.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-settings"
+      ]
+    },
+    {
+      "id": "c2-009",
+      "module": 12,
+      "lesson": "12B Windows System Settings",
+      "question": "Which Windows feature controls prompts or administrator credentials when administrative settings are changed?",
+      "options": [
+        "User Account Control (UAC)",
+        "Disk Cleanup",
+        "Resource Monitor",
+        "Task Scheduler"
+      ],
+      "answer": 0,
+      "explanation": "The Student Guide describes UAC as a mechanism to prevent unauthorized use of administrator privileges.",
+      "difficulty": "Medium",
+      "tags": [
+        "security",
+        "windows"
+      ]
+    },
+    {
+      "id": "c2-010",
+      "module": 12,
+      "lesson": "12B Windows System Settings",
+      "question": "Which Windows settings area is used to configure date, time zone, region, keyboard input, and language?",
+      "options": [
+        "Gaming",
+        "Devices",
+        "Personalization",
+        "Time and Language"
+      ],
+      "answer": 3,
+      "explanation": "The Student Guide describes Time and Language settings as covering date/time, time zone, region, keyboard input, and languages.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-settings"
+      ]
+    },
+    {
+      "id": "c2-011",
+      "module": 12,
+      "lesson": "12C Install and Configure Applications",
+      "question": "An application requires 64-bit support and a specific amount of RAM and storage. What should the technician check first?",
+      "options": [
+        "The Windows notification area",
+        "The application's system requirements",
+        "The user's wallpaper",
+        "The printer's toner level"
+      ],
+      "answer": 1,
+      "explanation": "The objectives require consideration of 32-bit/64-bit requirements, RAM, CPU, VRAM, storage, and OS compatibility.",
+      "difficulty": "Easy",
+      "tags": [
+        "applications"
+      ]
+    },
+    {
+      "id": "c2-012",
+      "module": 12,
+      "lesson": "12D Cloud-Based Applications",
+      "question": "Which cloud productivity area in the objectives includes synchronization of folders?",
+      "options": [
+        "Cloud storage",
+        "Disk partitioning",
+        "BIOS configuration",
+        "Printer maintenance"
+      ],
+      "answer": 0,
+      "explanation": "The cloud-based productivity objective explicitly includes storage with sync/folder settings.",
+      "difficulty": "Easy",
+      "tags": [
+        "cloud"
+      ]
+    },
+    {
+      "id": "c2-013",
+      "module": 13,
+      "lesson": "13A Use Management Consoles",
+      "question": "Which Windows console is intended for viewing and managing system event logs?",
+      "options": [
+        "Device Manager (devmgmt.msc)",
+        "Event Viewer (eventvwr.msc)",
+        "Task Scheduler (taskschd.msc)",
+        "Disk Management (diskmgmt.msc)"
+      ],
+      "answer": 1,
+      "explanation": "Event Viewer is the MMC snap-in for viewing and managing Windows logs.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-tools"
+      ]
+    },
+    {
+      "id": "c2-014",
+      "module": 13,
+      "lesson": "13A Use Management Consoles",
+      "question": "Which MMC snap-in is used to manage disks and partitions?",
+      "options": [
+        "Disk Management (diskmgmt.msc)",
+        "Event Viewer (eventvwr.msc)",
+        "Certificate Manager (certmgr.msc)",
+        "Group Policy Editor (gpedit.msc)"
+      ],
+      "answer": 0,
+      "explanation": "Disk Management is explicitly listed for managing disks and partitions in the Windows toolset.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-tools"
+      ]
+    },
+    {
+      "id": "c2-015",
+      "module": 13,
+      "lesson": "13B Command-Line Tools",
+      "question": "Which command displays the current user's username and domain/computer information?",
+      "options": [
+        "gpresult",
+        "winver",
+        "whoami",
+        "hostname"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide describes whoami as displaying the current user's username and domain information.",
+      "difficulty": "Easy",
+      "tags": [
+        "cli"
+      ]
+    },
+    {
+      "id": "c2-016",
+      "module": 13,
+      "lesson": "13B Command-Line Tools",
+      "question": "Which command is used to display Windows version information?",
+      "options": [
+        "whoami",
+        "net user",
+        "winver",
+        "hostname"
+      ],
+      "answer": 2,
+      "explanation": "The guide identifies winver as the command that provides Windows version information.",
+      "difficulty": "Easy",
+      "tags": [
+        "cli"
+      ]
+    },
+    {
+      "id": "c2-017",
+      "module": 13,
+      "lesson": "13C Windows Networking",
+      "question": "A technician needs to view IP addressing information on a Windows client. Which command is appropriate?",
+      "options": [
+        "ipconfig",
+        "tracert",
+        "net use",
+        "gpupdate"
+      ],
+      "answer": 0,
+      "explanation": "The Core 2 objectives list ipconfig under Windows network command-line tools.",
+      "difficulty": "Easy",
+      "tags": [
+        "networking",
+        "cli"
+      ]
+    },
+    {
+      "id": "c2-018",
+      "module": 13,
+      "lesson": "13C Windows Networking",
+      "question": "Which Windows network configuration concept determines whether an address is manually assigned or obtained dynamically?",
+      "options": [
+        "User Account Control",
+        "File Explorer view options",
+        "Static vs. dynamic addressing",
+        "Power plans"
+      ],
+      "answer": 2,
+      "explanation": "The networking objectives explicitly include static vs. dynamic client network configuration.",
+      "difficulty": "Medium",
+      "tags": [
+        "networking"
+      ]
+    },
+    {
+      "id": "c2-019",
+      "module": 14,
+      "lesson": "14A Troubleshoot Windows Networking",
+      "question": "A Windows client cannot resolve a domain name. Which configuration should be checked as part of client network settings?",
+      "options": [
+        "DNS settings",
+        "Screen saver settings",
+        "Sound settings",
+        "Printer queue settings"
+      ],
+      "answer": 0,
+      "explanation": "DNS settings are explicitly listed under Windows client network configuration.",
+      "difficulty": "Easy",
+      "tags": [
+        "network-troubleshooting"
+      ]
+    },
+    {
+      "id": "c2-020",
+      "module": 14,
+      "lesson": "14B Remote Access Technologies",
+      "question": "Which protocol connects to a command interpreter and uses TCP port 22 by default?",
+      "options": [
+        "Remote Desktop Protocol (RDP)",
+        "Virtual Network Computing (VNC)",
+        "Secure Shell (SSH)",
+        "WinRM"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide states that SSH is a remote access protocol to a command interpreter and uses TCP port 22 by default.",
+      "difficulty": "Medium",
+      "tags": [
+        "remote-access"
+      ]
+    },
+    {
+      "id": "c2-021",
+      "module": 14,
+      "lesson": "14B Remote Access Technologies",
+      "question": "Which remote access method is described as Microsoft's implementation of WS-Management?",
+      "options": [
+        "VNC",
+        "WinRM",
+        "RDP",
+        "SSH"
+      ],
+      "answer": 1,
+      "explanation": "The guide identifies WinRM as Microsoft's implementation of the WS-Management protocol.",
+      "difficulty": "Medium",
+      "tags": [
+        "remote-access"
+      ]
+    },
+    {
+      "id": "c2-022",
+      "module": 14,
+      "lesson": "14C Performance and Troubleshooting Tools",
+      "question": "Which Windows tool provides an inventory of hardware/software components, firmware and OS versions, driver locations, environment variables, and network status?",
+      "options": [
+        "Task Scheduler",
+        "Disk Cleanup",
+        "System Information (msinfo32.exe)",
+        "File Explorer"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide describes msinfo32.exe as generating a comprehensive system hardware/software report.",
+      "difficulty": "Medium",
+      "tags": [
+        "troubleshooting"
+      ]
+    },
+    {
+      "id": "c2-023",
+      "module": 14,
+      "lesson": "14C Performance and Troubleshooting Tools",
+      "question": "Which Windows log records audit data for the system?",
+      "options": [
+        "Application Log",
+        "Security Log",
+        "Setup Log",
+        "System Log"
+      ],
+      "answer": 1,
+      "explanation": "The guide lists Security Log as holding audit data for the system.",
+      "difficulty": "Easy",
+      "tags": [
+        "logs"
+      ]
+    },
+    {
+      "id": "c2-024",
+      "module": 14,
+      "lesson": "14D Troubleshoot Windows OS Problems",
+      "question": "Which symptom is explicitly listed as a common Windows OS issue?",
+      "options": [
+        "Incorrect printer paper size",
+        "No cellular signal",
+        "Blue screen of death (BSOD)",
+        "Low toner"
+      ],
+      "answer": 2,
+      "explanation": "BSOD is explicitly listed under common Windows OS issues in the Core 2 objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-troubleshooting"
+      ]
+    },
+    {
+      "id": "c2-025",
+      "module": 15,
+      "lesson": "15A Logical Security Concepts",
+      "question": "Which security principle gives users only the access required to perform their tasks?",
+      "options": [
+        "Data loss prevention",
+        "Principle of least privilege",
+        "Zero Trust model",
+        "Single sign-on"
+      ],
+      "answer": 1,
+      "explanation": "The security objectives explicitly list the principle of least privilege as a logical security control.",
+      "difficulty": "Easy",
+      "tags": [
+        "security"
+      ]
+    },
+    {
+      "id": "c2-026",
+      "module": 15,
+      "lesson": "15A Logical Security Concepts",
+      "question": "Which technology allows a user to authenticate once and access multiple supported services?",
+      "options": [
+        "Mobile device management (MDM)",
+        "Single sign-on (SSO)",
+        "Access control list (ACL)",
+        "Data loss prevention (DLP)"
+      ],
+      "answer": 1,
+      "explanation": "SSO is listed as a logical security technology in the objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "identity"
+      ]
+    },
+    {
+      "id": "c2-027",
+      "module": 15,
+      "lesson": "15B Windows Security Settings",
+      "question": "Which Windows feature encrypts a drive to protect data at rest?",
+      "options": [
+        "Disk Cleanup",
+        "BitLocker",
+        "Resource Monitor",
+        "Task Manager"
+      ],
+      "answer": 1,
+      "explanation": "BitLocker is explicitly listed among Windows security settings and is used for drive encryption.",
+      "difficulty": "Easy",
+      "tags": [
+        "encryption"
+      ]
+    },
+    {
+      "id": "c2-028",
+      "module": 15,
+      "lesson": "15B Windows Security Settings",
+      "question": "Which Windows security feature prompts for confirmation or administrator credentials when an administrative action requires elevation?",
+      "options": [
+        "Indexing Options",
+        "Power Options",
+        "File Explorer Options",
+        "User Account Control (UAC)"
+      ],
+      "answer": 3,
+      "explanation": "The Student Guide describes UAC as preventing unauthorized use of administrator privileges by requiring confirmation or credentials at its default level.",
+      "difficulty": "Medium",
+      "tags": [
+        "windows-security"
+      ]
+    },
+    {
+      "id": "c2-029",
+      "module": 15,
+      "lesson": "15C Windows Shares",
+      "question": "Which two permission layers are specifically compared when securing Windows shared resources?",
+      "options": [
+        "APFS and ext4",
+        "NTFS and share permissions",
+        "RDP and SSH",
+        "BIOS and UEFI passwords"
+      ],
+      "answer": 1,
+      "explanation": "The objectives explicitly include NTFS vs. share permissions.",
+      "difficulty": "Easy",
+      "tags": [
+        "shares"
+      ]
+    },
+    {
+      "id": "c2-030",
+      "module": 15,
+      "lesson": "15C Windows Shares",
+      "question": "Which Active Directory action applies centralized configuration settings to users or computers?",
+      "options": [
+        "Applying Group Policy",
+        "Formatting a drive",
+        "Changing the desktop wallpaper locally",
+        "Running Disk Cleanup"
+      ],
+      "answer": 0,
+      "explanation": "The Windows security objectives include applying Group Policy in Active Directory.",
+      "difficulty": "Medium",
+      "tags": [
+        "active-directory"
+      ]
+    },
+    {
+      "id": "c2-031",
+      "module": 16,
+      "lesson": "16A Windows Editions",
+      "question": "Which Windows edition is listed in the objectives for both Windows 10 and Windows 11?",
+      "options": [
+        "Pro for Workstations",
+        "Starter",
+        "Enterprise N only",
+        "Home"
+      ],
+      "answer": 3,
+      "explanation": "Home is listed under both Windows 10 and Windows 11 editions.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-editions"
+      ]
+    },
+    {
+      "id": "c2-032",
+      "module": 16,
+      "lesson": "16A Windows Editions",
+      "question": "Which Windows feature is listed as an edition difference?",
+      "options": [
+        "Monitor refresh rate",
+        "Keyboard layout",
+        "BitLocker availability",
+        "CPU clock speed"
+      ],
+      "answer": 2,
+      "explanation": "The objectives list BitLocker among Windows edition feature differences.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-editions"
+      ]
+    },
+    {
+      "id": "c2-033",
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Which installation type replaces the existing OS installation rather than updating it in place?",
+      "options": [
+        "Clean install",
+        "In-place upgrade",
+        "Feature update",
+        "Repair installation"
+      ],
+      "answer": 0,
+      "explanation": "A clean install is explicitly contrasted with an upgrade/in-place upgrade in the installation objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "installation"
+      ]
+    },
+    {
+      "id": "c2-034",
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Which partitioning scheme is abbreviated GPT?",
+      "options": [
+        "Global Process Table",
+        "General Partition Transfer",
+        "GUID Partition Table",
+        "Graphical Partition Tool"
+      ],
+      "answer": 2,
+      "explanation": "GPT stands for GUID Partition Table in the objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "partitioning"
+      ]
+    },
+    {
+      "id": "c2-035",
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Before an OS upgrade, which consideration is explicitly recommended?",
+      "options": [
+        "Delete all user profiles first",
+        "Remove all device drivers",
+        "Back up files and user preferences",
+        "Disable every security control permanently"
+      ],
+      "answer": 2,
+      "explanation": "The objectives explicitly include backing up files and user preferences before an upgrade.",
+      "difficulty": "Easy",
+      "tags": [
+        "upgrades"
+      ]
+    },
+    {
+      "id": "c2-036",
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Which deployment method aims to configure systems with minimal hands-on interaction?",
+      "options": [
+        "Manual clean install",
+        "Local repair installation",
+        "Zero-touch deployment",
+        "External drive browsing"
+      ],
+      "answer": 2,
+      "explanation": "Zero-touch deployment is one of the installation/deployment types listed in the objectives.",
+      "difficulty": "Medium",
+      "tags": [
+        "deployment"
+      ]
+    },
+    {
+      "id": "c2-037",
+      "module": 17,
+      "lesson": "17A Linux Features",
+      "question": "Which Linux command lists directory contents?",
+      "options": [
+        "chmod",
+        "ls",
+        "grep",
+        "pwd"
+      ],
+      "answer": 1,
+      "explanation": "The Linux objectives list ls under file management.",
+      "difficulty": "Easy",
+      "tags": [
+        "linux"
+      ]
+    },
+    {
+      "id": "c2-038",
+      "module": 17,
+      "lesson": "17A Linux Features",
+      "question": "Which Linux command changes file permissions?",
+      "options": [
+        "mount",
+        "chmod",
+        "chown",
+        "find"
+      ],
+      "answer": 1,
+      "explanation": "The objectives list chmod under Linux file management.",
+      "difficulty": "Easy",
+      "tags": [
+        "linux"
+      ]
+    },
+    {
+      "id": "c2-039",
+      "module": 17,
+      "lesson": "17B Package and Network Management",
+      "question": "Which Linux command is described as a powerful tool for network configuration and management and can display routes?",
+      "options": [
+        "curl",
+        "ping",
+        "ip",
+        "dig"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide describes ip as a network configuration/management tool and gives ip route show as an example.",
+      "difficulty": "Medium",
+      "tags": [
+        "linux",
+        "networking"
+      ]
+    },
+    {
+      "id": "c2-040",
+      "module": 17,
+      "lesson": "17B Package and Network Management",
+      "question": "Which Linux package manager is listed for Debian-family systems?",
+      "options": [
+        "nano",
+        "apt",
+        "dnf",
+        "systemd"
+      ],
+      "answer": 1,
+      "explanation": "The objectives list apt and dnf as Linux package-management tools.",
+      "difficulty": "Easy",
+      "tags": [
+        "linux",
+        "packages"
+      ]
+    },
+    {
+      "id": "c2-041",
+      "module": 17,
+      "lesson": "17C macOS Features",
+      "question": "Which macOS feature provides backups and can restore the entire system or specific files?",
+      "options": [
+        "Keychain",
+        "Time Machine",
+        "Spotlight",
+        "Finder"
+      ],
+      "answer": 1,
+      "explanation": "The Student Guide describes Time Machine as a backup and restoration feature.",
+      "difficulty": "Easy",
+      "tags": [
+        "macos",
+        "backup"
+      ]
+    },
+    {
+      "id": "c2-042",
+      "module": 17,
+      "lesson": "17C macOS Features",
+      "question": "Which macOS utility can be used to reformat and repair the system disk?",
+      "options": [
+        "Force Quit",
+        "Disk Utility",
+        "Dock",
+        "Mission Control"
+      ],
+      "answer": 1,
+      "explanation": "Disk Utility is explicitly listed among macOS features and tools.",
+      "difficulty": "Easy",
+      "tags": [
+        "macos"
+      ]
+    },
+    {
+      "id": "c2-043",
+      "module": 18,
+      "lesson": "18A Attacks, Threats, and Vulnerabilities",
+      "question": "A malicious email targets a senior executive with a tailored message. Which social engineering category best matches the objectives?",
+      "options": [
+        "Dumpster diving",
+        "Whaling",
+        "Smishing",
+        "Shoulder surfing"
+      ],
+      "answer": 1,
+      "explanation": "Whaling is listed as a phishing-related social engineering attack in the objectives.",
+      "difficulty": "Medium",
+      "tags": [
+        "security",
+        "social-engineering"
+      ]
+    },
+    {
+      "id": "c2-044",
+      "module": 18,
+      "lesson": "18A Attacks, Threats, and Vulnerabilities",
+      "question": "Which attack overwhelms a service with traffic from multiple distributed sources?",
+      "options": [
+        "Shoulder surfing",
+        "Distributed denial of service (DDoS)",
+        "Dictionary attack",
+        "SQL injection"
+      ],
+      "answer": 1,
+      "explanation": "DDoS is explicitly listed as a threat; the distributed nature distinguishes it from a basic DoS attack.",
+      "difficulty": "Easy",
+      "tags": [
+        "security"
+      ]
+    },
+    {
+      "id": "c2-045",
+      "module": 18,
+      "lesson": "18B Wireless Security Protocols",
+      "question": "Which wireless security option is newer than WPA2 in the objectives?",
+      "options": [
+        "AES",
+        "TKIP",
+        "RADIUS",
+        "WPA3"
+      ],
+      "answer": 3,
+      "explanation": "The objectives list WPA2 and WPA3 as wireless security protocols, with WPA3 being the newer protocol in that pair.",
+      "difficulty": "Easy",
+      "tags": [
+        "wireless-security"
+      ]
+    },
+    {
+      "id": "c2-046",
+      "module": 18,
+      "lesson": "18B Wireless Security Protocols",
+      "question": "Which authentication service is listed for wireless security authentication?",
+      "options": [
+        "AES",
+        "WPA3",
+        "TKIP",
+        "RADIUS"
+      ],
+      "answer": 3,
+      "explanation": "RADIUS is explicitly listed under authentication methods.",
+      "difficulty": "Easy",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "id": "c2-047",
+      "module": 18,
+      "lesson": "18C SOHO Router Security",
+      "question": "Which router setting helps prevent unauthorized administrative access by replacing vendor defaults?",
+      "options": [
+        "Change the default password",
+        "Enable guest access",
+        "Broadcast the default SSID",
+        "Enable unused ports"
+      ],
+      "answer": 0,
+      "explanation": "Changing default passwords is explicitly listed as a SOHO router security setting.",
+      "difficulty": "Easy",
+      "tags": [
+        "router-security"
+      ]
+    },
+    {
+      "id": "c2-048",
+      "module": 18,
+      "lesson": "18D Additional Security Measures",
+      "question": "Which wireless setting can be used to separate visitors from the main network?",
+      "options": [
+        "IP filtering",
+        "Guest access",
+        "Port forwarding",
+        "UPnP"
+      ],
+      "answer": 1,
+      "explanation": "Configuring guest access is explicitly listed under wireless-specific router security settings.",
+      "difficulty": "Easy",
+      "tags": [
+        "router-security"
+      ]
+    },
+    {
+      "id": "c2-049",
+      "module": 19,
+      "lesson": "19A Account Security",
+      "question": "Which account practice is explicitly listed as a workstation hardening measure?",
+      "options": [
+        "Use shared administrator passwords",
+        "Give every user administrator rights",
+        "Use failed-attempt lockout",
+        "Disable all account expiration"
+      ],
+      "answer": 2,
+      "explanation": "Failed-attempt lockout is listed under account management hardening techniques.",
+      "difficulty": "Easy",
+      "tags": [
+        "account-security"
+      ]
+    },
+    {
+      "id": "c2-050",
+      "module": 19,
+      "lesson": "19A Account Security",
+      "question": "Which authentication method is included in the Windows login options?",
+      "options": [
+        "Windows Hello/passwordless",
+        "FTP login",
+        "SMTP authentication",
+        "BIOS bootloader"
+      ],
+      "answer": 0,
+      "explanation": "The Windows security objectives include passwordless/Windows Hello among login options.",
+      "difficulty": "Easy",
+      "tags": [
+        "authentication"
+      ]
+    },
+    {
+      "id": "c2-051",
+      "module": 19,
+      "lesson": "19B Workstation Security",
+      "question": "Which practice protects data if a storage device is lost or stolen?",
+      "options": [
+        "Data-at-rest encryption",
+        "Disabling screen locks",
+        "Enabling AutoRun",
+        "Sharing passwords"
+      ],
+      "answer": 0,
+      "explanation": "Data-at-rest encryption is explicitly listed as a workstation security/hardening measure.",
+      "difficulty": "Easy",
+      "tags": [
+        "hardening"
+      ]
+    },
+    {
+      "id": "c2-052",
+      "module": 19,
+      "lesson": "19B Workstation Security",
+      "question": "Which setting should be disabled when it is not needed because it can automatically launch content from removable media?",
+      "options": [
+        "Screen resolution",
+        "File indexing",
+        "Time zone",
+        "AutoRun"
+      ],
+      "answer": 3,
+      "explanation": "The workstation-hardening objectives explicitly include disabling AutoRun.",
+      "difficulty": "Medium",
+      "tags": [
+        "hardening"
+      ]
+    },
+    {
+      "id": "c2-053",
+      "module": 19,
+      "lesson": "19C Browser Security",
+      "question": "Which browser feature helps prevent unwanted pop-up windows?",
+      "options": [
+        "Proxy",
+        "Pop-up blocker",
+        "Private-browsing mode",
+        "Password manager"
+      ],
+      "answer": 1,
+      "explanation": "The browser-security objectives explicitly list a pop-up blocker.",
+      "difficulty": "Easy",
+      "tags": [
+        "browser-security"
+      ]
+    },
+    {
+      "id": "c2-054",
+      "module": 19,
+      "lesson": "19D Troubleshoot Workstation Security",
+      "question": "A user sees repeated fake antivirus warnings in the browser. Which category of symptom is this?",
+      "options": [
+        "Hardware replacement symptom",
+        "Browser-related security symptom",
+        "Printer maintenance symptom",
+        "Normal Windows update behavior"
+      ],
+      "answer": 1,
+      "explanation": "The objectives list false alerts regarding antivirus protection and browser-related symptoms such as pop-ups and certificate warnings.",
+      "difficulty": "Medium",
+      "tags": [
+        "security-troubleshooting"
+      ]
+    },
+    {
+      "id": "c2-055",
+      "module": 20,
+      "lesson": "20A Mobile OS Security",
+      "question": "Which mobile security measure protects the device if someone gains physical access to it?",
+      "options": [
+        "Enabling developer mode",
+        "Disabling updates",
+        "Installing from unofficial stores",
+        "Screen lock"
+      ],
+      "answer": 3,
+      "explanation": "Screen locks are explicitly listed as mobile-device hardening techniques.",
+      "difficulty": "Easy",
+      "tags": [
+        "mobile-security"
+      ]
+    },
+    {
+      "id": "c2-056",
+      "module": 20,
+      "lesson": "20A Mobile OS Security",
+      "question": "Which management approach is explicitly listed for mobile device security policies?",
+      "options": [
+        "Task Scheduler",
+        "Group Policy Editor",
+        "Mobile device management (MDM)",
+        "Disk Management"
+      ],
+      "answer": 2,
+      "explanation": "MDM is explicitly listed under mobile security policies and procedures.",
+      "difficulty": "Easy",
+      "tags": [
+        "mdm"
+      ]
+    },
+    {
+      "id": "c2-057",
+      "module": 20,
+      "lesson": "20B Troubleshoot Mobile OS and App Software",
+      "question": "An app repeatedly crashes immediately after launch. Which symptom category does this match?",
+      "options": [
+        "Printer queue failure",
+        "Screen does not autorotate only",
+        "Application fails to launch or crashes",
+        "Windows BSOD"
+      ],
+      "answer": 2,
+      "explanation": "The mobile troubleshooting objectives explicitly include application fails to launch and application fails to close/crashes.",
+      "difficulty": "Easy",
+      "tags": [
+        "mobile-troubleshooting"
+      ]
+    },
+    {
+      "id": "c2-058",
+      "module": 20,
+      "lesson": "20B Troubleshoot Mobile OS and App Software",
+      "question": "Which connectivity technology is specifically listed for mobile troubleshooting?",
+      "options": [
+        "Near-field communication (NFC)",
+        "SATA",
+        "Thunderbolt",
+        "PCIe"
+      ],
+      "answer": 0,
+      "explanation": "NFC is listed alongside Bluetooth and Wi-Fi as a mobile connectivity issue to troubleshoot.",
+      "difficulty": "Easy",
+      "tags": [
+        "mobile"
+      ]
+    },
+    {
+      "id": "c2-059",
+      "module": 20,
+      "lesson": "20C Troubleshoot Mobile OS and App Security",
+      "question": "Which mobile-security symptom may indicate unauthorized or malicious application behavior?",
+      "options": [
+        "Correct application updates",
+        "Expected battery charging",
+        "Unexpected application behavior",
+        "Normal screen rotation"
+      ],
+      "answer": 2,
+      "explanation": "Unexpected application behavior is explicitly listed among common mobile security symptoms.",
+      "difficulty": "Medium",
+      "tags": [
+        "mobile-security"
+      ]
+    },
+    {
+      "id": "c2-060",
+      "module": 20,
+      "lesson": "20C Troubleshoot Mobile OS and App Security",
+      "question": "Which mobile configuration increases security risk when it allows elevated access outside normal controls?",
+      "options": [
+        "Root access or jailbreak",
+        "Screen lock",
+        "Remote backup",
+        "OS update"
+      ],
+      "answer": 0,
+      "explanation": "Root access/jailbreak is explicitly identified as a mobile OS security concern.",
+      "difficulty": "Medium",
+      "tags": [
+        "mobile-security"
+      ]
+    },
+    {
+      "id": "c2-061",
+      "module": 21,
+      "lesson": "21A Data Backup and Recovery",
+      "question": "Which backup capability is specifically described for macOS?",
+      "options": [
+        "Event Viewer",
+        "Group Policy",
+        "Time Machine",
+        "Task Manager"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide describes Time Machine as a macOS backup and recovery feature.",
+      "difficulty": "Easy",
+      "tags": [
+        "backup"
+      ]
+    },
+    {
+      "id": "c2-062",
+      "module": 21,
+      "lesson": "21A Data Backup and Recovery",
+      "question": "When preparing to make a significant system change, which practice helps protect user data?",
+      "options": [
+        "Skip documentation",
+        "Perform or verify an appropriate backup",
+        "Disable all recovery mechanisms",
+        "Delete the only copy of the data"
+      ],
+      "answer": 1,
+      "explanation": "The support/troubleshooting material emphasizes checking backup status and performing a backup before changes when possible.",
+      "difficulty": "Medium",
+      "tags": [
+        "backup"
+      ]
+    },
+    {
+      "id": "c2-063",
+      "module": 21,
+      "lesson": "21B Data Handling Best Practices",
+      "question": "Which method is specifically listed for physically destroying a hard drive?",
+      "options": [
+        "Defragmentation",
+        "File compression",
+        "Partition mounting",
+        "Shredding"
+      ],
+      "answer": 3,
+      "explanation": "The security objectives list drilling, shredding, degaussing, and incineration as physical destruction methods.",
+      "difficulty": "Easy",
+      "tags": [
+        "data-destruction"
+      ]
+    },
+    {
+      "id": "c2-064",
+      "module": 21,
+      "lesson": "21B Data Handling Best Practices",
+      "question": "Which practice is associated with recycling or repurposing storage media?",
+      "options": [
+        "Leaving all data intact",
+        "Disabling the file system",
+        "Sharing the drive publicly",
+        "Erasing/wiping"
+      ],
+      "answer": 3,
+      "explanation": "The objectives list erasing/wiping as a method under recycling or repurposing best practices.",
+      "difficulty": "Easy",
+      "tags": [
+        "data-destruction"
+      ]
+    },
+    {
+      "id": "c2-065",
+      "module": 21,
+      "lesson": "21C Artificial Intelligence",
+      "question": "Which module contains Artificial Intelligence as an explicit lesson topic?",
+      "options": [
+        "Module 18 — Configuring SOHO Network Security",
+        "Module 21 — Using Data Security",
+        "Module 13 — Managing Windows",
+        "Module 16 — Installing Operating Systems"
+      ],
+      "answer": 1,
+      "explanation": "The Student Guide contents identify Lesson 21C as Artificial Intelligence under Module 21.",
+      "difficulty": "Easy",
+      "tags": [
+        "ai"
+      ]
+    },
+    {
+      "id": "c2-066",
+      "module": 21,
+      "lesson": "21C Artificial Intelligence",
+      "question": "Which category does Artificial Intelligence appear under in the Core 2 Student Guide?",
+      "options": [
+        "Installing Operating Systems",
+        "Supporting Mobile Software",
+        "Using Data Security",
+        "Supporting Windows"
+      ],
+      "answer": 2,
+      "explanation": "The contents identify Module 21 as Using Data Security and Lesson 21C as Artificial Intelligence.",
+      "difficulty": "Easy",
+      "tags": [
+        "ai"
+      ]
+    },
+    {
+      "id": "c2-067",
+      "module": 22,
+      "lesson": "22A Change and Inventory Management",
+      "question": "Which change type is explicitly listed as requiring its own category in change management?",
+      "options": [
+        "Keyboard change",
+        "Screen resolution change",
+        "Emergency change",
+        "Wallpaper change"
+      ],
+      "answer": 2,
+      "explanation": "The objectives list standard, normal, and emergency change types.",
+      "difficulty": "Easy",
+      "tags": [
+        "change-management"
+      ]
+    },
+    {
+      "id": "c2-068",
+      "module": 22,
+      "lesson": "22A Change and Inventory Management",
+      "question": "Which document is used to define what happens if a change must be reversed?",
+      "options": [
+        "Rollback plan",
+        "Browser cache",
+        "Inventory list",
+        "User profile"
+      ],
+      "answer": 0,
+      "explanation": "A rollback plan is explicitly listed as part of documented change-management processes.",
+      "difficulty": "Easy",
+      "tags": [
+        "change-management"
+      ]
+    },
+    {
+      "id": "c2-069",
+      "module": 22,
+      "lesson": "22A Change and Inventory Management",
+      "question": "Which asset record can help verify whether hardware is still covered by support?",
+      "options": [
+        "Taskbar shortcuts",
+        "Screen saver settings",
+        "Warranty/support documentation",
+        "Browser history"
+      ],
+      "answer": 2,
+      "explanation": "The Student Guide states that procurement and warranty/support documentation should be recorded with asset information.",
+      "difficulty": "Medium",
+      "tags": [
+        "asset-management"
+      ]
+    },
+    {
+      "id": "c2-070",
+      "module": 22,
+      "lesson": "22B Common Safety and Environmental Procedures",
+      "question": "Which practice reduces the risk of electrostatic discharge (ESD) when servicing sensitive components?",
+      "options": [
+        "Use an appropriate antistatic wrist strap and ESD-safe work area",
+        "Store components loose on the desk",
+        "Touch component contacts frequently",
+        "Work on a carpet without grounding"
+      ],
+      "answer": 0,
+      "explanation": "The Student Guide describes ESD workstations, wrist straps, mats, and antistatic packaging as protective measures.",
+      "difficulty": "Easy",
+      "tags": [
+        "safety",
+        "esd"
+      ]
+    },
+    {
+      "id": "c2-071",
+      "module": 22,
+      "lesson": "22B Common Safety and Environmental Procedures",
+      "question": "Before replacing an internal PC component, what power-safety step is required?",
+      "options": [
+        "Disconnect AC power and remove the battery if present",
+        "Keep the system powered on",
+        "Open the power supply unit",
+        "Insert tools into the power supply fan"
+      ],
+      "answer": 0,
+      "explanation": "The Student Guide says to disconnect power first, remove the battery if present, and avoid opening power supplies because capacitors can retain dangerous charge.",
+      "difficulty": "Medium",
+      "tags": [
+        "safety"
+      ]
+    },
+    {
+      "id": "c2-072",
+      "module": 22,
+      "lesson": "22C Scripting Basics",
+      "question": "Which file extension is explicitly listed for a PowerShell script?",
+      "options": [
+        ".ps1",
+        ".py",
+        ".bat",
+        ".sh"
+      ],
+      "answer": 0,
+      "explanation": ".ps1 is listed among the script file types in the Core 2 objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "scripting"
+      ]
+    },
+    {
+      "id": "c2-073",
+      "module": 22,
+      "lesson": "22C Scripting Basics",
+      "question": "Which is an example of a scripting use case listed in the objectives?",
+      "options": [
+        "Crimping an Ethernet connector",
+        "Changing a CPU socket",
+        "Replacing a monitor panel",
+        "Remapping network drives"
+      ],
+      "answer": 3,
+      "explanation": "The objectives list basic automation, restarting machines, remapping network drives, application installation, automated backups, gathering data, and initiating updates.",
+      "difficulty": "Easy",
+      "tags": [
+        "scripting"
+      ]
+    },
+    {
+      "id": "c2-074",
+      "module": 22,
+      "lesson": "22C Scripting Basics",
+      "question": "Why should scripts be tested before deployment?",
+      "options": [
+        "They can introduce malware, change system settings, or cause resource-related failures",
+        "Testing always makes scripts run slower",
+        "Scripts cannot affect system settings",
+        "Testing is only required for hardware"
+      ],
+      "answer": 0,
+      "explanation": "The objectives and Student Guide identify risks including malware introduction, unintended system-setting changes, and browser/system crashes from resource mishandling.",
+      "difficulty": "Medium",
+      "tags": [
+        "scripting",
+        "security"
+      ]
+    },
+    {
+      "module": 11,
+      "lesson": "11A Documentation",
+      "question": "A ticket describes an unexpected error affecting an end user. Which ticket type matches the Student Guide definition?",
+      "options": [
+        "Incident",
+        "Request",
+        "Problem",
+        "Project"
+      ],
+      "answer": 0,
+      "explanation": "An incident is an error or unexpected situation faced by an end user or customer.",
+      "difficulty": "Medium",
+      "tags": [
+        "ticketing",
+        "incidents"
+      ],
+      "id": "c2-075"
+    },
+    {
+      "module": 11,
+      "lesson": "11A Documentation",
+      "question": "A help desk receives many incidents with the same underlying cause. Which ticket type is intended to represent the cause of incidents?",
+      "options": [
+        "Problem",
+        "Request",
+        "Incident",
+        "Change"
+      ],
+      "answer": 0,
+      "explanation": "A problem is the cause of incidents and may require analysis and service reconfiguration to solve.",
+      "difficulty": "Hard",
+      "tags": [
+        "ticketing",
+        "problems"
+      ],
+      "id": "c2-076"
+    },
+    {
+      "module": 11,
+      "lesson": "11B Professional Communication",
+      "question": "A technician needs to explain a technical issue to a nontechnical customer. Which communication approach is recommended?",
+      "options": [
+        "Use plain language and avoid unnecessary jargon",
+        "Use as many technical acronyms as possible",
+        "Assume the customer already understands the terminology",
+        "Provide only command names without explanation"
+      ],
+      "answer": 0,
+      "explanation": "The Student Guide emphasizes communication that customers can understand, including avoiding unnecessary technical jargon.",
+      "difficulty": "Medium",
+      "tags": [
+        "communication",
+        "customers"
+      ],
+      "id": "c2-077"
+    },
+    {
+      "module": 11,
+      "lesson": "11C Types of Operating Systems",
+      "question": "Which filesystem is listed for Linux systems in the Core 2 objectives?",
+      "options": [
+        "ext4",
+        "APFS",
+        "NTFS",
+        "ReFS"
+      ],
+      "answer": 0,
+      "explanation": "ext4 is one of the filesystem types listed in the Core 2 objectives under common operating systems.",
+      "difficulty": "Medium",
+      "tags": [
+        "linux",
+        "filesystems"
+      ],
+      "id": "c2-078"
+    },
+    {
+      "module": 12,
+      "lesson": "12A Windows User Settings",
+      "question": "A user wants Windows to show file extensions in File Explorer. Which setting category should the technician inspect?",
+      "options": [
+        "File Explorer Options",
+        "Power Options",
+        "Time & Language",
+        "Privacy settings"
+      ],
+      "answer": 0,
+      "explanation": "File Explorer Options contains settings controlling how files and folders are displayed, including hidden files and extensions.",
+      "difficulty": "Medium",
+      "tags": [
+        "windows",
+        "file-explorer"
+      ],
+      "id": "c2-079"
+    },
+    {
+      "module": 12,
+      "lesson": "12B Windows System Settings",
+      "question": "Which Windows feature is designed to request elevation when an action requires administrative privileges?",
+      "options": [
+        "User Account Control (UAC)",
+        "Task Scheduler",
+        "Disk Cleanup",
+        "Resource Monitor"
+      ],
+      "answer": 0,
+      "explanation": "UAC controls elevation prompts for administrative actions.",
+      "difficulty": "Medium",
+      "tags": [
+        "uac",
+        "security"
+      ],
+      "id": "c2-080"
+    },
+    {
+      "module": 12,
+      "lesson": "12C Install and Configure Applications",
+      "question": "An application requires a dedicated graphics card and a specified amount of video memory. Which installation consideration should be checked?",
+      "options": [
+        "Application system requirements",
+        "Ticket priority",
+        "Windows event severity",
+        "User account expiration"
+      ],
+      "answer": 0,
+      "explanation": "Application system requirements can include graphics hardware, VRAM, RAM, CPU, storage, and OS compatibility.",
+      "difficulty": "Hard",
+      "tags": [
+        "applications",
+        "requirements"
+      ],
+      "id": "c2-081"
+    },
+    {
+      "module": 12,
+      "lesson": "12D Cloud-Based Applications",
+      "question": "A company uses cloud storage and wants files synchronized between the service and a local folder. Which cloud-application setting is relevant?",
+      "options": [
+        "Sync/folder settings",
+        "BIOS password",
+        "NTFS inheritance",
+        "Device Manager resources"
+      ],
+      "answer": 0,
+      "explanation": "The Core 2 objectives specifically list sync/folder settings under cloud-based storage.",
+      "difficulty": "Medium",
+      "tags": [
+        "cloud",
+        "sync"
+      ],
+      "id": "c2-082"
+    },
+    {
+      "module": 13,
+      "lesson": "13A Use Management Consoles",
+      "question": "A technician needs to manage scheduled automated tasks in Windows. Which MMC snap-in is appropriate?",
+      "options": [
+        "Task Scheduler",
+        "Certificate Manager",
+        "Disk Management",
+        "Event Viewer"
+      ],
+      "answer": 0,
+      "explanation": "Task Scheduler (taskschd.msc) is the Windows management console for scheduled tasks.",
+      "difficulty": "Medium",
+      "tags": [
+        "mmc",
+        "task-scheduler"
+      ],
+      "id": "c2-083"
+    },
+    {
+      "module": 13,
+      "lesson": "13A Use Management Consoles",
+      "question": "Which Windows console is used to manage hardware devices and their drivers?",
+      "options": [
+        "Device Manager",
+        "Disk Management",
+        "Event Viewer",
+        "Group Policy Editor"
+      ],
+      "answer": 0,
+      "explanation": "Device Manager (devmgmt.msc) manages devices and their drivers.",
+      "difficulty": "Medium",
+      "tags": [
+        "mmc",
+        "device-manager"
+      ],
+      "id": "c2-084"
+    },
+    {
+      "module": 13,
+      "lesson": "13B Command-Line Tools",
+      "question": "Which command can display the Windows network configuration, including IP addressing information?",
+      "options": [
+        "ipconfig",
+        "whoami",
+        "winver",
+        "tasklist"
+      ],
+      "answer": 0,
+      "explanation": "ipconfig is used to display Windows IP configuration information.",
+      "difficulty": "Easy",
+      "tags": [
+        "cli",
+        "ipconfig"
+      ],
+      "id": "c2-085"
+    },
+    {
+      "module": 13,
+      "lesson": "13C Windows Networking",
+      "question": "A Windows client is configured to receive its IP address automatically rather than having one manually assigned. Which addressing method is being used?",
+      "options": [
+        "Dynamic addressing",
+        "Static addressing",
+        "Loopback addressing",
+        "Link-local-only addressing"
+      ],
+      "answer": 0,
+      "explanation": "Dynamic addressing means the address is obtained automatically; static addressing is manually assigned.",
+      "difficulty": "Medium",
+      "tags": [
+        "networking",
+        "addressing"
+      ],
+      "id": "c2-086"
+    },
+    {
+      "module": 14,
+      "lesson": "14A Troubleshoot Windows Networking",
+      "question": "A Windows workstation has network connectivity by IP address but cannot resolve hostnames. Which service configuration should be investigated?",
+      "options": [
+        "DNS",
+        "DHCP",
+        "NTP",
+        "RADIUS"
+      ],
+      "answer": 0,
+      "explanation": "DNS provides name resolution, so DNS configuration should be checked when hostnames cannot be resolved.",
+      "difficulty": "Hard",
+      "tags": [
+        "networking",
+        "dns"
+      ],
+      "id": "c2-087"
+    },
+    {
+      "module": 14,
+      "lesson": "14B Remote Access Technologies",
+      "question": "Which remote-access technology is Microsoft’s implementation of WS-Management?",
+      "options": [
+        "WinRM",
+        "SSH",
+        "RDP",
+        "VNC"
+      ],
+      "answer": 0,
+      "explanation": "Windows Remote Management (WinRM) is Microsoft’s implementation of WS-Management.",
+      "difficulty": "Hard",
+      "tags": [
+        "remote-access",
+        "winrm"
+      ],
+      "id": "c2-088"
+    },
+    {
+      "module": 14,
+      "lesson": "14C Performance and Troubleshooting Tools",
+      "question": "Which Windows tool is specifically used to monitor system performance counters and resource behavior?",
+      "options": [
+        "Performance Monitor",
+        "Disk Cleanup",
+        "Certificate Manager",
+        "File Explorer"
+      ],
+      "answer": 0,
+      "explanation": "Performance Monitor (perfmon.msc) is the listed Windows tool for performance monitoring.",
+      "difficulty": "Medium",
+      "tags": [
+        "performance",
+        "perfmon"
+      ],
+      "id": "c2-089"
+    },
+    {
+      "module": 14,
+      "lesson": "14D Troubleshoot Windows OS Problems",
+      "question": "A Windows system repeatedly displays a blue-screen error. Which troubleshooting category does this symptom belong to?",
+      "options": [
+        "Windows OS problem",
+        "Cloud synchronization issue",
+        "Browser pop-up issue",
+        "Mobile NFC issue"
+      ],
+      "answer": 0,
+      "explanation": "A blue-screen error is listed as a common Windows operating-system problem.",
+      "difficulty": "Medium",
+      "tags": [
+        "windows",
+        "bsod"
+      ],
+      "id": "c2-090"
+    },
+    {
+      "module": 15,
+      "lesson": "15A Logical Security Concepts",
+      "question": "Which access model assumes access should not be trusted merely because a user is inside a network?",
+      "options": [
+        "Zero Trust model",
+        "Workgroup model",
+        "Peer-to-peer model",
+        "Recovery model"
+      ],
+      "answer": 0,
+      "explanation": "The Core 2 objectives list the Zero Trust model as a logical security concept.",
+      "difficulty": "Hard",
+      "tags": [
+        "security",
+        "zero-trust"
+      ],
+      "id": "c2-091"
+    },
+    {
+      "module": 15,
+      "lesson": "15A Logical Security Concepts",
+      "question": "Which technology provides centralized control of user identities, permissions, and access?",
+      "options": [
+        "Identity Access Management (IAM)",
+        "Disk Management",
+        "Task Scheduler",
+        "System Information"
+      ],
+      "answer": 0,
+      "explanation": "IAM is listed as a logical security measure for managing identities and access.",
+      "difficulty": "Hard",
+      "tags": [
+        "security",
+        "iam"
+      ],
+      "id": "c2-092"
+    },
+    {
+      "module": 15,
+      "lesson": "15B Windows Security Settings",
+      "question": "Which Windows encryption feature is specifically intended to protect files using the file system?",
+      "options": [
+        "Encrypting File System (EFS)",
+        "User Account Control (UAC)",
+        "Group Policy",
+        "Windows Firewall"
+      ],
+      "answer": 0,
+      "explanation": "EFS is the Windows feature listed for file-system-based encryption; BitLocker protects drives.",
+      "difficulty": "Hard",
+      "tags": [
+        "windows",
+        "efs"
+      ],
+      "id": "c2-093"
+    },
+    {
+      "module": 15,
+      "lesson": "15C Windows Shares",
+      "question": "When Windows shared resources are secured, which permission systems need to be considered together?",
+      "options": [
+        "NTFS and share permissions",
+        "UAC and BitLocker",
+        "BIOS and UEFI passwords",
+        "RADIUS and TACACS+"
+      ],
+      "answer": 0,
+      "explanation": "The Core 2 objectives explicitly compare NTFS permissions with share permissions.",
+      "difficulty": "Hard",
+      "tags": [
+        "shares",
+        "ntfs"
+      ],
+      "id": "c2-094"
+    },
+    {
+      "module": 16,
+      "lesson": "16A Windows Editions",
+      "question": "Which Windows editions are explicitly listed for Windows 11 in the Core 2 objectives?",
+      "options": [
+        "Home, Pro, Enterprise",
+        "Home, Pro for Workstations, Enterprise",
+        "Home, Education, Server",
+        "Pro, Server, Enterprise"
+      ],
+      "answer": 0,
+      "explanation": "The objectives list Windows 11 Home, Pro, and Enterprise.",
+      "difficulty": "Medium",
+      "tags": [
+        "windows-editions"
+      ],
+      "id": "c2-095"
+    },
+    {
+      "module": 16,
+      "lesson": "16A Windows Editions",
+      "question": "Which Windows feature is identified as an edition difference in the Core 2 objectives?",
+      "options": [
+        "Remote Desktop Protocol availability",
+        "Keyboard layout",
+        "Screen resolution",
+        "File Explorer themes"
+      ],
+      "answer": 0,
+      "explanation": "RDP availability is listed as one of the feature differences between Windows editions.",
+      "difficulty": "Hard",
+      "tags": [
+        "windows-editions",
+        "rdp"
+      ],
+      "id": "c2-096"
+    },
+    {
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Which installation method is intended to repair an existing operating-system installation rather than perform a normal clean install?",
+      "options": [
+        "Repair installation",
+        "Clean install",
+        "Zero-touch deployment",
+        "Image deployment"
+      ],
+      "answer": 0,
+      "explanation": "Repair installation is explicitly listed as an OS installation type.",
+      "difficulty": "Medium",
+      "tags": [
+        "installation",
+        "repair"
+      ],
+      "id": "c2-097"
+    },
+    {
+      "module": 16,
+      "lesson": "16B OS Installations and Upgrades",
+      "question": "Which partitioning method is an alternative to Master Boot Record (MBR) in the objectives?",
+      "options": [
+        "GUID Partition Table (GPT)",
+        "NTFS",
+        "APFS",
+        "FAT32"
+      ],
+      "answer": 0,
+      "explanation": "GPT and MBR are the two partitioning schemes listed in the Core 2 objectives.",
+      "difficulty": "Medium",
+      "tags": [
+        "gpt",
+        "mbr"
+      ],
+      "id": "c2-098"
+    },
+    {
+      "module": 17,
+      "lesson": "17A Linux Features",
+      "question": "Which command changes permissions on a Linux file or directory?",
+      "options": [
+        "chmod",
+        "ls",
+        "ip",
+        "apt"
+      ],
+      "answer": 0,
+      "explanation": "chmod is the Linux command listed for changing file permissions.",
+      "difficulty": "Medium",
+      "tags": [
+        "linux",
+        "permissions"
+      ],
+      "id": "c2-099"
+    },
+    {
+      "module": 17,
+      "lesson": "17A Linux Features",
+      "question": "Which filesystem is listed for Linux and is distinct from ext4?",
+      "options": [
+        "XFS",
+        "APFS",
+        "ReFS",
+        "NTFS"
+      ],
+      "answer": 0,
+      "explanation": "XFS is another filesystem type listed in the Core 2 objectives for common operating systems.",
+      "difficulty": "Medium",
+      "tags": [
+        "linux",
+        "xfs"
+      ],
+      "id": "c2-100"
+    },
+    {
+      "module": 17,
+      "lesson": "17B Package and Network Management",
+      "question": "Which Linux command is used to manage software packages on Debian-family systems?",
+      "options": [
+        "apt",
+        "chmod",
+        "ls",
+        "ip"
+      ],
+      "answer": 0,
+      "explanation": "apt is the package-management command listed for Debian-family Linux systems.",
+      "difficulty": "Medium",
+      "tags": [
+        "linux",
+        "packages"
+      ],
+      "id": "c2-101"
+    },
+    {
+      "module": 17,
+      "lesson": "17C macOS Features",
+      "question": "Which macOS utility is specifically associated with managing disks and partitions?",
+      "options": [
+        "Disk Utility",
+        "Time Machine",
+        "Terminal",
+        "System Information"
+      ],
+      "answer": 0,
+      "explanation": "Disk Utility is the macOS utility used to manage disks and partitions.",
+      "difficulty": "Medium",
+      "tags": [
+        "macos",
+        "disk-utility"
+      ],
+      "id": "c2-102"
+    },
+    {
+      "module": 18,
+      "lesson": "18A Attacks, Threats, and Vulnerabilities",
+      "question": "An attacker sends a deceptive message designed specifically for a high-profile executive. Which social-engineering attack is described?",
+      "options": [
+        "Whaling",
+        "Smishing",
+        "Vishing",
+        "Shoulder surfing"
+      ],
+      "answer": 0,
+      "explanation": "Whaling is a targeted phishing-style attack aimed at high-profile individuals such as executives.",
+      "difficulty": "Hard",
+      "tags": [
+        "social-engineering",
+        "whaling"
+      ],
+      "id": "c2-103"
+    },
+    {
+      "module": 18,
+      "lesson": "18A Attacks, Threats, and Vulnerabilities",
+      "question": "Which threat uses a fraudulent wireless access point that imitates a legitimate network?",
+      "options": [
+        "Evil twin",
+        "DDoS",
+        "SQL injection",
+        "Dictionary attack"
+      ],
+      "answer": 0,
+      "explanation": "An evil twin is a fraudulent wireless access point designed to imitate a legitimate one.",
+      "difficulty": "Hard",
+      "tags": [
+        "wireless",
+        "evil-twin"
+      ],
+      "id": "c2-104"
+    },
+    {
+      "module": 18,
+      "lesson": "18B Wireless Security Protocols",
+      "question": "Which encryption standard is listed alongside TKIP under wireless security protocols?",
+      "options": [
+        "AES",
+        "RADIUS",
+        "Kerberos",
+        "SAML"
+      ],
+      "answer": 0,
+      "explanation": "AES is listed with TKIP as a wireless security encryption technology.",
+      "difficulty": "Medium",
+      "tags": [
+        "wireless",
+        "aes"
+      ],
+      "id": "c2-105"
+    },
+    {
+      "module": 18,
+      "lesson": "18D Additional Security Measures",
+      "question": "Which wireless network arrangement can provide visitors access without placing them on the main network?",
+      "options": [
+        "Guest network",
+        "Domain controller",
+        "Local administrator account",
+        "Loopback interface"
+      ],
+      "answer": 0,
+      "explanation": "A guest network is used to provide separate access for visitors.",
+      "difficulty": "Medium",
+      "tags": [
+        "soho",
+        "guest-network"
+      ],
+      "id": "c2-106"
+    },
+    {
+      "module": 19,
+      "lesson": "19A Account Security",
+      "question": "Which account control limits how long a user can authenticate before the account expires?",
+      "options": [
+        "Account expiration date",
+        "Screen resolution",
+        "File extension display",
+        "Power plan"
+      ],
+      "answer": 0,
+      "explanation": "Account expiration dates are listed as an account-management hardening measure.",
+      "difficulty": "Medium",
+      "tags": [
+        "accounts",
+        "hardening"
+      ],
+      "id": "c2-107"
+    },
+    {
+      "module": 19,
+      "lesson": "19A Account Security",
+      "question": "Which Windows login option uses biometric information from the user's face?",
+      "options": [
+        "Facial recognition",
+        "PIN",
+        "Password",
+        "Security question"
+      ],
+      "answer": 0,
+      "explanation": "Facial recognition is one of the Windows login options listed in the objectives.",
+      "difficulty": "Easy",
+      "tags": [
+        "windows-login",
+        "biometrics"
+      ],
+      "id": "c2-108"
+    },
+    {
+      "module": 19,
+      "lesson": "19B Workstation Security",
+      "question": "Which password practice is explicitly included in workstation hardening?",
+      "options": [
+        "Use unique passwords",
+        "Reuse one password everywhere",
+        "Disable all password requirements",
+        "Store passwords in plain text"
+      ],
+      "answer": 0,
+      "explanation": "Password uniqueness is explicitly listed among workstation security considerations.",
+      "difficulty": "Medium",
+      "tags": [
+        "passwords",
+        "hardening"
+      ],
+      "id": "c2-109"
+    },
+    {
+      "module": 19,
+      "lesson": "19C Browser Security",
+      "question": "A technician wants to reduce automatic execution from removable media. Which workstation setting is relevant?",
+      "options": [
+        "Disable AutoRun",
+        "Enable guest accounts",
+        "Disable screen lock",
+        "Increase log-in timeout"
+      ],
+      "answer": 0,
+      "explanation": "The objectives specifically list disabling AutoRun as a workstation hardening technique.",
+      "difficulty": "Medium",
+      "tags": [
+        "autorun",
+        "hardening"
+      ],
+      "id": "c2-110"
+    },
+    {
+      "module": 20,
+      "lesson": "20A Mobile OS Security",
+      "question": "Which mobile-security capability can remove organizational data from a lost device remotely?",
+      "options": [
+        "Remote wipe",
+        "Screen rotation",
+        "NFC",
+        "Airplane mode"
+      ],
+      "answer": 0,
+      "explanation": "Remote wipes are explicitly listed as a mobile security measure.",
+      "difficulty": "Medium",
+      "tags": [
+        "mobile",
+        "remote-wipe"
+      ],
+      "id": "c2-111"
+    },
+    {
+      "module": 20,
+      "lesson": "20A Mobile OS Security",
+      "question": "Which mobile management approach can enforce organizational device policies?",
+      "options": [
+        "Mobile Device Management (MDM)",
+        "Disk Management",
+        "Group Policy Editor",
+        "Performance Monitor"
+      ],
+      "answer": 0,
+      "explanation": "MDM is listed for managing mobile device security policies and requirements.",
+      "difficulty": "Medium",
+      "tags": [
+        "mobile",
+        "mdm"
+      ],
+      "id": "c2-112"
+    },
+    {
+      "module": 20,
+      "lesson": "20B Troubleshoot Mobile OS and App Software",
+      "question": "A mobile application works normally until a new version is installed, then it repeatedly crashes. Which troubleshooting area is directly involved?",
+      "options": [
+        "Application software",
+        "Wireless encryption protocol",
+        "Physical access control",
+        "Data destruction"
+      ],
+      "answer": 0,
+      "explanation": "Repeated application crashes are a mobile OS and application software troubleshooting symptom.",
+      "difficulty": "Medium",
+      "tags": [
+        "mobile",
+        "apps"
+      ],
+      "id": "c2-113"
+    },
+    {
+      "module": 20,
+      "lesson": "20C Troubleshoot Mobile OS and App Security",
+      "question": "A device has been modified to allow elevated access outside the normal mobile OS security model. Which condition does this describe?",
+      "options": [
+        "Rooting or jailbreaking",
+        "Screen lock",
+        "Remote backup",
+        "Content filtering"
+      ],
+      "answer": 0,
+      "explanation": "Rooting or jailbreaking is the security-related mobile configuration that provides elevated access outside normal controls.",
+      "difficulty": "Hard",
+      "tags": [
+        "mobile",
+        "security"
+      ],
+      "id": "c2-114"
+    },
+    {
+      "module": 21,
+      "lesson": "21A Data Backup and Recovery",
+      "question": "Which backup strategy is specifically named in the Core 2 objectives?",
+      "options": [
+        "Grandfather-Father-Son (GFS)",
+        "Full-Differential-Only",
+        "RAID-0 backup",
+        "Screen-lock backup"
+      ],
+      "answer": 0,
+      "explanation": "Grandfather-Father-Son (GFS) is explicitly listed among backup concepts in the objectives.",
+      "difficulty": "Hard",
+      "tags": [
+        "backup",
+        "gfs"
+      ],
+      "id": "c2-115"
+    },
+    {
+      "module": 21,
+      "lesson": "21A Data Backup and Recovery",
+      "question": "Before performing a major system change, which action helps protect user data according to the operational guidance?",
+      "options": [
+        "Verify that backups are available",
+        "Delete all restore points",
+        "Disable all security controls",
+        "Remove the user account"
+      ],
+      "answer": 0,
+      "explanation": "Backing up and verifying data before significant changes is part of safe operational practice.",
+      "difficulty": "Medium",
+      "tags": [
+        "backup",
+        "recovery"
+      ],
+      "id": "c2-116"
+    },
+    {
+      "module": 21,
+      "lesson": "21B Data Handling Best Practices",
+      "question": "Which data-destruction method uses a machine to physically reduce storage media to very small pieces?",
+      "options": [
+        "Shredding",
+        "Quick formatting",
+        "File renaming",
+        "Compression"
+      ],
+      "answer": 0,
+      "explanation": "Shredding is listed as a physical data-destruction method.",
+      "difficulty": "Medium",
+      "tags": [
+        "data-destruction"
+      ],
+      "id": "c2-117"
+    },
+    {
+      "module": 21,
+      "lesson": "21C Artificial Intelligence",
+      "question": "Where is Artificial Intelligence placed in the Core 2 Student Guide structure?",
+      "options": [
+        "Module 21: Using Data Security",
+        "Module 16: Installing Operating Systems",
+        "Module 18: Configuring SOHO Network Security",
+        "Module 22: Implementing Operational Procedures"
+      ],
+      "answer": 0,
+      "explanation": "Artificial Intelligence is an explicit topic in Module 21, Using Data Security.",
+      "difficulty": "Medium",
+      "tags": [
+        "ai",
+        "data-security"
+      ],
+      "id": "c2-118"
+    },
+    {
+      "module": 22,
+      "lesson": "22A Change and Inventory Management",
+      "question": "Which inventory record can help identify a device and link it to its lifecycle information?",
+      "options": [
+        "Asset ID or service tag",
+        "Browser history",
+        "Screen resolution",
+        "Keyboard layout"
+      ],
+      "answer": 0,
+      "explanation": "The Student Guide notes that a ticket may link device information to an inventory record through a service tag or asset ID.",
+      "difficulty": "Medium",
+      "tags": [
+        "inventory",
+        "assets"
+      ],
+      "id": "c2-119"
+    },
+    {
+      "module": 22,
+      "lesson": "22B Common Safety and Environmental Procedures",
+      "question": "Which ESD-control practice is intended to safely discharge static electricity while servicing sensitive components?",
+      "options": [
+        "Use an ESD wrist strap with an appropriate work area",
+        "Work on carpet without protection",
+        "Touch connectors with bare hands",
+        "Increase static charge before handling parts"
+      ],
+      "answer": 0,
+      "explanation": "An ESD wrist strap and appropriate ESD-safe work area are listed practices for reducing electrostatic-discharge risk.",
+      "difficulty": "Medium",
+      "tags": [
+        "esd",
+        "safety"
+      ],
+      "id": "c2-120"
     }
   ]
 }

@@ -1,15 +1,17 @@
 {
+  "name": "A+ Core 2 Study App",
   "short_name": "A+ Core 2",
-  "name": "A+ Core 2 Study Companion",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#080b14",
+  "theme_color": "#0b1020",
+  "description": "CompTIA A+ Core 2 (220-1202) Modules 11\u201322 study PWA.",
   "icons": [
     {
       "src": "icon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "sizes": "512x512"
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": ".",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
-  "display": "standalone"
+  ]
 }
