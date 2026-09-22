@@ -1,13 +1,12 @@
-/* Custom Styles for Flashcard Perspective and Animations */
-
+/* Animationer och Perspektiv */
 .perspective-1000 {
     perspective: 1000px;
 }
 
-/* Custom scrollbar för terminal och alternativ */
+/* Snygg scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -16,7 +15,7 @@
 
 ::-webkit-scrollbar-thumb {
     background: #334155;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
