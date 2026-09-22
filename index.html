@@ -1,68 +1,147 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="sv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1020">
-<meta name="description" content="CompTIA A+ Core 2 (220-1202) study PWA — Modules 11–22.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg">
-<title>A+ Core 2 Study App</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A+ Core 2 (220-1102) Study App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.webmanifest">
 </head>
-<body>
-<header class="topbar">
-  <div class="brand"><div class="logo">A+</div><div><strong>Core 2 Study</strong><span>220-1202 · Modules 11–22</span></div></div>
-  <div class="top-actions"><button id="themeBtn" class="icon-btn" title="Toggle theme">◐</button><button id="homeBtn" class="ghost-btn">Home</button></div>
-</header>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans">
 
-<main id="app">
-<section id="home" class="view active">
-  <div class="hero">
-    <div><p class="eyebrow">COMPTIA A+ CORE 2</p><h1>Study smarter.<br><span>Practice deeper.</span></h1>
-    <p class="sub">Operating systems · Security · Software troubleshooting · Operational procedures</p><p class="sub">120 questions · 10 per module · Source-grounded Core 2 practice</p></div>
-    <div class="stats" id="stats"></div>
-  </div>
-  <div class="section-head"><div><h2>Practice</h2><p>Choose exactly what you want to train.</p></div></div>
-  <div class="practice-grid">
-    <button class="feature-card" data-mode="final"><b>Final Test</b><span>Mixed questions from Modules 11–22.</span></button>
-    <button class="feature-card" data-mode="random"><b>Random Practice</b><span>Fresh mixed practice across all Core 2 topics.</span></button>
-    <button class="feature-card" data-mode="wrong"><b>Wrong Questions</b><span>Retry questions you have missed.</span><em id="wrongCount">0</em></button>
-    <button class="feature-card" data-mode="weak"><b>Weak Areas</b><span>Practice your lowest-performing lessons.</span><em id="weakCount">0</em></button>
-    <button class="feature-card" data-mode="starred"><b>Starred Questions</b><span>Review the questions you marked.</span><em id="starCount">0</em></button>
-    <button class="feature-card" data-mode="new"><b>New Questions</b><span>Questions you have not answered yet.</span><em id="newCount">0</em></button>
-  </div>
+    <!-- Navigation Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 sticky top-0 z-50 shadow-md">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent">
+                A+ Core 2 Study Companion
+            </h1>
+            <nav class="flex gap-2">
+                <button onclick="switchMode('quiz')" id="nav-quiz" class="px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-600 text-white transition">Quiz</button>
+                <button onclick="switchMode('flashcards')" id="nav-flashcards" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition">Flashcards</button>
+                <button onclick="switchMode('pbq')" id="nav-pbq" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition">PBQ</button>
+                <button onclick="switchMode('stats')" id="nav-stats" class="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white transition">Statistik</button>
+            </nav>
+        </div>
+    </header>
 
-  <div class="section-head"><div><h2>Module Challenge</h2><p>Pick a 3-module range, or add one extra weak module.</p></div></div>
-  <div class="challenge">
-    <select id="rangeSelect"></select>
-    <select id="extraModule"><option value="">No extra module</option></select>
-    <button id="challengeBtn" class="primary">Start Challenge</button>
-  </div>
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto p-4 md:p-6">
+        
+        <!-- QUIZ MODE -->
+        <section id="quiz-section" class="space-y-6">
+            <!-- Progress & Controls -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex items-center gap-4 w-full sm:w-auto">
+                    <div class="text-sm font-medium text-slate-400">
+                        Fråga <span id="current-q-num" class="text-white font-bold">1</span> av <span id="total-q-num" class="text-white">0</span>
+                    </div>
+                    <div class="w-full sm:w-32 bg-slate-700 h-2 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="bg-blue-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="timer" class="text-amber-400 font-mono font-bold text-lg">90:00</div>
+                    <select id="domain-filter" onchange="filterQuestions()" class="bg-slate-700 border border-slate-600 rounded-lg px-2 py-1 text-xs text-slate-200">
+                        <option value="all">Alla Domäner</option>
+                        <option value="1.0">1.0 Operating Systems</option>
+                        <option value="2.0">2.0 Security</option>
+                        <option value="3.0">3.0 Software Troubleshooting</option>
+                        <option value="4.0">4.0 Operational Procedures</option>
+                    </select>
+                </div>
+            </div>
 
-  <div class="section-head modules-head"><div><h2>Modules 11–22</h2><p>Study by module and lesson.</p></div>
-    <select id="countSelect"><option>10</option><option>20</option><option>30</option><option>50</option><option>75</option><option>100</option><option>150</option><option>200</option><option>250</option><option>300</option><option>All available</option></select>
-  </div>
-  <div id="moduleGrid" class="module-grid"></div>
+            <!-- Question Card -->
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg space-y-6">
+                <div class="flex justify-between items-start gap-4">
+                    <span id="question-domain" class="text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded bg-slate-700 text-blue-400">
+                        Domän
+                    </span>
+                    <button onclick="toggleBookmark()" id="bookmark-btn" class="text-slate-500 hover:text-amber-400 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                    </button>
+                </div>
 
-  <div class="sources-note"><b>Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content. No outside study content is added.</div>
-</section>
+                <p id="question-text" class="text-lg md:text-xl font-medium leading-relaxed">
+                    Laddar fråga...
+                </p>
 
-<section id="quiz" class="view">
-  <div class="quiz-top"><button id="backQuiz" class="ghost-btn">← Back</button><div class="progress-wrap"><div class="progress-label"><span id="quizLabel"></span><span id="quizProgress"></span></div><div class="progress"><i id="progressBar"></i></div></div><button id="starBtn" class="star">☆</button></div>
-  <div class="question-card">
-    <div class="q-meta"><span id="lessonTag"></span><span id="difficultyTag"></span></div>
-    <h2 id="questionText"></h2>
-    <div id="answers" class="answers"></div>
-    <div id="feedback" class="feedback"></div>
-  </div>
-  <div class="quiz-actions"><button id="confirmBtn" class="primary" disabled>Confirm Answer</button><button id="nextBtn" class="primary hidden">Next Question →</button></div>
-</section>
+                <!-- Options -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Alternativ laddas dynamiskt -->
+                </div>
 
-<section id="results" class="view">
-  <div class="results-card"><p class="eyebrow">SESSION COMPLETE</p><h1 id="resultTitle"></h1><div class="score-ring"><strong id="resultScore"></strong><span>correct</span></div><div id="resultDetails"></div><div class="result-actions"><button id="retryBtn" class="primary">Retry</button><button id="resultHome" class="ghost-btn">Back Home</button></div></div>
-</section>
-</main>
-<script src="app.js"></script>
+                <!-- Explanation Box (Hidden by default) -->
+                <div id="explanation-box" class="hidden bg-slate-900/80 border border-slate-700 rounded-lg p-4 text-sm text-slate-300 space-y-2">
+                    <div class="font-semibold text-blue-400">Förklaring:</div>
+                    <p id="explanation-text"></p>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between">
+                <button onclick="prevQuestion()" id="prev-btn" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm font-medium transition disabled:opacity-50">Föregående</button>
+                <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-sm font-medium transition">Nästa</button>
+            </div>
+        </section>
+
+        <!-- FLASHCARDS MODE -->
+        <section id="flashcards-section" class="hidden space-y-6">
+            <div class="text-center text-slate-400 text-sm">Klicka på kortet för att vända på det</div>
+            <div class="perspective-1000 min-h-[300px] flex items-center justify-center">
+                <div id="flashcard" onclick="flipCard()" class="w-full max-w-md h-72 bg-slate-800 border border-slate-700 rounded-2xl p-6 flex flex-col justify-center items-center text-center cursor-pointer shadow-xl transition-all duration-500 transform hover:scale-[1.02]">
+                    <span id="fc-category" class="text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4">Kategori</span>
+                    <div id="fc-content" class="text-xl font-medium">Laddar flashcard...</div>
+                </div>
+            </div>
+            <div class="flex justify-center gap-4">
+                <button onclick="prevCard()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium">Föregående</button>
+                <button onclick="nextCard()" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 rounded-lg text-sm font-medium">Nästa</button>
+            </div>
+        </section>
+
+        <!-- PBQ MODE -->
+        <section id="pbq-section" class="hidden space-y-6">
+            <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-lg space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="bg-amber-500/20 text-amber-400 text-xs px-2.5 py-1 rounded font-bold">PBQ</span>
+                    <h2 class="text-lg font-bold">Performance-Based Question: Kommandotolken</h2>
+                </div>
+                <p class="text-sm text-slate-300">En användare kan inte nå nätverket. Identifiera IP-konfigurationen och förnya DHCP-leasingsavtalet via CLI.</p>
+                
+                <!-- Terminal Window Simulator -->
+                <div class="bg-black font-mono p-4 rounded-lg border border-slate-700 text-green-400 text-sm space-y-2 min-h-[220px]">
+                    <div>C:\Users\Admin> <span id="terminal-history"></span></div>
+                    <div class="flex items-center gap-1">
+                        <span>C:\Users\Admin&gt;</span>
+                        <input type="text" id="terminal-input" onkeydown="handleTerminalCommand(event)" class="bg-transparent text-green-400 focus:outline-none flex-grow" autofocus autocomplete="off">
+                    </div>
+                </div>
+                <div id="pbq-feedback" class="text-sm font-medium"></div>
+            </div>
+        </section>
+
+        <!-- STATS MODE -->
+        <section id="stats-section" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                    <div class="text-3xl font-bold text-blue-400" id="stat-total">0</div>
+                    <div class="text-sm text-slate-400 mt-1">Besvarade Frågor</div>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                    <div class="text-3xl font-bold text-green-400" id="stat-accuracy">0%</div>
+                    <div class="text-sm text-slate-400 mt-1">Noggrannhet</div>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 text-center">
+                    <div class="text-3xl font-bold text-amber-400" id="stat-score">0 / 900</div>
+                    <div class="text-sm text-slate-400 mt-1">Uppskattad Poäng</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="app.js"></script>
 </body>
 </html>
