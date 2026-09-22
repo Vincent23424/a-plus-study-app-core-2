@@ -11,7 +11,7 @@
         "Task Scheduler"
       ],
       "correct": 1,
-      "explanation": "I 'Advanced System Settings' under fliken 'Advanced' hittar du 'Startup and Recovery' där du kan bocka ur/i 'Automatically restart' vid systemfel."
+      "explanation": "I 'Advanced System Settings' under fliken 'Advanced' hittar du 'Startup and Recovery' där du kan ställa in hur systemet ska agera vid systemfel."
     },
     {
       "id": 2,
@@ -37,7 +37,7 @@
         "Inaktivera Windows Firewall"
       ],
       "correct": 1,
-      "explanation": "Sortera processerna i Aktivitetshanteraren efter diskanvändning för att se vilken specifik applikation eller tjänst som orsakar flaskhalsen."
+      "explanation": "Sortera processerna i Aktivitetshanteraren efter diskanvändning för att se vilken specifik applikation eller tjänst som belastar disken."
     }
   ],
   "flashcards": [
