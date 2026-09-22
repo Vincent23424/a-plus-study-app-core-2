@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="CompTIA A+ Core 2 (220-1202) study PWA — Modules 11–22.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg">
+<title>A+ Core 2 Study App</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">A+</div><div><strong>Core 2 Study</strong><span>220-1202 · Modules 11–22</span></div></div>
+  <div class="top-actions"><button id="themeBtn" class="icon-btn" title="Toggle theme">◐</button><button id="homeBtn" class="ghost-btn">Home</button></div>
+</header>
+
+<main id="app">
+<section id="home" class="view active">
+  <div class="hero">
+    <div><p class="eyebrow">COMPTIA A+ CORE 2</p><h1>Study smarter.<br><span>Practice deeper.</span></h1>
+    <p class="sub">Operating systems · Security · Software troubleshooting · Operational procedures</p><p class="sub">120 questions · 10 per module · Source-grounded Core 2 practice</p></div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div class="section-head"><div><h2>Practice</h2><p>Choose exactly what you want to train.</p></div></div>
+  <div class="practice-grid">
+    <button class="feature-card" data-mode="final"><b>Final Test</b><span>Mixed questions from Modules 11–22.</span></button>
+    <button class="feature-card" data-mode="random"><b>Random Practice</b><span>Fresh mixed practice across all Core 2 topics.</span></button>
+    <button class="feature-card" data-mode="wrong"><b>Wrong Questions</b><span>Retry questions you have missed.</span><em id="wrongCount">0</em></button>
+    <button class="feature-card" data-mode="weak"><b>Weak Areas</b><span>Practice your lowest-performing lessons.</span><em id="weakCount">0</em></button>
+    <button class="feature-card" data-mode="starred"><b>Starred Questions</b><span>Review the questions you marked.</span><em id="starCount">0</em></button>
+    <button class="feature-card" data-mode="new"><b>New Questions</b><span>Questions you have not answered yet.</span><em id="newCount">0</em></button>
+  </div>
+
+  <div class="section-head"><div><h2>Module Challenge</h2><p>Pick a 3-module range, or add one extra weak module.</p></div></div>
+  <div class="challenge">
+    <select id="rangeSelect"></select>
+    <select id="extraModule"><option value="">No extra module</option></select>
+    <button id="challengeBtn" class="primary">Start Challenge</button>
+  </div>
+
+  <div class="section-head modules-head"><div><h2>Modules 11–22</h2><p>Study by module and lesson.</p></div>
+    <select id="countSelect"><option>10</option><option>20</option><option>30</option><option>50</option><option>75</option><option>100</option><option>150</option><option>200</option><option>250</option><option>300</option><option>All available</option></select>
+  </div>
+  <div id="moduleGrid" class="module-grid"></div>
+
+  <div class="sources-note"><b>Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content. No outside study content is added.</div>
+</section>
+
+<section id="quiz" class="view">
+  <div class="quiz-top"><button id="backQuiz" class="ghost-btn">← Back</button><div class="progress-wrap"><div class="progress-label"><span id="quizLabel"></span><span id="quizProgress"></span></div><div class="progress"><i id="progressBar"></i></div></div><button id="starBtn" class="star">☆</button></div>
+  <div class="question-card">
+    <div class="q-meta"><span id="lessonTag"></span><span id="difficultyTag"></span></div>
+    <h2 id="questionText"></h2>
+    <div id="answers" class="answers"></div>
+    <div id="feedback" class="feedback"></div>
+  </div>
+  <div class="quiz-actions"><button id="confirmBtn" class="primary" disabled>Confirm Answer</button><button id="nextBtn" class="primary hidden">Next Question →</button></div>
+</section>
+
+<section id="results" class="view">
+  <div class="results-card"><p class="eyebrow">SESSION COMPLETE</p><h1 id="resultTitle"></h1><div class="score-ring"><strong id="resultScore"></strong><span>correct</span></div><div id="resultDetails"></div><div class="result-actions"><button id="retryBtn" class="primary">Retry</button><button id="resultHome" class="ghost-btn">Back Home</button></div></div>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
