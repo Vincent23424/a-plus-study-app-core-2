@@ -1,193 +1,238 @@
-const $=s=>document.querySelector(s);
-let DATA,questions=[],session=[],sessionPool=[],index=0,selected=null,answered=false,currentMode="";
-let sessionAnswers=[];
+// Global App State
+let questions = [];
+let filteredQuestions = [];
+let currentQIndex = 0;
+let userAnswers = {};
+let bookmarks = [];
+let timerSeconds = 5400; // 90 minuter
+let timerInterval = null;
 
-const state=JSON.parse(localStorage.getItem("c2state")||'{"answered":{},"wrong":[],"starred":[],"stats":{},"theme":"dark"}');
-function save(){localStorage.setItem("c2state",JSON.stringify(state))}
-function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function mod(id){return DATA.modules.find(m=>m.id===id)}
-function getWeak(){
-  const scores={};
-  questions.forEach(q=>{
-    const x=state.stats[q.lesson];
-    if(x && sum(x)>0)scores[q.lesson]=x.c/sum(x);
-  });
-  return Object.entries(scores).sort((a,b)=>a[1]-b[1]).slice(0,5).map(x=>x[0]);
-}
-function sum(x){return (x.c||0)+(x.w||0)}
-function stats(){
-  const a=Object.values(state.stats), c=a.reduce((n,x)=>n+(x.c||0),0), t=a.reduce((n,x)=>n+sum(x),0);
-  $("#stats").innerHTML=`<div class="stat"><b>${questions.length}</b><span>Questions</span></div><div class="stat"><b>${t?Math.round(c/t*100):0}%</b><span>Accuracy</span></div><div class="stat"><b>${getWeak().length}</b><span>Weak lessons</span></div>`;
-  $("#wrongCount").textContent=state.wrong.length;
-  $("#starCount").textContent=state.starred.length;
-  $("#newCount").textContent=questions.filter(q=>!state.answered[q.id]).length;
-  $("#weakCount").textContent=getWeak().length;
-}
-function show(id){
-  document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
-  $("#"+id).classList.add("active");
-  window.scrollTo(0,0);
-}
-function buildHome(){
-  const rs=$("#rangeSelect"), em=$("#extraModule");
-  for(let i=11;i<=20;i++){
-    const o=document.createElement("option");
-    o.value=`${i}-${i+2}`;o.textContent=`Modules ${i}–${i+2}`;rs.appendChild(o);
-  }
-  DATA.modules.forEach(m=>{
-    const o=document.createElement("option");o.value=m.id;o.textContent=`Module ${m.id}`;em.appendChild(o);
-  });
-  DATA.modules.forEach(m=>{
-    const card=document.createElement("button");card.className="module";card.dataset.module=m.id;
-    card.innerHTML=`<div class="num">MODULE ${m.id}</div><h3>${esc(m.title)}</h3><p>${questions.filter(q=>q.module===m.id).length} questions</p><div class="lesson-list">${m.lessons.map(esc).join(" · ")}</div>`;
-    $("#moduleGrid").appendChild(card);
-  });
-  $("#moduleGrid").addEventListener("click",e=>{
-    const b=e.target.closest(".module");
-    if(b)start(questions.filter(q=>q.module==b.dataset.module),`Module ${b.dataset.module}`);
-  });
-}
-function uniqueSample(arr,n){
-  const copy=[...arr];
-  for(let i=copy.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [copy[i],copy[j]]=[copy[j],copy[i]];
-  }
-  return copy.slice(0,Math.min(n,copy.length));
-}
-function resetSessionTracking(){
-  sessionAnswers=[];
-  selected=null;
-  answered=false;
-}
-function start(pool,label){
-  if(!pool.length){alert("There are no questions in this set yet.");return}
-  const requested=$("#countSelect").value==="All available"?pool.length:+$("#countSelect").value;
-  sessionPool=[...pool];
-  session=uniqueSample(sessionPool,requested);
-  index=0;
-  currentMode=label;
-  resetSessionTracking();
-  show("quiz");
-  renderQuestion();
-}
-function retryCurrent(){
-  if(!sessionPool.length)return;
-  session=uniqueSample(sessionPool,session.length);
-  index=0;
-  currentMode=currentMode+" · Retry";
-  resetSessionTracking();
-  show("quiz");
-  renderQuestion();
-}
-function renderQuestion(){
-  const q=session[index];
-  selected=null;answered=false;
-  $("#quizLabel").textContent=currentMode;
-  $("#quizProgress").textContent=`${index+1} / ${session.length}`;
-  $("#progressBar").style.width=`${index/session.length*100}%`;
-  $("#lessonTag").textContent=q.lesson;
-  $("#difficultyTag").textContent=q.difficulty;
-  $("#questionText").textContent=q.question;
-  $("#answers").innerHTML=q.options.map((o,i)=>`<button class="answer" data-i="${i}">${esc(o)}</button>`).join("");
-  $("#feedback").className="feedback";
-  $("#feedback").textContent="";
-  $("#confirmBtn").disabled=true;
-  $("#confirmBtn").classList.remove("hidden");
-  $("#nextBtn").classList.add("hidden");
-  $("#starBtn").textContent=state.starred.includes(q.id)?"★":"☆";
-  $("#starBtn").classList.toggle("on",state.starred.includes(q.id));
-}
-function choose(i){
-  if(answered)return;
-  selected=i;
-  document.querySelectorAll(".answer").forEach((b,n)=>b.classList.toggle("selected",n===i));
-  $("#confirmBtn").disabled=false;
-}
-function confirmAnswer(){
-  if(selected===null||answered)return;
-  answered=true;
-  const q=session[index],ok=selected===q.answer;
-  sessionAnswers[index]=ok;
-  if(!state.stats[q.lesson])state.stats[q.lesson]={c:0,w:0};
-  state.stats[q.lesson][ok?"c":"w"]++;
-  state.answered[q.id]=true;
-  if(!ok&&!state.wrong.includes(q.id))state.wrong.push(q.id);
-  if(ok)state.wrong=state.wrong.filter(id=>id!==q.id);
-  save();
-  document.querySelectorAll(".answer").forEach((b,i)=>{
-    b.classList.remove("selected");
-    if(i===q.answer)b.classList.add("correct");
-    if(i===selected&&!ok)b.classList.add("wrong");
-  });
-  $("#feedback").innerHTML=`<strong>${ok?"Correct":"Not quite."}</strong> ${esc(q.explanation)}`;
-  $("#feedback").className="feedback show";
-  $("#confirmBtn").classList.add("hidden");
-  $("#nextBtn").classList.remove("hidden");
-  stats();
-}
-function next(){
-  if(!answered)return;
-  if(index<session.length-1){index++;renderQuestion()}
-  else finish();
-}
-function finish(){
-  const c=sessionAnswers.filter(Boolean).length,total=session.length,pct=total?Math.round(c/total*100):0;
-  show("results");
-  $("#resultTitle").textContent=pct>=80?"Session complete":pct>=60?"Good work — keep training":"Keep going — review your weak areas";
-  $("#resultScore").textContent=`${c}/${total}`;
-  $("#resultDetails").innerHTML=`<div><b>${pct}%</b><span>Score</span></div><div><b>${total-c}</b><span>Missed</span></div><div><b>${state.starred.length}</b><span>Starred</span></div>`;
-}
-$("#answers").addEventListener("click",e=>{
-  const b=e.target.closest(".answer");
-  if(b)choose(+b.dataset.i);
+// Flashcard State
+let flashcards = [];
+let currentFCIndex = 0;
+let isFlipped = false;
+
+// Initialize Application
+document.addEventListener("DOMContentLoaded", () => {
+    fetchData();
+    startTimer();
+    registerServiceWorker();
 });
-$("#confirmBtn").onclick=confirmAnswer;
-$("#nextBtn").onclick=next;
-$("#backQuiz").onclick=()=>{
-  if(confirm("Leave this session? Your answered questions are saved."))show("home");
-};
-$("#homeBtn").onclick=()=>show("home");
-$("#resultHome").onclick=()=>show("home");
-$("#retryBtn").onclick=retryCurrent;
-$("#starBtn").onclick=()=>{
-  const id=session[index].id;
-  if(state.starred.includes(id))state.starred=state.starred.filter(x=>x!==id);
-  else state.starred.push(id);
-  save();
-  $("#starBtn").textContent=state.starred.includes(id)?"★":"☆";
-  $("#starBtn").classList.toggle("on",state.starred.includes(id));
-  stats();
-};
-$("#themeBtn").onclick=()=>{
-  document.documentElement.classList.toggle("light");
-  state.theme=document.documentElement.classList.contains("light")?"light":"dark";
-  save();
-};
-document.querySelectorAll(".feature-card").forEach(b=>b.onclick=()=>{
-  const m=b.dataset.mode;
-  if(m==="final")start(questions,"Final Test");
-  if(m==="random")start(questions,"Random Practice");
-  if(m==="wrong")start(questions.filter(q=>state.wrong.includes(q.id)),"Wrong Questions");
-  if(m==="starred")start(questions.filter(q=>state.starred.includes(q.id)),"Starred Questions");
-  if(m==="new")start(questions.filter(q=>!state.answered[q.id]),"New Questions");
-  if(m==="weak"){
-    const w=getWeak();
-    start(questions.filter(q=>w.includes(q.lesson)),"Weak Areas");
-  }
-});
-$("#challengeBtn").onclick=()=>{
-  const [a,b]=$("#rangeSelect").value.split("-").map(Number),extra=$("#extraModule").value;
-  let pool=questions.filter(q=>q.module>=a&&q.module<=b);
-  if(extra)pool=pool.concat(questions.filter(q=>q.module==+extra));
-  start([...new Map(pool.map(q=>[q.id,q])).values()],`Challenge ${a}–${b}${extra?` + Module ${extra}`:""}`);
-};
-async function init(){
-  DATA=await fetch("questions.json").then(r=>r.json());
-  questions=DATA.questions;
-  if(state.theme==="light")document.documentElement.classList.add("light");
-  buildHome();
-  stats();
-  if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+// Register Service Worker for PWA Offline Support
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(() => console.log('Service Worker registrerad.'))
+            .catch(err => console.error('Service Worker misslyckades:', err));
+    }
 }
-init();
+
+// Fetch JSON Data
+async function fetchData() {
+    try {
+        const response = await fetch('questions.json');
+        const data = await response.json();
+        questions = data.questions;
+        flashcards = data.flashcards || [];
+        filteredQuestions = [...questions];
+        
+        document.getElementById('total-q-num').innerText = filteredQuestions.length;
+        renderQuestion();
+        renderFlashcard();
+    } catch (error) {
+        console.error("Fel vid laddning av frågor:", error);
+        document.getElementById('question-text').innerText = "Kunde inte ladda frågorna. Kontrollera att questions.json finns.";
+    }
+}
+
+// Render Current Question
+function renderQuestion() {
+    if (filteredQuestions.length === 0) return;
+
+    const q = filteredQuestions[currentQIndex];
+    document.getElementById('current-q-num').innerText = currentQIndex + 1;
+    document.getElementById('question-domain').innerText = `Domän ${q.domain}`;
+    document.getElementById('question-text').innerText = q.question;
+
+    // Update Progress Bar
+    const progress = ((currentQIndex + 1) / filteredQuestions.length) * 100;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+
+    // Render Options
+    const container = document.getElementById('options-container');
+    container.innerHTML = '';
+
+    q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left p-4 rounded-xl border border-slate-700 bg-slate-800/50 hover:bg-slate-700/50 transition flex items-center justify-between group";
+        
+        const isSelected = userAnswers[q.id] === idx;
+        if (isSelected) {
+            btn.classList.add('border-blue-500', 'bg-blue-500/10');
+        }
+
+        btn.innerHTML = `
+            <span class="text-sm md:text-base">${opt}</span>
+            <span class="w-5 h-5 rounded-full border border-slate-600 flex items-center justify-center text-xs group-hover:border-blue-400">
+                ${String.fromCharCode(65 + idx)}
+            </span>
+        `;
+        btn.onclick = () => selectOption(idx);
+        container.appendChild(btn);
+    });
+
+    // Handle Explanation View
+    const explanationBox = document.getElementById('explanation-box');
+    if (userAnswers[q.id] !== undefined) {
+        document.getElementById('explanation-text').innerText = q.explanation;
+        explanationBox.classList.remove('hidden');
+    } else {
+        explanationBox.classList.add('hidden');
+    }
+
+    // Update Bookmark Button
+    const bookmarkBtn = document.getElementById('bookmark-btn');
+    bookmarkBtn.style.color = bookmarks.includes(q.id) ? '#f59e0b' : '';
+}
+
+// Select Option & Verify
+function selectOption(index) {
+    const q = filteredQuestions[currentQIndex];
+    userAnswers[q.id] = index;
+    renderQuestion();
+    updateStats();
+}
+
+// Navigation Controls
+function nextQuestion() {
+    if (currentQIndex < filteredQuestions.length - 1) {
+        currentQIndex++;
+        renderQuestion();
+    }
+}
+
+function prevQuestion() {
+    if (currentQIndex > 0) {
+        currentQIndex--;
+        renderQuestion();
+    }
+}
+
+// Filter Questions by Domain
+function filterQuestions() {
+    const val = document.getElementById('domain-filter').value;
+    if (val === 'all') {
+        filteredQuestions = [...questions];
+    } else {
+        filteredQuestions = questions.filter(q => q.domain.startsWith(val));
+    }
+    currentQIndex = 0;
+    document.getElementById('total-q-num').innerText = filteredQuestions.length;
+    renderQuestion();
+}
+
+// Toggle Bookmark
+function toggleBookmark() {
+    const q = filteredQuestions[currentQIndex];
+    if (bookmarks.includes(q.id)) {
+        bookmarks = bookmarks.filter(id => id !== q.id);
+    } else {
+        bookmarks.push(q.id);
+    }
+    renderQuestion();
+}
+
+// Mode Switching (Quiz / Flashcards / PBQ / Stats)
+function switchMode(mode) {
+    ['quiz', 'flashcards', 'pbq', 'stats'].forEach(m => {
+        document.getElementById(`${m}-section`).classList.add('hidden');
+        document.getElementById(`nav-${m}`).classList.remove('bg-blue-600', 'text-white');
+        document.getElementById(`nav-${m}`).classList.add('text-slate-400');
+    });
+
+    document.getElementById(`${mode}-section`).classList.remove('hidden');
+    document.getElementById(`nav-${mode}`).classList.add('bg-blue-600', 'text-white');
+    document.getElementById(`nav-${mode}`).classList.remove('text-slate-400');
+}
+
+// Flashcards Logic
+function renderFlashcard() {
+    if (flashcards.length === 0) return;
+    const fc = flashcards[currentFCIndex];
+    document.getElementById('fc-category').innerText = fc.category;
+    document.getElementById('fc-content').innerText = isFlipped ? fc.back : fc.front;
+}
+
+function flipCard() {
+    isFlipped = !isFlipped;
+    renderFlashcard();
+}
+
+function nextCard() {
+    isFlipped = false;
+    currentFCIndex = (currentFCIndex + 1) % flashcards.length;
+    renderFlashcard();
+}
+
+function prevCard() {
+    isFlipped = false;
+    currentFCIndex = (currentFCIndex - 1 + flashcards.length) % flashcards.length;
+    renderFlashcard();
+}
+
+// PBQ Interactive Terminal Logic
+function handleTerminalCommand(e) {
+    if (e.key === 'Enter') {
+        const input = e.target.value.trim().toLowerCase();
+        const history = document.getElementById('terminal-history');
+        const feedback = document.getElementById('pbq-feedback');
+
+        if (input === 'ipconfig /renew') {
+            history.innerHTML += `<br>C:\\Users\\Admin> ${input}<br><span class="text-slate-400">Begär ny IP-adress från DHCP... Framgångsrikt! IP: 192.168.1.105</span>`;
+            feedback.innerHTML = '<span class="text-green-400">Korrekt utfört! Nätverksanslutningen har återställts.</span>';
+        } else if (input === 'ipconfig /all') {
+            history.innerHTML += `<br>C:\\Users\\Admin> ${input}<br><span class="text-slate-400">Visar fullständig nätverkskonfiguration...</span>`;
+            feedback.innerHTML = '<span class="text-amber-400">Bra start, men du behöver förnya leasingsavtalet.</span>';
+        } else {
+            history.innerHTML += `<br>C:\\Users\\Admin> ${input}<br><span class="text-red-400">'${input}' känns inte igen som ett internt kommando.</span>`;
+            feedback.innerHTML = '<span class="text-red-400">Felaktigt kommando. Försök igen (Tips: använd ipconfig).</span>';
+        }
+
+        e.target.value = '';
+    }
+}
+
+// Timer Counter
+function startTimer() {
+    timerInterval = setInterval(() => {
+        if (timerSeconds <= 0) {
+            clearInterval(timerInterval);
+            alert("Tiden har gått ut!");
+            return;
+        }
+        timerSeconds--;
+        const mins = Math.floor(timerSeconds / 60);
+        const secs = timerSeconds % 60;
+        document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }, 1000);
+}
+
+// Update Statistics
+function updateStats() {
+    const answeredCount = Object.keys(userAnswers).length;
+    let correctCount = 0;
+
+    questions.forEach(q => {
+        if (userAnswers[q.id] === q.correct) {
+            correctCount++;
+        }
+    });
+
+    const accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+    const estimatedScore = 100 + Math.round((correctCount / questions.length) * 800);
+
+    document.getElementById('stat-total').innerText = answeredCount;
+    document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+    document.getElementById('stat-score').innerText = `${estimatedScore} / 900`;
+}
