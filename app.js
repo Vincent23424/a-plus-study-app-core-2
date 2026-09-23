@@ -662,7 +662,26 @@
         MainApp.prototype.navigateTo=function(viewId){this.currentView=viewId;['home','flashcards','quiz','pbq','results','stats','reference'].forEach(v=>{const e=document.getElementById(`view-${v}`);if(e)e.classList.add('hidden');const n=document.getElementById(`nav-${v}`);if(n){n.classList.remove('bg-brand-600','text-white');n.classList.add('text-slate-400');}});const e=document.getElementById(`view-${viewId}`);if(e)e.classList.remove('hidden');const n=document.getElementById(`nav-${viewId}`);if(n){n.classList.add('bg-brand-600','text-white');n.classList.remove('text-slate-400');}if(viewId==='flashcards')this.loadFlashcards(this.selectedModuleId);if(viewId==='pbq')this.loadPBQScenario(this.currentPBQIndex);if(viewId==='stats')this.renderStatsView();if(viewId==='reference')this.renderReference();window.scrollTo({top:0,behavior:'smooth'});};
         MainApp.prototype.populatePBQDropdown=function(){const s=document.getElementById('pbq-scenario-select');if(!s)return;s.innerHTML=pbqScenarios.map((x,i)=>`<option value="${i}">Scenario ${i+1}: ${x.title}</option>`).join('');};
         MainApp.prototype.submitPBQ=function(){const input=document.getElementById('terminal-input'),cmd=(input?.value||'').trim().toLowerCase(),sc=pbqScenarios[this.currentPBQIndex];if(!cmd)return;const ok=sc.expected.some(x=>cmd===x.toLowerCase()||cmd.includes(x.toLowerCase()));const fb=document.getElementById('pbq-feedback');if(fb){fb.className=`mb-3 p-3 rounded-xl text-xs border ${ok?'bg-emerald-950/40 border-emerald-800 text-emerald-300':'bg-rose-950/40 border-rose-800 text-rose-300'}`;fb.innerHTML=ok?`<b>✓ Correct</b><div class="mt-1">${sc.success}</div>`:`<b>✗ Not correct</b><div class="mt-1">${sc.failure}</div><div class="mt-1 text-slate-500">Use the hint if needed and submit again.</div>`;}if(ok){const key=`pbq-${this.currentPBQIndex}`;this.state.pbqCompleted=this.state.pbqCompleted||{};if(!this.state.pbqCompleted[key]){this.state.pbqCompleted[key]=true;this.state.pbqSolved=(this.state.pbqSolved||0)+1;this.saveState();}}input.value='';};
+        MainApp.prototype.toggleTheme = function(){
+            const light = document.body.classList.toggle('theme-light');
+            localStorage.setItem('c2theme', light ? 'light' : 'dark');
+            this.updateThemeButton();
+        };
+
+        MainApp.prototype.updateThemeButton = function(){
+            const light = document.body.classList.contains('theme-light');
+            const icon = document.getElementById('theme-toggle-icon');
+            const label = document.getElementById('theme-toggle-label');
+            const btn = document.getElementById('theme-toggle');
+            if(icon) icon.className = light ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+            if(label) label.textContent = light ? 'Dark' : 'Light';
+            if(btn) btn.title = light ? 'Switch to dark mode' : 'Switch to light mode';
+        };
+
         let app;
         window.onload = function() {
+            const savedTheme = localStorage.getItem('c2theme');
+            if(savedTheme === 'light') document.body.classList.add('theme-light');
             app = new MainApp();
+            app.updateThemeButton();
         };
