@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Meta-taggar för att förhindra caching -->
+    <!-- Förhindra caching -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
     <title>CompTIA A+ Core 2 Study Hub</title>
 
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,38 +33,50 @@
     <!-- FontAwesome för ikoner -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Egen CSS med versionstagg mot cache -->
-    <link rel="stylesheet" href="style.css?v=2.0">
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .card-dark {
+            background-color: #111625;
+            border: 1px solid #1e293b;
+        }
+        .card-dark:hover {
+            border-color: #334155;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body class="bg-[#0b0f19] text-slate-100 min-h-screen pb-12">
 
     <!-- Navigationsfält -->
-    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <header class="border-b border-slate-800/80 bg-[#0b0f19]/90 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-md">A+</div>
+                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-md text-xs">A+</div>
                 <div>
                     <h1 class="font-bold text-sm text-white leading-tight">CompTIA A+ Core 2</h1>
                     <p class="text-[10px] text-slate-400">Modules 11–22 Study Hub</p>
                 </div>
             </div>
 
-            <!-- Navigering -->
+            <!-- Meny -->
             <nav class="hidden md:flex items-center gap-1 text-xs font-semibold">
-                <button id="nav-home" onclick="app.navigateTo('home')" class="px-3 py-2 rounded-xl bg-brand-600 text-white transition-all"><i class="fa-solid fa-layer-group mr-1.5"></i> Practice & Modules</button>
+                <button id="nav-home" onclick="app.navigateTo('home')" class="px-3 py-2 rounded-xl bg-indigo-600 text-white transition-all"><i class="fa-solid fa-layer-group mr-1.5"></i> Practice & Modules</button>
                 <button id="nav-flashcards" onclick="app.navigateTo('flashcards')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-clone mr-1.5"></i> Flashcards</button>
                 <button id="nav-pbq" onclick="app.navigateTo('pbq')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-terminal mr-1.5"></i> PBQ & Lab</button>
                 <button id="nav-stats" onclick="app.navigateTo('stats')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-chart-line mr-1.5"></i> Stats</button>
                 <button id="nav-reference" onclick="app.navigateTo('reference')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-book mr-1.5"></i> Reference</button>
             </nav>
 
-            <!-- Högerknappar: Dark Mode & Final Test -->
+            <!-- Knappar -->
             <div class="flex items-center gap-2">
-                <button id="theme-toggle" onclick="app.toggleTheme()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium transition-all flex items-center gap-2 border border-slate-700">
+                <button id="theme-toggle" onclick="app.toggleTheme()" class="px-3 py-1.5 rounded-xl bg-[#111625] hover:bg-slate-800 text-slate-200 text-xs font-medium transition-all flex items-center gap-2 border border-slate-800">
                     <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
                     <span id="theme-toggle-label">Dark Mode</span>
                 </button>
-                <button onclick="app.startPracticeMode('final')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md transition-all flex items-center gap-1.5">
+                <button onclick="app.startPracticeMode('final')" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-bolt"></i> Final Test
                 </button>
             </div>
@@ -74,31 +86,32 @@
     <!-- Huvudinnehåll -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <!-- VYN: HOME / PRACTICE & MODULES -->
+        <!-- VYN: HOME -->
         <section id="view-home" class="space-y-8">
+            
             <!-- Hero banner -->
-            <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950/60 p-6 md:p-8 border border-slate-800 shadow-xl relative overflow-hidden">
+            <div class="rounded-3xl card-dark p-6 md:p-8 relative overflow-hidden">
                 <div class="max-w-2xl relative z-10">
-                    <span class="inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full bg-brand-500/10 text-brand-accent border border-brand-500/20 mb-3">
+                    <span class="inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-3">
                         <i class="fa-solid fa-shield-halved"></i> CompTIA A+ 220-1202 Prep
                     </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">Study smarter. Practice deeper.</h2>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">Study smarter. <span class="text-indigo-400">Practice deeper.</span></h2>
                     <p class="text-xs md:text-sm text-slate-400 mb-6">Operating systems · Security · Software troubleshooting · Operational procedures (Modules 11–22)</p>
 
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
                             <span class="text-[10px] text-slate-400 block mb-1">Total Questions</span>
-                            <span id="stat-total-q" class="text-base font-bold text-white font-mono">0</span>
+                            <span id="stat-total-q" class="text-base font-bold text-white font-mono">420</span>
                         </div>
-                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
                             <span class="text-[10px] text-slate-400 block mb-1">Accuracy</span>
                             <span id="stat-accuracy-home" class="text-base font-bold text-emerald-400 font-mono">0%</span>
                         </div>
-                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
                             <span class="text-[10px] text-slate-400 block mb-1">Wrong Questions</span>
                             <span id="stat-wrong-home" class="text-base font-bold text-rose-400 font-mono">0</span>
                         </div>
-                        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3">
+                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
                             <span class="text-[10px] text-slate-400 block mb-1">Starred</span>
                             <span id="stat-starred-home" class="text-base font-bold text-amber-400 font-mono">0</span>
                         </div>
@@ -106,74 +119,100 @@
                 </div>
             </div>
 
-            <!-- Träningslägen -->
+            <!-- Practice-sektion -->
             <div>
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Practice Modes</h3>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Practice</h3>
+                <p class="text-[11px] text-slate-500 mb-4">Choose exactly what you want to train.</p>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <button onclick="app.startPracticeMode('random')" class="glass-card text-left p-4 rounded-2xl border border-slate-800 hover:border-brand-500/50 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-white group-hover:text-brand-accent transition-colors">Random Practice</span>
-                            <i class="fa-solid fa-shuffle text-slate-600 group-hover:text-brand-accent"></i>
+                    <button onclick="app.startPracticeMode('final')" class="card-dark text-left p-4 rounded-2xl transition-all group relative">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">Final Test</span>
+                            <i class="fa-solid fa-trophy text-amber-500 text-xs"></i>
                         </div>
-                        <p class="text-xs text-slate-400">Fresh mixed practice across all Core 2 topics.</p>
+                        <p class="text-[11px] text-slate-400">Mixed questions from Modules 11-22.</p>
                     </button>
 
-                    <button onclick="app.startPracticeMode('wrong')" class="glass-card text-left p-4 rounded-2xl border border-slate-800 hover:border-rose-500/50 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
+                    <button onclick="app.startPracticeMode('random')" class="card-dark text-left p-4 rounded-2xl transition-all group">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">Random Practice</span>
+                            <i class="fa-solid fa-shuffle text-sky-400 text-xs"></i>
+                        </div>
+                        <p class="text-[11px] text-slate-400">Fresh mixed practice across all Core 2 topics.</p>
+                    </button>
+
+                    <button onclick="app.startPracticeMode('wrong')" class="card-dark text-left p-4 rounded-2xl transition-all group">
+                        <div class="flex items-center justify-between mb-1">
                             <span class="text-xs font-bold text-white group-hover:text-rose-400 transition-colors">Wrong Questions</span>
                             <span id="badge-wrong" class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono">0</span>
                         </div>
-                        <p class="text-xs text-slate-400">Retry questions you have missed.</p>
+                        <p class="text-[11px] text-slate-400">Retry questions you have missed.</p>
                     </button>
 
-                    <button onclick="app.startPracticeMode('weak')" class="glass-card text-left p-4 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
+                    <button onclick="app.startPracticeMode('weak')" class="card-dark text-left p-4 rounded-2xl transition-all group">
+                        <div class="flex items-center justify-between mb-1">
                             <span class="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">Weak Areas</span>
                             <span id="badge-weak" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">0</span>
                         </div>
-                        <p class="text-xs text-slate-400">Practice your lowest-performing lessons.</p>
+                        <p class="text-[11px] text-slate-400">Practice your lowest-performing lessons.</p>
                     </button>
 
-                    <button onclick="app.startPracticeMode('starred')" class="glass-card text-left p-4 rounded-2xl border border-slate-800 hover:border-amber-500/50 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
+                    <button onclick="app.startPracticeMode('starred')" class="card-dark text-left p-4 rounded-2xl transition-all group">
+                        <div class="flex items-center justify-between mb-1">
                             <span class="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">Starred Questions</span>
                             <span id="badge-starred" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">0</span>
                         </div>
-                        <p class="text-xs text-slate-400">Review the questions you marked.</p>
+                        <p class="text-[11px] text-slate-400">Review the questions you marked.</p>
                     </button>
 
-                    <button onclick="app.startPracticeMode('new')" class="glass-card text-left p-4 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all group">
-                        <div class="flex items-center justify-between mb-2">
+                    <button onclick="app.startPracticeMode('new')" class="card-dark text-left p-4 rounded-2xl transition-all group">
+                        <div class="flex items-center justify-between mb-1">
                             <span class="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">New Questions</span>
-                            <span id="badge-new" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">0</span>
+                            <span id="badge-new" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">420</span>
                         </div>
-                        <p class="text-xs text-slate-400">Questions you have not answered yet.</p>
+                        <p class="text-[11px] text-slate-400">Questions you have not answered yet.</p>
                     </button>
                 </div>
             </div>
 
-            <!-- Challenge setup -->
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-4">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Module Challenge</h3>
+            <!-- Module Challenge -->
+            <div class="card-dark rounded-2xl p-5 space-y-3">
+                <div>
+                    <h3 class="text-xs font-bold text-white">Module Challenge</h3>
+                    <p class="text-[11px] text-slate-400">Pick a 3-module range, or add one extra weak module.</p>
+                </div>
                 <div class="flex flex-wrap items-center gap-3">
-                    <select id="rangeSelect" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brand-500"></select>
-                    <select id="extraModule" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brand-500"></select>
-                    <select id="countSelect" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brand-500">
-                        <option value="10">10 Questions</option>
-                        <option value="20" selected>20 Questions</option>
-                        <option value="30">30 Questions</option>
-                        <option value="All available">All available</option>
-                    </select>
-                    <button onclick="app.startChallenge()" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all ml-auto">
+                    <select id="rangeSelect" class="bg-[#0b0f19] border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"></select>
+                    <select id="extraModule" class="bg-[#0b0f19] border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"></select>
+                    <button onclick="app.startChallenge()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all">
                         Start Challenge
                     </button>
                 </div>
             </div>
 
-            <!-- Modulrutnät -->
+            <!-- Moduler Grid -->
             <div>
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3">Modules 11–22</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Modules 11–22</h3>
+                        <p class="text-[11px] text-slate-400">Study by module and lesson.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400">Questions per set:</span>
+                        <select id="countSelect" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-2 py-1 text-white">
+                            <option value="10" selected>10</option>
+                            <option value="20">20</option>
+                            <option value="35">35</option>
+                            <option value="All available">All</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div id="modulesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-[#111625]/50 border border-slate-800/60 text-[11px] text-slate-400">
+                <b>Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content.
             </div>
         </section>
 
@@ -181,37 +220,22 @@
         <section id="view-flashcards" class="hidden max-w-2xl mx-auto space-y-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <span id="flashcard-module-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/20 text-brand-accent font-bold">Module</span>
+                    <span id="flashcard-module-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold">Module</span>
                     <h2 id="flashcard-title" class="text-lg font-bold text-white mt-1">Flashcards</h2>
                 </div>
-                <div class="flex items-center gap-2">
-                    <select id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
-                </div>
+                <select id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
             </div>
 
-            <!-- Flashcard Flip Box -->
-            <div onclick="app.flipCard()" class="perspective-1000 cursor-pointer h-72 w-full">
-                <div id="flashcard-inner" class="relative w-full h-full duration-500 transform-style-3d transition-transform">
-                    <!-- Framsida -->
-                    <div class="absolute w-full h-full rounded-3xl glass-card border border-slate-800 p-8 flex flex-col justify-between backface-hidden">
-                        <span class="text-xs text-slate-500 font-mono">TERM / CONCEPT</span>
-                        <div id="card-front-text" class="text-xl font-bold text-white text-center"></div>
-                        <div class="text-center text-xs text-slate-500"><i class="fa-solid fa-rotate-right mr-1"></i> Click to flip</div>
-                    </div>
-                    <!-- Baksida -->
-                    <div class="absolute w-full h-full rounded-3xl glass-card border border-brand-500/40 p-8 flex flex-col justify-between backface-hidden rotate-y-180 bg-slate-900">
-                        <span class="text-xs text-brand-accent font-mono">DEFINITION</span>
-                        <div id="card-back-text" class="text-sm text-slate-200 leading-relaxed text-center"></div>
-                        <div class="text-center text-xs text-slate-500"><i class="fa-solid fa-rotate-right mr-1"></i> Click to flip back</div>
-                    </div>
-                </div>
+            <div onclick="app.flipCard()" class="cursor-pointer min-h-[220px] card-dark rounded-3xl p-8 flex flex-col justify-between text-center relative">
+                <span class="text-[10px] text-indigo-400 font-mono uppercase tracking-wider block" id="card-type">TERM / CONCEPT</span>
+                <div id="card-content-text" class="text-lg font-bold text-white my-auto py-4">Click to start</div>
+                <div class="text-xs text-slate-500"><i class="fa-solid fa-rotate mr-1"></i> Klicka för att vända kortet</div>
             </div>
 
-            <!-- Kortkontroller -->
             <div class="flex items-center justify-between">
-                <button onclick="app.prevCard()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200"><i class="fa-solid fa-arrow-left mr-1"></i> Prev</button>
+                <button onclick="app.prevCard()" class="px-4 py-2 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-semibold text-slate-200"><i class="fa-solid fa-arrow-left mr-1"></i> Prev</button>
                 <span id="card-progress-count" class="text-xs font-mono text-slate-400">0 / 0</span>
-                <button onclick="app.nextCard()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                <button onclick="app.nextCard()" class="px-4 py-2 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-semibold text-slate-200">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
             </div>
         </section>
 
@@ -219,81 +243,69 @@
         <section id="view-quiz" class="hidden max-w-2xl mx-auto space-y-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <span id="quizLabel" class="text-xs font-bold text-brand-accent block">Quiz</span>
+                    <span id="quizLabel" class="text-xs font-bold text-indigo-400 block">Quiz</span>
                     <div class="flex items-center gap-2 mt-1">
-                        <span id="lessonTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">Lesson</span>
-                        <span id="difficultyTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400">Core 2</span>
+                        <span id="lessonTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#111625] text-slate-300 border border-slate-800">Lesson</span>
+                        <span id="difficultyTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#111625] text-slate-400 border border-slate-800">Core 2</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button id="starBtn" onclick="app.toggleStarCurrentQuestion()" class="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400"></button>
+                    <button id="starBtn" onclick="app.toggleStarCurrentQuestion()" class="p-2 rounded-xl bg-[#111625] border border-slate-800 text-slate-400 hover:text-amber-400"></button>
                     <span id="quizProgress" class="text-xs font-mono text-slate-400">0 / 0</span>
                 </div>
             </div>
 
-            <!-- Progress bar -->
-            <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                <div id="progressBar" class="h-full bg-brand-500 transition-all duration-300" style="width: 0%"></div>
+            <div class="w-full h-1.5 bg-[#111625] rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-indigo-500 transition-all duration-300" style="width: 0%"></div>
             </div>
 
-            <!-- Frågetext -->
-            <div class="glass-card rounded-2xl p-6 border border-slate-800">
+            <div class="card-dark rounded-2xl p-6">
                 <p id="questionText" class="text-sm md:text-base font-semibold text-white leading-relaxed"></p>
             </div>
 
-            <!-- Alternativ -->
             <div id="answers" class="space-y-3"></div>
-
-            <!-- Feedback -->
             <div id="feedback" class="hidden"></div>
 
-            <!-- Kontroller -->
             <div class="flex justify-end gap-3">
-                <button id="confirmBtn" onclick="app.confirmAnswer()" class="px-6 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white transition-all">Submit Answer</button>
+                <button id="confirmBtn" onclick="app.confirmAnswer()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all">Submit Answer</button>
                 <button id="nextBtn" onclick="app.nextQuestion()" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all">Next Question <i class="fa-solid fa-arrow-right ml-1"></i></button>
             </div>
         </section>
 
-        <!-- VYN: PBQ & LAB -->
+        <!-- VYN: PBQ -->
         <section id="view-pbq" class="hidden max-w-3xl mx-auto space-y-6">
             <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-lg font-bold text-white">PBQ & CLI Simulator</h2>
-                    <p class="text-xs text-slate-400">Performance-based questions with terminal commands</p>
-                </div>
-                <select id="pbq-scenario-select" onchange="app.selectPBQScenario(this.value)" class="bg-slate-900 border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
+                <h2 class="text-lg font-bold text-white">PBQ & CLI Simulator</h2>
+                <select id="pbq-scenario-select" onchange="app.selectPBQScenario(this.value)" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
             </div>
 
-            <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+            <div class="card-dark rounded-2xl p-5 space-y-3">
                 <h3 id="pbq-scenario-title" class="font-bold text-white text-sm">Scenario</h3>
                 <p id="pbq-scenario-desc" class="text-xs text-slate-300 leading-relaxed"></p>
-                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-brand-accent">
+                <div class="p-3 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-indigo-300">
                     <b>Objective:</b> <span id="pbq-scenario-objective"></span>
                 </div>
             </div>
 
-            <!-- Terminal fönster -->
             <div class="rounded-2xl border border-slate-800 bg-black font-mono text-xs overflow-hidden shadow-2xl">
-                <div class="bg-slate-900 px-4 py-2 border-b border-slate-800 flex items-center justify-between text-slate-400">
-                    <span class="text-[10px]"><i class="fa-solid fa-terminal mr-2 text-brand-accent"></i>Command Prompt - C:\Windows\System32\cmd.exe</span>
+                <div class="bg-[#111625] px-4 py-2 border-b border-slate-800 flex items-center justify-between text-slate-400">
+                    <span class="text-[10px]"><i class="fa-solid fa-terminal mr-2 text-indigo-400"></i>Command Prompt</span>
                     <button onclick="app.clearTerminal()" class="text-[10px] hover:text-white">Clear</button>
                 </div>
                 <div id="terminal-body" class="p-4 h-64 overflow-y-auto text-slate-200 space-y-1"></div>
-                <div class="px-4 py-3 bg-slate-950 border-t border-slate-900 flex items-center gap-2">
+                <div class="px-4 py-3 bg-black border-t border-slate-900 flex items-center gap-2">
                     <span class="text-slate-500">C:\Windows\System32&gt;</span>
-                    <input type="text" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" class="bg-transparent border-none text-white text-xs focus:outline-none flex-1 font-mono" placeholder="Type command here..." autofocus />
-                    <button onclick="app.execTerminalCommand()" class="px-3 py-1 bg-brand-600 text-white rounded text-[10px] font-bold">Run</button>
+                    <input type="text" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" class="bg-transparent border-none text-white text-xs focus:outline-none flex-1 font-mono" placeholder="Type command..." />
+                    <button onclick="app.execTerminalCommand()" class="px-3 py-1 bg-indigo-600 text-white rounded text-[10px] font-bold">Run</button>
                 </div>
             </div>
-
-            <div id="pbq-feedback"></div>
         </section>
 
         <!-- VYN: STATS -->
         <section id="view-stats" class="hidden max-w-3xl mx-auto space-y-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold text-white">Performance Analytics</h2>
-                <button onclick="app.resetProgress()" class="px-3 py-1.5 rounded-xl bg-rose-900/40 hover:bg-rose-900/60 text-rose-300 text-xs font-semibold border border-rose-800/50">Reset All Data</button>
+                <button onclick="app.resetProgress()" class="px-3 py-1.5 rounded-xl bg-rose-900/40 text-rose-300 text-xs border border-rose-800/50">Reset All Data</button>
             </div>
             <div id="module-stats-list" class="space-y-3"></div>
         </section>
@@ -306,7 +318,7 @@
 
         <!-- VYN: RESULTS -->
         <section id="view-results" class="hidden max-w-md mx-auto text-center space-y-6 py-8">
-            <div class="w-16 h-16 rounded-3xl bg-brand-600/20 text-brand-accent border border-brand-500/30 flex items-center justify-center text-2xl mx-auto">
+            <div class="w-16 h-16 rounded-3xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-2xl mx-auto">
                 <i class="fa-solid fa-trophy"></i>
             </div>
             <div>
@@ -316,14 +328,14 @@
             </div>
             <div id="resultDetails" class="grid grid-cols-3 gap-3 text-xs"></div>
             <div class="pt-4 flex gap-3">
-                <button onclick="app.retrySession()" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white">Retry Set</button>
-                <button onclick="app.navigateTo('home')" class="flex-1 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white">Back to Home</button>
+                <button onclick="app.retrySession()" class="flex-1 py-2.5 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-bold text-white">Retry Set</button>
+                <button onclick="app.navigateTo('home')" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white">Back to Home</button>
             </div>
         </section>
 
     </main>
 
-    <!-- Skriptfiler med versionstaggar mot cache -->
+    <!-- Skript -->
     <script src="data.js?v=2.0"></script>
     <script src="app.js?v=2.0"></script>
 </body>
