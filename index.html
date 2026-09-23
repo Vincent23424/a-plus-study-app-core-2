@@ -1,16 +1,456 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+
 <html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CompTIA A+ Core 2 Mastery & Practice Hub</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter & JetBrains Mono -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CompTIA A+ Core 2 Study App</title>
+<!-- Tailwind CSS -->
+<!-- FontAwesome Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<!-- Google Fonts Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="flex flex-col min-h-screen text-slate-100 antialiased selection:bg-brand-500 selection:text-white">
+<!-- Top Navigation Header -->
+<header class="sticky top-0 z-50 glass-panel border-b border-slate-800 px-4 lg:px-8 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-3 cursor-pointer" onclick="app.navigateTo('home')">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 font-extrabold text-white text-lg">
+                    A+
+                </div>
+<div>
+<h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CompTIA A+ Core 2</h1>
+<p class="text-xs text-brand-accent font-medium">Modules 11–22 Study Hub</p>
+</div>
+</div>
+<!-- Global Nav Buttons -->
+<nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+<button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-brand-600" id="nav-home" onclick="app.navigateTo('home')">
+<i class="fa-solid fa-layer-group mr-2"></i>Practice &amp; Modules
+                </button>
+<button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800" id="nav-flashcards" onclick="app.navigateTo('flashcards')">
+<i class="fa-solid fa-clone text-brand-accent mr-2"></i>Flashcards
+                </button>
+<button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800" id="nav-pbq" onclick="app.navigateTo('pbq')">
+<i class="fa-solid fa-terminal text-amber-400 mr-2"></i>PBQ &amp; Lab
+                </button>
+<button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800" id="nav-stats" onclick="app.navigateTo('stats')">
+<i class="fa-solid fa-chart-line text-purple-400 mr-2"></i>Stats
+                </button>
+<button class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800" id="nav-reference" onclick="app.navigateTo('reference')">
+<i class="fa-solid fa-book text-cyan-400 mr-2"></i>Reference
+                </button>
+</nav>
+<div class="flex items-center gap-3">
+<button class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-accent to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-md active:scale-95" onclick="app.startPracticeMode('final')">
+<i class="fa-solid fa-bolt"></i> Final Test
+                </button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8">
+<!-- View 1: Home Dashboard (Integrating ChatGPT Layout + Modules) -->
+<section class="space-y-8" id="view-home">
+<!-- Hero Banner & Stats -->
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-900 via-slate-900 to-slate-900 border border-brand-500/20 p-6 md:p-8 shadow-2xl">
+<div class="relative z-10 max-w-3xl">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-accent border border-brand-500/30 mb-3">
+<i class="fa-solid fa-graduation-cap"></i> CompTIA A+ 220-1202 Prep
+                    </span>
+<h2 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        Study smarter. <span class="text-brand-accent">Practice deeper.</span>
+</h2>
+<p class="mt-2 text-sm md:text-base text-slate-300">
+                        Operating systems · Security · Software troubleshooting · Operational procedures (Modules 11–22)
+                    </p>
+</div>
+<!-- Stats summary strip -->
+<div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-slate-800/80 pt-4">
+<div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+<span class="text-[11px] text-slate-400 block font-medium">Total Questions</span>
+<span class="text-lg font-bold text-white" id="stat-total-q">0</span>
+</div>
+<div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+<span class="text-[11px] text-slate-400 block font-medium">Accuracy</span>
+<span class="text-lg font-bold text-emerald-400" id="stat-accuracy-home">0%</span>
+</div>
+<div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+<span class="text-[11px] text-slate-400 block font-medium">Wrong Questions</span>
+<span class="text-lg font-bold text-rose-400" id="stat-wrong-home">0</span>
+</div>
+<div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+<span class="text-[11px] text-slate-400 block font-medium">Starred</span>
+<span class="text-lg font-bold text-amber-400" id="stat-starred-home">0</span>
+</div>
+</div>
+</div>
+<!-- Section 1: Practice Cards (ChatGPT Style) -->
+<div class="space-y-3">
+<div>
+<h3 class="text-xl font-bold text-white">Practice</h3>
+<p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Final Test -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('final')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Final Test</h4>
+<i class="fa-solid fa-trophy text-amber-400"></i>
+</div>
+<p class="text-xs text-slate-400">Mixed questions from Modules 11–22.</p>
+</div>
+</button>
+<!-- Random Practice -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('random')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Random Practice</h4>
+<i class="fa-solid fa-shuffle text-brand-accent"></i>
+</div>
+<p class="text-xs text-slate-400">Fresh mixed practice across all Core 2 topics.</p>
+</div>
+</button>
+<!-- Wrong Questions -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('wrong')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Wrong Questions</h4>
+<span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-xs font-bold border border-rose-500/30" id="badge-wrong">0</span>
+</div>
+<p class="text-xs text-slate-400">Retry questions you have missed.</p>
+</div>
+</button>
+<!-- Weak Areas -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('weak')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Weak Areas</h4>
+<span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30" id="badge-weak">0</span>
+</div>
+<p class="text-xs text-slate-400">Practice your lowest-performing lessons.</p>
+</div>
+</button>
+<!-- Starred Questions -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('starred')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Starred Questions</h4>
+<span class="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30" id="badge-starred">0</span>
+</div>
+<p class="text-xs text-slate-400">Review the questions you marked.</p>
+</div>
+</button>
+<!-- New Questions -->
+<button class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group" onclick="app.startPracticeMode('new')">
+<div>
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">New Questions</h4>
+<span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30" id="badge-new">0</span>
+</div>
+<p class="text-xs text-slate-400">Questions you have not answered yet.</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Section 2: Module Challenge (ChatGPT Style) -->
+<div class="glass-card p-6 rounded-2xl space-y-4">
+<div>
+<h3 class="text-lg font-bold text-white">Module Challenge</h3>
+<p class="text-xs text-slate-400">Pick a 3-module range, or add one extra weak module.</p>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3">
+<select class="w-full sm:w-auto bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500" id="rangeSelect">
+<!-- Filled by JS -->
+</select>
+<select class="w-full sm:w-auto bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500" id="extraModule">
+<option value="">No extra module</option>
+<!-- Filled by JS -->
+</select>
+<button class="w-full sm:w-auto px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition-all shadow-md" onclick="app.startChallenge()">
+                        Start Challenge
+                    </button>
+</div>
+</div>
+<!-- Section 3: Modules 11–22 Grid & Selector -->
+<div class="space-y-4">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div>
+<h3 class="text-xl font-bold text-white">Modules 11–22</h3>
+<p class="text-xs text-slate-400">Study by module and lesson.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-400 font-medium">Questions per set:</span>
+<select class="bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-3 py-1.5 focus:outline-none focus:border-brand-500" id="countSelect">
+<option>10</option>
+<option>20</option>
+<option>30</option>
+<option>50</option>
+<option>100</option>
+<option>All available</option>
+</select>
+</div>
+</div>
+<!-- Modules Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="modulesGrid">
+<!-- Populated dynamically -->
+</div>
+</div>
+<!-- Source Rule Footer note -->
+<div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-400">
+<b class="text-slate-200">Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content. No outside study content is added.
+            </div>
+</section>
+<!-- View 2: Flashcards View -->
+<section class="hidden space-y-6" id="view-flashcards">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+<div>
+<span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider" id="flashcard-module-badge">Module 11</span>
+<h2 class="text-xl font-bold text-white mt-1" id="flashcard-title">Managing Support Procedures</h2>
+</div>
+<div class="flex items-center gap-2">
+<select class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-500" id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)">
+<!-- Options generated dynamically -->
+</select>
+<select class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200" id="flashcards-count-select" onchange="app.changeFlashcardCount(this.value)">
+<option value="10">10 cards</option><option value="20">20 cards</option><option value="30">30 cards</option><option value="50">50 cards</option><option value="100">100 cards</option><option value="200">200 cards</option><option value="300">300 cards</option><option value="all">All available</option>
+</select><span class="text-[11px] text-slate-500 font-mono" id="flashcards-available"></span>
+</div>
+</div>
+<!-- Card Flip Area -->
+<div class="max-w-2xl mx-auto">
+<div class="perspective-1000 h-80 sm:h-96 cursor-pointer group" id="flashcard-container" onclick="app.flipCard()">
+<div class="relative w-full h-full transform-style-3d transition-transform duration-500 shadow-2xl rounded-3xl" id="flashcard-inner">
+<!-- Front Face -->
+<div class="absolute inset-0 backface-hidden glass-card rounded-3xl p-8 flex flex-col justify-between border-2 border-slate-700/60 group-hover:border-brand-500/50">
+<div class="flex justify-between items-center text-xs font-medium text-slate-400">
+<span><i class="fa-solid fa-lightbulb text-amber-400 mr-1.5"></i> TERM / CONCEPT</span>
+<span class="bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-mono" id="card-progress-count">1 / 10</span>
+</div>
+<div class="text-center my-auto px-4">
+<h3 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight" id="card-front-text">Loading...</h3>
+</div>
+<div class="text-center text-xs text-slate-500 font-medium">
+<i class="fa-solid fa-rotate mr-1"></i> Click or press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-300">Space</kbd> to flip card
+                            </div>
+</div>
+<!-- Back Face -->
+<div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-slate-900 via-brand-900/40 to-slate-900 border-2 border-brand-500/60 rounded-3xl p-8 flex flex-col justify-between">
+<div class="flex justify-between items-center text-xs font-medium text-slate-400">
+<span class="text-brand-accent font-bold"><i class="fa-solid fa-circle-check mr-1.5"></i> DEFINITION / EXPLANATION</span>
+<span class="text-xs text-slate-400">Core Concept</span>
+</div>
+<div class="my-auto px-2 overflow-y-auto max-h-48">
+<p class="text-base sm:text-lg text-slate-200 leading-relaxed font-normal" id="card-back-text">Loading definition...</p>
+</div>
+<div class="text-center text-xs text-slate-500 font-medium">
+                                Flip back anytime
+                            </div>
+</div>
+</div>
+</div>
+<!-- Controls -->
+<div class="flex items-center justify-between mt-6 px-4">
+<button class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm transition-all flex items-center gap-2" onclick="app.prevCard()">
+<i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+<button class="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-all" onclick="app.shuffleCards()">
+<i class="fa-solid fa-shuffle mr-1"></i> Shuffle
+                    </button>
+<button class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all flex items-center gap-2" onclick="app.nextCard()">
+                        Next <i class="fa-solid fa-arrow-right"></i>
+</button>
+</div>
+</div>
+</section>
+<!-- View 3: Quiz Mode -->
+<section class="hidden space-y-6" id="view-quiz">
+<!-- Top Action Header -->
+<div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300" onclick="app.navigateTo('home')">
+<i class="fa-solid fa-arrow-left mr-1"></i> Back
+                    </button>
+<div>
+<h3 class="font-bold text-sm text-white" id="quizLabel">Quiz Mode</h3>
+<p class="text-xs text-brand-accent font-mono" id="lessonTag"></p>
+</div>
+</div>
+<!-- Progress Bar -->
+<div class="w-full sm:w-64 space-y-1">
+<div class="flex justify-between text-[10px] text-slate-400 font-mono">
+<span>PROGRESS</span>
+<span id="quizProgress">0 / 0</span>
+</div>
+<div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-brand-500 to-brand-accent h-full w-0 transition-all duration-300" id="progressBar"></div>
+</div>
+</div>
+<!-- Star Button -->
+<button class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400 transition-colors" id="starBtn" onclick="app.toggleStarCurrentQuestion()">
+<i class="fa-regular fa-star text-lg"></i>
+</button>
+</div>
+<!-- Question Card -->
+<div class="max-w-3xl mx-auto glass-card rounded-3xl p-6 sm:p-8 space-y-6">
+<div>
+<span class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700" id="difficultyTag">Easy</span>
+<h2 class="text-lg sm:text-xl font-bold text-white mt-3 leading-relaxed" id="questionText">
+                        Loading Question...
+                    </h2>
+</div>
+<!-- Options -->
+<div class="space-y-3" id="answers">
+<!-- Options injected here -->
+</div>
+<!-- Feedback Area -->
+<div class="hidden p-4 rounded-2xl border space-y-2" id="feedback">
+<!-- Feedback text -->
+</div>
+<!-- Actions -->
+<div class="flex justify-end pt-2">
+<button class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2" id="confirmBtn" onclick="app.confirmAnswer()">
+                        Confirm Answer
+                    </button>
+<button class="hidden px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2" id="nextBtn" onclick="app.nextQuestion()">
+                        Next Question <i class="fa-solid fa-chevron-right"></i>
+</button>
+</div>
+</div>
+</section>
+<!-- View: Reference -->
+<section class="hidden space-y-6" id="view-reference">
+<div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 border border-cyan-500/20 p-6 md:p-8">
+<span class="text-xs font-bold text-cyan-300 uppercase tracking-wider"><i class="fa-solid fa-book mr-1"></i> Core 2 Reference</span>
+<h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Ports, commands, standards &amp; types</h2>
+<p class="text-sm text-slate-400 mt-2">Only information from the uploaded Core 2 Student Guide and Core 2 Exam Objectives.</p>
+</div>
+<div class="space-y-5" id="reference-content"></div>
+</section>
+<!-- View 4: PBQ Terminal Lab -->
+<section class="hidden space-y-6" id="view-pbq">
+<div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div>
+<span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">PERFORMANCE-BASED LAB</span>
+<h2 class="text-xl font-bold text-white mt-1">CLI Terminal &amp; Scenario Simulator</h2>
+<p class="text-xs text-slate-400">Solve practical technical scenarios by running CLI commands or taking appropriate admin actions.</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200" onclick="app.selectPBQScenario(0)">Scenario 1: SFC/CHKDSK</button>
+<button class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200" onclick="app.selectPBQScenario(1)">Scenario 2: Network Fix</button>
+<button class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200" onclick="app.selectPBQScenario(2)">Scenario 3: SOHO WPA3</button>
+</div>
+</div>
+<!-- Active Scenario Container -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Task Description Panel -->
+<div class="lg:col-span-5 space-y-4">
+<div class="glass-card rounded-2xl p-5 border border-slate-700 space-y-4">
+<div class="flex items-center gap-2 text-xs font-bold text-brand-accent uppercase tracking-wider">
+<i class="fa-solid fa-circle-info"></i> Scenario Briefing
+                        </div>
+<h3 class="font-bold text-base text-white" id="pbq-scenario-title">System File Corruption Incident</h3>
+<p class="text-xs text-slate-300 leading-relaxed" id="pbq-scenario-desc">
+                            A Windows 11 client system is experiencing system lockups. You suspect corrupted system files.
+                        </p>
+<div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-1">
+<span class="font-semibold text-amber-400">Objective:</span>
+<p class="text-slate-300" id="pbq-scenario-objective">Run the correct command line utility in elevated privilege mode to scan and automatically repair corrupted protected Windows system files.</p>
+</div>
+<div class="p-3 bg-brand-500/10 rounded-xl border border-brand-500/20 text-xs text-brand-100 hidden" id="pbq-hint-box">
+<i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> <span id="pbq-hint-text"></span>
+</div>
+<button class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-all" onclick="app.togglePBQHint()">
+<i class="fa-solid fa-question-circle mr-1"></i> Need Hint?
+                        </button>
+</div>
+</div>
+<!-- Interactive Terminal Simulator -->
+<div class="lg:col-span-7">
+<div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex flex-col h-96">
+<!-- Terminal Header -->
+<div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+<span class="ml-2 font-mono text-xs text-slate-400">Administrator: Command Prompt</span>
+</div>
+<button class="text-xs text-slate-500 hover:text-slate-300 font-mono" onclick="app.clearTerminal()">clear</button>
+</div>
+<!-- Terminal Body -->
+<div class="hidden mb-3 p-3 rounded-xl text-xs" id="pbq-feedback"></div>
+<div class="flex-1 p-4 font-mono text-xs sm:text-sm text-emerald-400 overflow-y-auto space-y-2 selection:bg-emerald-900 selection:text-emerald-100" id="terminal-body">
+<div>Microsoft Windows [Version 10.0.19045.3803]</div>
+<div>(c) Microsoft Corporation. All rights reserved.</div>
+<div class="text-slate-400 pb-2">Type your troubleshooting command below (e.g. sfc /scannow, chkdsk /f, ipconfig /renew):</div>
+</div>
+<!-- Terminal Input -->
+<div class="p-3 bg-slate-900/90 border-t border-slate-800 flex items-center gap-2">
+<span class="font-mono text-xs text-emerald-400">C:\Windows\System32&gt;</span>
+<input class="flex-1 bg-transparent border-none outline-none font-mono text-xs sm:text-sm text-white placeholder-slate-600 focus:ring-0" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" placeholder="Enter command..." type="text"/>
+<button class="px-3 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-mono" onclick="app.execTerminalCommand()">Run</button>
+<button class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs" onclick="app.submitPBQ()">Submit</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- View 5: Results View -->
+<section class="hidden max-w-xl mx-auto space-y-6 text-center" id="view-results">
+<div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800">
+<span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Session Complete</span>
+<h1 class="text-2xl font-extrabold text-white" id="resultTitle">Great Job!</h1>
+<div class="w-28 h-28 mx-auto rounded-full bg-brand-600/20 border-2 border-brand-500 flex flex-col items-center justify-center">
+<strong class="text-3xl font-black text-white" id="resultScore">0/0</strong>
+<span class="text-xs text-brand-accent font-bold" id="resultPct">0%</span>
+</div>
+<div class="grid grid-cols-3 gap-3 pt-2 text-xs" id="resultDetails">
+<!-- Details injected dynamically -->
+</div>
+<div class="flex gap-3 pt-4">
+<button class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs text-white transition-all" onclick="app.retrySession()">
+                        Retry Session
+                    </button>
+<button class="flex-1 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs text-white transition-all" onclick="app.navigateTo('home')">
+                        Back to Home
+                    </button>
+</div>
+</div>
+</section>
+<!-- View 6: User Progress & Stats -->
+<section class="hidden space-y-6" id="view-stats">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="text-xl font-bold text-white">Your Core 2 Progress &amp; Analytics</h2>
+<p class="text-xs text-slate-400">Tracking practice scores and module mastery</p>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-semibold transition-all" onclick="app.resetProgress()">
+<i class="fa-solid fa-trash-can mr-1"></i> Reset Progress
+                </button>
+</div>
+<!-- Breakdown List -->
+<div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
+<h3 class="font-bold text-base text-white">Module Mastery Breakdown</h3>
+<div class="space-y-3" id="module-stats-list">
+<!-- Populated dynamically -->
+</div>
+</div>
+</section>
+</main>
+<footer class="mt-auto border-t border-slate-800/80 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
+<div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+<p>CompTIA A+ Core 2 (220-1202) Study &amp; Quiz Application</p>
+<p class="font-mono text-slate-600">Modules 11–22</p>
+</div>
+</footer>
+<!-- Integrated Script & Embedded Questions Data -->
+<script src="https://cdn.tailwindcss.com"></script><script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -39,441 +479,5 @@
                 }
             }
         }
-    </script>
-    <!-- CSS inladdad direkt från rotmappen utan /css/ -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="flex flex-col min-h-screen text-slate-100 antialiased selection:bg-brand-500 selection:text-white">
-
-    <!-- Top Navigation Header -->
-    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 px-4 lg:px-8 py-3">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigateTo('home')">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 font-extrabold text-white text-lg">
-                    A+
-                </div>
-                <div>
-                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CompTIA A+ Core 2</h1>
-                    <p class="text-xs text-brand-accent font-medium">Modules 11–22 Study Hub</p>
-                </div>
-            </div>
-
-            <!-- Global Nav Buttons -->
-            <nav class="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
-                <button onclick="app.navigateTo('home')" id="nav-home" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-brand-600">
-                    <i class="fa-solid fa-layer-group mr-2"></i>Practice & Modules
-                </button>
-                <button onclick="app.navigateTo('flashcards')" id="nav-flashcards" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-clone text-brand-accent mr-2"></i>Flashcards
-                </button>
-                <button onclick="app.navigateTo('pbq')" id="nav-pbq" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-terminal text-amber-400 mr-2"></i>PBQ & Lab
-                </button>
-                <button onclick="app.navigateTo('stats')" id="nav-stats" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-chart-line text-purple-400 mr-2"></i>Stats
-                </button>
-                <button onclick="app.navigateTo('reference')" id="nav-reference" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-book text-cyan-400 mr-2"></i>Reference
-                </button>
-            </nav>
-
-            <div class="flex items-center gap-3">
-                <button onclick="app.startPracticeMode('final')" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-accent to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-md active:scale-95">
-                    <i class="fa-solid fa-bolt"></i> Final Test
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content Area -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8">
-        <div id="view-back-row" class="view-back-row hidden">
-            <button id="view-back-button" class="view-back-btn" onclick="app.goBack()">
-                <i class="fa-solid fa-arrow-left"></i><span>Tillbaka</span>
-            </button>
-        </div>
-
-        <!-- View 1: Home Dashboard -->
-        <section id="view-home" class="space-y-8">
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-900 via-slate-900 to-slate-900 border border-brand-500/20 p-6 md:p-8 shadow-2xl">
-                <div class="relative z-10 max-w-3xl">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-accent border border-brand-500/30 mb-3">
-                        <i class="fa-solid fa-graduation-cap"></i> CompTIA A+ 220-1202 Prep
-                    </span>
-                    <h2 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                        Study smarter. <span class="text-brand-accent">Practice deeper.</span>
-                    </h2>
-                    <p class="mt-2 text-sm md:text-base text-slate-300">
-                        Operating systems · Security · Software troubleshooting · Operational procedures (Modules 11–22)
-                    </p>
-                </div>
-
-                <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-slate-800/80 pt-4">
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block font-medium">Total Questions</span>
-                        <span id="stat-total-q" class="text-lg font-bold text-white">0</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block font-medium">Accuracy</span>
-                        <span id="stat-accuracy-home" class="text-lg font-bold text-emerald-400">0%</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block font-medium">Wrong Questions</span>
-                        <span id="stat-wrong-home" class="text-lg font-bold text-rose-400">0</span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-                        <span class="text-[11px] text-slate-400 block font-medium">Starred</span>
-                        <span id="stat-starred-home" class="text-lg font-bold text-amber-400">0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Practice Cards -->
-            <div class="space-y-3">
-                <div>
-                    <h3 class="text-xl font-bold text-white">Practice</h3>
-                    <p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <button onclick="app.startPracticeMode('final')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Final Test</h4>
-                                <i class="fa-solid fa-trophy text-amber-400"></i>
-                            </div>
-                            <p class="text-xs text-slate-400">Mixed questions from Modules 11–22.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="app.startPracticeMode('random')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Random Practice</h4>
-                                <i class="fa-solid fa-shuffle text-brand-accent"></i>
-                            </div>
-                            <p class="text-xs text-slate-400">Fresh mixed practice across all Core 2 topics.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="app.startPracticeMode('wrong')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Wrong Questions</h4>
-                                <span id="badge-wrong" class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-xs font-bold border border-rose-500/30">0</span>
-                            </div>
-                            <p class="text-xs text-slate-400">Retry questions you have missed.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="app.startPracticeMode('weak')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Weak Areas</h4>
-                                <span id="badge-weak" class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">0</span>
-                            </div>
-                            <p class="text-xs text-slate-400">Practice your lowest-performing lessons.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="app.startPracticeMode('starred')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Starred Questions</h4>
-                                <span id="badge-starred" class="px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30">0</span>
-                            </div>
-                            <p class="text-xs text-slate-400">Review the questions you marked.</p>
-                        </div>
-                    </button>
-
-                    <button onclick="app.startPracticeMode('new')" class="glass-card p-5 rounded-2xl text-left flex flex-col justify-between group">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">New Questions</h4>
-                                <span id="badge-new" class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">0</span>
-                            </div>
-                            <p class="text-xs text-slate-400">Questions you have not answered yet.</p>
-                        </div>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Module Challenge -->
-            <div class="glass-card p-6 rounded-2xl space-y-4">
-                <div>
-                    <h3 class="text-lg font-bold text-white">Module Challenge</h3>
-                    <p class="text-xs text-slate-400">Pick a 3-module range, or add one extra weak module.</p>
-                </div>
-                <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <select id="rangeSelect" class="w-full sm:w-auto bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500"></select>
-                    <select id="extraModule" class="w-full sm:w-auto bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500">
-                        <option value="">No extra module</option>
-                    </select>
-                    <button onclick="app.startChallenge()" class="w-full sm:w-auto px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition-all shadow-md">
-                        Start Challenge
-                    </button>
-                </div>
-            </div>
-
-            <!-- Modules Grid -->
-            <div class="space-y-4">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                        <h3 class="text-xl font-bold text-white">Modules 11–22</h3>
-                        <p class="text-xs text-slate-400">Study by module and lesson.</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-medium">Questions per set:</span>
-                        <select id="countSelect" class="bg-slate-800 border border-slate-700 text-xs text-white rounded-xl px-3 py-1.5 focus:outline-none focus:border-brand-500">
-                            <option>10</option>
-                            <option>20</option>
-                            <option>30</option>
-                            <option>50</option>
-                            <option>100</option>
-                            <option>All available</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div id="modulesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-            </div>
-        </section>
-
-        <!-- View 2: Flashcards View -->
-        <section id="view-flashcards" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
-                <div>
-                    <span id="flashcard-module-badge" class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Module 11</span>
-                    <h2 id="flashcard-title" class="text-xl font-bold text-white mt-1">Managing Support Procedures</h2>
-                </div>
-                <div class="flex items-center gap-2">
-                    <select id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-500"></select>
-                    <select id="flashcards-count-select" onchange="app.changeFlashcardCount(this.value)" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
-                        <option value="10">10 cards</option><option value="20">20 cards</option><option value="30">30 cards</option><option value="50">50 cards</option><option value="100">100 cards</option><option value="200">200 cards</option><option value="300">300 cards</option><option value="all">All available</option>
-                    </select><span id="flashcards-available" class="text-[11px] text-slate-500 font-mono"></span>
-                </div>
-            </div>
-
-            <div class="max-w-2xl mx-auto">
-                <div id="flashcard-container" onclick="app.flipCard()" class="perspective-1000 h-80 sm:h-96 cursor-pointer group">
-                    <div id="flashcard-inner" class="relative w-full h-full transform-style-3d transition-transform duration-500 shadow-2xl rounded-3xl">
-                        <div class="absolute inset-0 backface-hidden glass-card rounded-3xl p-8 flex flex-col justify-between border-2 border-slate-700/60 group-hover:border-brand-500/50">
-                            <div class="flex justify-between items-center text-xs font-medium text-slate-400">
-                                <span><i class="fa-solid fa-lightbulb text-amber-400 mr-1.5"></i> TERM / CONCEPT</span>
-                                <span id="card-progress-count" class="bg-slate-800 px-2.5 py-1 rounded-full text-slate-300 font-mono">1 / 10</span>
-                            </div>
-                            <div class="text-center my-auto px-4">
-                                <h3 id="card-front-text" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Loading...</h3>
-                            </div>
-                            <div class="text-center text-xs text-slate-500 font-medium">
-                                <i class="fa-solid fa-rotate mr-1"></i> Click or press <kbd class="px-1.5 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-300">Space</kbd> to flip card
-                            </div>
-                        </div>
-
-                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-slate-900 via-brand-900/40 to-slate-900 border-2 border-brand-500/60 rounded-3xl p-8 flex flex-col justify-between">
-                            <div class="flex justify-between items-center text-xs font-medium text-slate-400">
-                                <span class="text-brand-accent font-bold"><i class="fa-solid fa-circle-check mr-1.5"></i> DEFINITION / EXPLANATION</span>
-                                <span class="text-xs text-slate-400">Core Concept</span>
-                            </div>
-                            <div class="my-auto px-2 overflow-y-auto max-h-48">
-                                <p id="card-back-text" class="text-base sm:text-lg text-slate-200 leading-relaxed font-normal">Loading definition...</p>
-                            </div>
-                            <div class="text-center text-xs text-slate-500 font-medium">
-                                Flip back anytime
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between mt-6 px-4">
-                    <button onclick="app.prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-sm transition-all flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-left"></i> Previous
-                    </button>
-                    <button onclick="app.shuffleCards()" class="px-4 py-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-medium transition-all">
-                        <i class="fa-solid fa-shuffle mr-1"></i> Shuffle
-                    </button>
-                    <button onclick="app.nextCard()" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all flex items-center gap-2">
-                        Next <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- View 3: Quiz Mode -->
-        <section id="view-quiz" class="hidden space-y-6">
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <button onclick="app.navigateTo('home')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300">
-                        <i class="fa-solid fa-arrow-left mr-1"></i> Back
-                    </button>
-                    <div>
-                        <h3 id="quizLabel" class="font-bold text-sm text-white">Quiz Mode</h3>
-                        <p id="lessonTag" class="text-xs text-brand-accent font-mono"></p>
-                    </div>
-                </div>
-
-                <div class="w-full sm:w-64 space-y-1">
-                    <div class="flex justify-between text-[10px] text-slate-400 font-mono">
-                        <span>PROGRESS</span>
-                        <span id="quizProgress">0 / 0</span>
-                    </div>
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div id="progressBar" class="bg-gradient-to-r from-brand-500 to-brand-accent h-full w-0 transition-all duration-300"></div>
-                    </div>
-                </div>
-
-                <button id="starBtn" onclick="app.toggleStarCurrentQuestion()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400 transition-colors">
-                    <i class="fa-regular fa-star text-lg"></i>
-                </button>
-            </div>
-
-            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-6 sm:p-8 space-y-6">
-                <div>
-                    <span id="difficultyTag" class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700">Easy</span>
-                    <h2 id="questionText" class="text-lg sm:text-xl font-bold text-white mt-3 leading-relaxed">
-                        Loading Question...
-                    </h2>
-                </div>
-
-                <div id="answers" class="space-y-3"></div>
-
-                <div id="feedback" class="hidden p-4 rounded-2xl border space-y-2"></div>
-
-                <div class="flex justify-end pt-2">
-                    <button id="confirmBtn" onclick="app.confirmAnswer()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2">
-                        Confirm Answer
-                    </button>
-                    <button id="nextBtn" onclick="app.nextQuestion()" class="hidden px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2">
-                        Next Question <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- View: Reference -->
-        <section id="view-reference" class="hidden space-y-6">
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 border border-cyan-500/20 p-6 md:p-8">
-                <span class="text-xs font-bold text-cyan-300 uppercase tracking-wider"><i class="fa-solid fa-book mr-1"></i> Core 2 Reference</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Ports, commands, standards & types</h2>
-            </div>
-            <div id="reference-content" class="space-y-5"></div>
-        </section>
-
-        <!-- View 4: PBQ Terminal Lab -->
-        <section id="view-pbq" class="hidden space-y-6">
-            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div>
-                    <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">PERFORMANCE-BASED LAB</span>
-                    <h2 class="text-xl font-bold text-white mt-1">CLI Terminal & Scenario Simulator</h2>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="app.selectPBQScenario(0)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 1: SFC/CHKDSK</button>
-                    <button onclick="app.selectPBQScenario(1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 2: Network Fix</button>
-                    <button onclick="app.selectPBQScenario(2)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 3: SOHO WPA3</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-5 space-y-4">
-                    <div class="glass-card rounded-2xl p-5 border border-slate-700 space-y-4">
-                        <div class="flex items-center gap-2 text-xs font-bold text-brand-accent uppercase tracking-wider">
-                            <i class="fa-solid fa-circle-info"></i> Scenario Briefing
-                        </div>
-                        <h3 id="pbq-scenario-title" class="font-bold text-base text-white">System File Corruption Incident</h3>
-                        <p id="pbq-scenario-desc" class="text-xs text-slate-300 leading-relaxed"></p>
-                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-1">
-                            <span class="font-semibold text-amber-400">Objective:</span>
-                            <p id="pbq-scenario-objective" class="text-slate-300"></p>
-                        </div>
-                        <div id="pbq-hint-box" class="p-3 bg-brand-500/10 rounded-xl border border-brand-500/20 text-xs text-brand-100 hidden">
-                            <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> <span id="pbq-hint-text"></span>
-                        </div>
-                        <button onclick="app.togglePBQHint()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-all">
-                            <i class="fa-solid fa-question-circle mr-1"></i> Need Hint?
-                        </button>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-7">
-                    <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex flex-col h-96">
-                        <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
-                                <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
-                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
-                                <span class="ml-2 font-mono text-xs text-slate-400">Administrator: Command Prompt</span>
-                            </div>
-                            <button onclick="app.clearTerminal()" class="text-xs text-slate-500 hover:text-slate-300 font-mono">clear</button>
-                        </div>
-                        <div id="pbq-feedback" class="hidden mb-3 p-3 rounded-xl text-xs"></div>
-                        <div id="terminal-body" class="flex-1 p-4 font-mono text-xs sm:text-sm text-emerald-400 overflow-y-auto space-y-2 selection:bg-emerald-900 selection:text-emerald-100">
-                            <div>Microsoft Windows [Version 10.0.19045.3803]</div>
-                            <div>(c) Microsoft Corporation. All rights reserved.</div>
-                            <div class="text-slate-400 pb-2">Type your troubleshooting command below:</div>
-                        </div>
-                        <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex items-center gap-2">
-                            <span class="font-mono text-xs text-emerald-400">C:\Windows\System32&gt;</span>
-                            <input type="text" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" placeholder="Enter command..." class="flex-1 bg-transparent border-none outline-none font-mono text-xs sm:text-sm text-white placeholder-slate-600 focus:ring-0">
-                            <button onclick="app.execTerminalCommand()" class="px-3 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-mono">Run</button>
-                            <button onclick="app.submitPBQ()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Submit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- View 5: Results View -->
-        <section id="view-results" class="hidden max-w-xl mx-auto space-y-6 text-center">
-            <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Session Complete</span>
-                <h1 id="resultTitle" class="text-2xl font-extrabold text-white">Great Job!</h1>
-                
-                <div class="w-28 h-28 mx-auto rounded-full bg-brand-600/20 border-2 border-brand-500 flex flex-col items-center justify-center">
-                    <strong id="resultScore" class="text-3xl font-black text-white">0/0</strong>
-                    <span id="resultPct" class="text-xs text-brand-accent font-bold">0%</span>
-                </div>
-
-                <div id="resultDetails" class="grid grid-cols-3 gap-3 pt-2 text-xs"></div>
-
-                <div class="flex gap-3 pt-4">
-                    <button onclick="app.retrySession()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs text-white transition-all">
-                        Retry Session
-                    </button>
-                    <button onclick="app.navigateTo('home')" class="flex-1 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs text-white transition-all">
-                        Back to Home
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- View 6: User Progress & Stats -->
-        <section id="view-stats" class="hidden space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-xl font-bold text-white">Your Core 2 Progress & Analytics</h2>
-                    <p class="text-xs text-slate-400">Tracking practice scores and module mastery</p>
-                </div>
-                <button onclick="app.resetProgress()" class="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-semibold transition-all">
-                    <i class="fa-solid fa-trash-can mr-1"></i> Reset Progress
-                </button>
-            </div>
-
-            <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
-                <h3 class="font-bold text-base text-white">Module Mastery Breakdown</h3>
-                <div id="module-stats-list" class="space-y-3"></div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>CompTIA A+ Core 2 (220-1202) Study & Quiz Application</p>
-            <p class="font-mono text-slate-600">Modules 11–22</p>
-        </div>
-    </footer>
-
-    <!-- Skript inladdade direkt från rotmappen utan /js/ -->
-    <script src="data.js"></script>
-    <script src="app.js"></script>
-</body>
+    </script><script src="data.js"></script><script src="app.js"></script></body>
 </html>
