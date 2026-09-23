@@ -26,7 +26,7 @@ class MainApp {
         this.currentModeLabel = '';
 
         // Flashcard State
-        this.selectedModuleId = 11;
+        this.selectedModuleId = 'all';
         this.cardIndex = 0;
         this.isCardFlipped = false;
 
@@ -37,6 +37,7 @@ class MainApp {
     }
 
     init() {
+        this.initTheme();
         this.buildHomeControls();
         this.renderModulesGrid();
         this.updateGlobalStats();
@@ -44,18 +45,19 @@ class MainApp {
         this.populatePBQDropdown();
         this.renderReference();
         this.updateReadiness();
-        this.initTheme();
     }
 
     /* Dark Mode / Theme Handling */
     initTheme() {
         const savedTheme = localStorage.getItem('c2theme');
+        // Om inget är sparat eller om det är inställt på dark -> aktivera mörkt läge
         if (savedTheme === 'light') {
             document.documentElement.classList.remove('dark');
             document.body.classList.add('theme-light');
         } else {
             document.documentElement.classList.add('dark');
             document.body.classList.remove('theme-light');
+            localStorage.setItem('c2theme', 'dark');
         }
         this.updateThemeButton();
     }
@@ -86,6 +88,7 @@ class MainApp {
     }
 
     updateReadiness() {
+        if (!window.DATA) return;
         let correct=0, attempted=0;
         Object.values(this.state.stats).forEach(s=>{correct+=s.c||0;attempted+=(s.c||0)+(s.w||0);});
         const coverage=DATA.questions.length ? Object.keys(this.state.answered).length/DATA.questions.length : 0;
@@ -98,15 +101,8 @@ class MainApp {
         if(v)v.textContent=readiness+'%'; if(b)b.style.width=readiness+'%';
     }
 
-    startAllModules(){
-        const sel=document.getElementById('all-module-count'); const val=sel?sel.value:'20';
-        const pool=[...DATA.questions].sort(()=>Math.random()-.5); const n=val==='all'?pool.length:Math.min(Number(val),pool.length);
-        this.startSession(pool.slice(0,n),`All Modules — ${n} Questions`);
-    }
-
-    changeFlashcardCount(v){this.flashcardCount=v==='all'?'all':Number(v);this.loadFlashcards(this.selectedModuleId);}
-
     populateFlashcardDropdown(){
+        if (!window.DATA) return;
         const s=document.getElementById('flashcards-module-select');if(!s)return;
         s.innerHTML='<option value="all">All Modules</option>';
         DATA.modules.forEach(m=>{const o=document.createElement('option');o.value=m.id;o.textContent=`Module ${m.id}: ${m.title}`;s.appendChild(o);});
@@ -118,6 +114,7 @@ class MainApp {
     startFlashcardsForModule(v){this.selectedModuleId=v;const s=document.getElementById('flashcards-module-select');if(s)s.value=v;this.navigateTo('flashcards');}
 
     loadFlashcards(v){
+        if (!window.DATA) return;
         const all=v==='all'?Object.values(DATA.flashcards).flat():[...(DATA.flashcards[String(v)]||[])];
         const n=this.flashcardCount||20; this.currentCards=[...all].sort(()=>Math.random()-.5).slice(0,n==='all'?all.length:Math.min(n,all.length));
         this.cardIndex=0;this.isCardFlipped=false;
@@ -126,21 +123,12 @@ class MainApp {
         const title=document.getElementById('flashcard-title');
         if(badge) badge.textContent=v==='all'?'All Modules':`Module ${m.id}`;
         if(title) title.textContent=v==='all'?'Core 2 — Modules 11–22':m.title;
-        const av=document.getElementById('flashcards-available');if(av)av.textContent=`${all.length} available`;
         this.renderCard();
     }
 
     populatePBQDropdown(){
         const existing=document.getElementById('pbq-scenario-select');if(!existing)return;
         existing.innerHTML=pbqScenarios.map((s,i)=>`<option value="${i}">Scenario ${i+1}: ${s.title}</option>`).join('');
-    }
-
-    submitPBQ(){
-        const input=document.getElementById('terminal-input'),cmd=(input?.value||'').trim().toLowerCase(),sc=pbqScenarios[this.currentPBQIndex];if(!cmd)return;
-        const ok=sc.expected.some(x=>cmd===x.toLowerCase()||cmd.includes(x.toLowerCase())); const fb=document.getElementById('pbq-feedback');
-        if(fb){fb.className=`mb-3 p-3 rounded-xl text-xs border ${ok?'bg-emerald-950/40 border-emerald-800 text-emerald-300':'bg-rose-950/40 border-rose-800 text-rose-300'}`;fb.innerHTML=ok?`<b>✓ Correct</b><div class="mt-1">${sc.success}</div>`:`<b>✗ Not correct</b><div class="mt-1">${sc.failure}</div><div class="mt-1 text-slate-500">Use the hint if needed and submit again.</div>`;}
-        if(ok){const key=`pbq-${this.currentPBQIndex}`;this.state.pbqCompleted=this.state.pbqCompleted||{};if(!this.state.pbqCompleted[key]){this.state.pbqCompleted[key]=true;this.state.pbqSolved=(this.state.pbqSolved||0)+1;this.saveState();}}
-        if(input) input.value='';
     }
 
     renderReference(){
@@ -183,6 +171,7 @@ class MainApp {
     }
 
     getWeakLessons() {
+        if (!window.DATA) return [];
         const scores = {};
         DATA.questions.forEach(q => {
             const x = this.state.stats[q.lesson];
@@ -192,6 +181,7 @@ class MainApp {
     }
 
     updateGlobalStats() {
+        if (!window.DATA) return;
         const totalQ = DATA.questions.length;
         let correctTotal = 0;
         let attemptedTotal = 0;
@@ -204,7 +194,6 @@ class MainApp {
         const accuracy = attemptedTotal > 0 ? Math.round((correctTotal / attemptedTotal) * 100) : 0;
         const weakCount = this.getWeakLessons().length;
 
-        // Home hero stats
         const qEl = document.getElementById('stat-total-q');
         const accEl = document.getElementById('stat-accuracy-home');
         const wrEl = document.getElementById('stat-wrong-home');
@@ -215,7 +204,6 @@ class MainApp {
         if(wrEl) wrEl.textContent = this.state.wrong.length;
         if(stEl) stEl.textContent = this.state.starred.length;
 
-        // Feature card badges
         const bWr = document.getElementById('badge-wrong');
         const bWk = document.getElementById('badge-weak');
         const bSt = document.getElementById('badge-starred');
@@ -228,6 +216,7 @@ class MainApp {
     }
 
     buildHomeControls() {
+        if (!window.DATA) return;
         const rs = document.getElementById('rangeSelect');
         const em = document.getElementById('extraModule');
         if(!rs || !em) return;
@@ -251,6 +240,7 @@ class MainApp {
     }
 
     renderModulesGrid() {
+        if (!window.DATA) return;
         const grid = document.getElementById('modulesGrid');
         if(!grid) return;
         grid.innerHTML = '';
@@ -289,6 +279,7 @@ class MainApp {
     }
 
     startPracticeMode(mode) {
+        if (!window.DATA) return;
         let pool = [];
         let label = '';
 
@@ -322,6 +313,7 @@ class MainApp {
     }
 
     startChallenge() {
+        if (!window.DATA) return;
         const rsVal = document.getElementById('rangeSelect')?.value;
         const extra = document.getElementById('extraModule')?.value;
         if(!rsVal) return;
@@ -339,6 +331,7 @@ class MainApp {
     }
 
     startModuleQuiz(modId) {
+        if (!window.DATA) return;
         const pool = DATA.questions.filter(q => q.module === modId);
         const mod = DATA.modules.find(m => m.id === modId);
         this.startSession(pool, `Module ${modId}: ${mod.title}`);
@@ -566,14 +559,6 @@ class MainApp {
         this.renderCard();
     }
 
-    shuffleCards() {
-        if(!this.currentCards) return;
-        this.currentCards.sort(() => Math.random() - 0.5);
-        this.cardIndex = 0;
-        this.renderCard();
-    }
-
-    /* PBQ Terminal logic */
     loadPBQScenario(index) {
         this.currentPBQIndex = index;
         const sc = pbqScenarios[index];
@@ -581,8 +566,6 @@ class MainApp {
         document.getElementById('pbq-scenario-title').textContent = sc.title;
         document.getElementById('pbq-scenario-desc').textContent = sc.desc;
         document.getElementById('pbq-scenario-objective').textContent = sc.objective;
-        document.getElementById('pbq-hint-text').textContent = sc.hint;
-        document.getElementById('pbq-hint-box').classList.add('hidden');
 
         const body = document.getElementById('terminal-body');
         if(body) {
@@ -596,10 +579,6 @@ class MainApp {
 
     selectPBQScenario(idx) {
         this.loadPBQScenario(idx);
-    }
-
-    togglePBQHint() {
-        document.getElementById('pbq-hint-box').classList.toggle('hidden');
     }
 
     handleTerminalCommand(e) {
@@ -648,8 +627,8 @@ class MainApp {
         }
     }
 
-    /* Render Stats Page */
     renderStatsView() {
+        if (!window.DATA) return;
         const list = document.getElementById('module-stats-list');
         if(!list) return;
         list.innerHTML = '';
