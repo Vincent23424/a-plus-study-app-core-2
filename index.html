@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html lang="sv" class="dark">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Förhindra caching -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-
-    <title>CompTIA A+ Core 2 Study Hub</title>
-
+    <title>CompTIA A+ Core 2 Mastery & Practice Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -20,323 +17,639 @@
                 extend: {
                     colors: {
                         brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
                             500: '#6366f1',
                             600: '#4f46e5',
-                            accent: '#38bdf8'
-                        }
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                            accent: '#06b6d4',
+                            success: '#10b981',
+                            warning: '#f59e0b',
+                            danger: '#ef4444'
+                        },
+                        darkbg: '#0b0f19',
+                        darkcard: '#151d2a',
+                        darkborder: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
                     }
                 }
             }
         }
     </script>
-
-    <!-- FontAwesome för ikoner -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         body {
+            font-family: 'Inter', sans-serif;
             background-color: #0b0f19;
-            color: #f1f5f9;
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: #f8fafc;
+            min-height: 100vh;
         }
-        .card-dark {
-            background-color: #111625;
-            border: 1px solid #1e293b;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
-        .card-dark:hover {
-            border-color: #334155;
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+
+        /* Flashcard 3D Flip */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Modern Glassmorphic & Sleek Card UI */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glass-card {
+            background: rgba(21, 29, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(26, 36, 53, 0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-<body class="bg-[#0b0f19] text-slate-100 min-h-screen pb-12">
+<body class="flex flex-col min-h-screen text-slate-100 antialiased selection:bg-brand-500 selection:text-white bg-gradient-to-b from-[#0b0f19] via-[#0f172a] to-[#0b0f19]">
 
-    <!-- Navigationsfält -->
-    <header class="border-b border-slate-800/80 bg-[#0b0f19]/90 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-md text-xs">A+</div>
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/60 px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3.5 cursor-pointer" onclick="app.navigateTo('home')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 font-extrabold text-white text-lg">
+                    A+
+                </div>
                 <div>
-                    <h1 class="font-bold text-sm text-white leading-tight">CompTIA A+ Core 2</h1>
-                    <p class="text-[10px] text-slate-400">Modules 11–22 Study Hub</p>
+                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">CompTIA A+ Core 2</h1>
+                    <p class="text-xs text-brand-accent font-medium">Modules 11–22 Study Hub</p>
                 </div>
             </div>
 
-            <!-- Meny -->
-            <nav class="hidden md:flex items-center gap-1 text-xs font-semibold">
-                <button id="nav-home" onclick="app.navigateTo('home')" class="px-3 py-2 rounded-xl bg-indigo-600 text-white transition-all"><i class="fa-solid fa-layer-group mr-1.5"></i> Practice & Modules</button>
-                <button id="nav-flashcards" onclick="app.navigateTo('flashcards')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-clone mr-1.5"></i> Flashcards</button>
-                <button id="nav-pbq" onclick="app.navigateTo('pbq')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-terminal mr-1.5"></i> PBQ & Lab</button>
-                <button id="nav-stats" onclick="app.navigateTo('stats')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-chart-line mr-1.5"></i> Stats</button>
-                <button id="nav-reference" onclick="app.navigateTo('reference')" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white transition-all"><i class="fa-solid fa-book mr-1.5"></i> Reference</button>
+            <!-- Global Nav Buttons -->
+            <nav class="hidden md:flex items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-xl border border-slate-800">
+                <button onclick="app.navigateTo('home')" id="nav-home" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-white bg-brand-600 shadow-md">
+                    <i class="fa-solid fa-layer-group mr-2"></i>Practice & Modules
+                </button>
+                <button onclick="app.navigateTo('flashcards')" id="nav-flashcards" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-clone text-brand-accent mr-2"></i>Flashcards
+                </button>
+                <button onclick="app.navigateTo('pbq')" id="nav-pbq" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-terminal text-amber-400 mr-2"></i>PBQ & Lab
+                </button>
+                <button onclick="app.navigateTo('stats')" id="nav-stats" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-chart-line text-purple-400 mr-2"></i>Stats
+                </button>
+                <button onclick="app.navigateTo('reference')" id="nav-reference" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-book text-cyan-400 mr-2"></i>Reference
+                </button>
             </nav>
 
-            <!-- Knappar -->
-            <div class="flex items-center gap-2">
-                <button id="theme-toggle" onclick="app.toggleTheme()" class="px-3 py-1.5 rounded-xl bg-[#111625] hover:bg-slate-800 text-slate-200 text-xs font-medium transition-all flex items-center gap-2 border border-slate-800">
-                    <i id="theme-toggle-icon" class="fa-solid fa-moon"></i>
-                    <span id="theme-toggle-label">Dark Mode</span>
-                </button>
-                <button onclick="app.startPracticeMode('final')" class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold shadow-md transition-all flex items-center gap-1.5">
+            <div class="flex items-center gap-3">
+                <button onclick="app.startPracticeMode('final')" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-brand-accent to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all shadow-lg shadow-cyan-500/10 active:scale-95">
                     <i class="fa-solid fa-bolt"></i> Final Test
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Huvudinnehåll -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8">
         
-        <!-- VYN: HOME -->
+        <!-- View 1: Home Dashboard (Matching requested layout in Image 2) -->
         <section id="view-home" class="space-y-8">
             
-            <!-- Hero banner -->
-            <div class="rounded-3xl card-dark p-6 md:p-8 relative overflow-hidden">
-                <div class="max-w-2xl relative z-10">
-                    <span class="inline-flex items-center gap-1.5 text-[11px] font-mono px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-3">
-                        <i class="fa-solid fa-shield-halved"></i> CompTIA A+ 220-1202 Prep
+            <!-- Hero Banner & Stats -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-brand-900/50 to-slate-900 border border-slate-800/80 p-6 md:p-8 shadow-2xl">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-accent border border-brand-500/30 mb-3">
+                        <i class="fa-solid fa-graduation-cap"></i> CompTIA A+ 220-1202 Prep
                     </span>
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mb-2">Study smarter. <span class="text-indigo-400">Practice deeper.</span></h2>
-                    <p class="text-xs md:text-sm text-slate-400 mb-6">Operating systems · Security · Software troubleshooting · Operational procedures (Modules 11–22)</p>
+                    <h2 class="text-2xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        Study smarter. <span class="text-brand-accent">Practice deeper.</span>
+                    </h2>
+                    <p class="mt-2 text-sm md:text-base text-slate-400">
+                        Operating systems · Security · Software troubleshooting · Operational procedures (Modules 11–22)
+                    </p>
+                </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
-                            <span class="text-[10px] text-slate-400 block mb-1">Total Questions</span>
-                            <span id="stat-total-q" class="text-base font-bold text-white font-mono">420</span>
-                        </div>
-                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
-                            <span class="text-[10px] text-slate-400 block mb-1">Accuracy</span>
-                            <span id="stat-accuracy-home" class="text-base font-bold text-emerald-400 font-mono">0%</span>
-                        </div>
-                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
-                            <span class="text-[10px] text-slate-400 block mb-1">Wrong Questions</span>
-                            <span id="stat-wrong-home" class="text-base font-bold text-rose-400 font-mono">0</span>
-                        </div>
-                        <div class="bg-[#0b0f19] border border-slate-800/80 rounded-2xl p-3">
-                            <span class="text-[10px] text-slate-400 block mb-1">Starred</span>
-                            <span id="stat-starred-home" class="text-base font-bold text-amber-400 font-mono">0</span>
-                        </div>
+                <!-- Stats summary strip -->
+                <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 border-t border-slate-800/80 pt-4">
+                    <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/60">
+                        <span class="text-[11px] text-slate-400 block font-medium">Total Questions</span>
+                        <span id="stat-total-q" class="text-xl font-bold text-white">0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/60">
+                        <span class="text-[11px] text-slate-400 block font-medium">Accuracy</span>
+                        <span id="stat-accuracy-home" class="text-xl font-bold text-emerald-400">0%</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/60">
+                        <span class="text-[11px] text-slate-400 block font-medium">Wrong Questions</span>
+                        <span id="stat-wrong-home" class="text-xl font-bold text-rose-400">0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-slate-800/60">
+                        <span class="text-[11px] text-slate-400 block font-medium">Starred</span>
+                        <span id="stat-starred-home" class="text-xl font-bold text-amber-400">0</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Practice-sektion -->
-            <div>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Practice</h3>
-                <p class="text-[11px] text-slate-500 mb-4">Choose exactly what you want to train.</p>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <button onclick="app.startPracticeMode('final')" class="card-dark text-left p-4 rounded-2xl transition-all group relative">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">Final Test</span>
-                            <i class="fa-solid fa-trophy text-amber-500 text-xs"></i>
+            <!-- Section 1: Practice Cards (Designed as 2-column wide layout as in Image 2) -->
+            <div class="space-y-4">
+                <div>
+                    <h3 class="text-xl font-bold text-white">Practice</h3>
+                    <p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Final Test -->
+                    <button onclick="app.startPracticeMode('final')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-trophy"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Mixed questions from Modules 11-22.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Final Test</h4>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Mixed questions from Modules 11–22.</p>
+                        </div>
                     </button>
 
-                    <button onclick="app.startPracticeMode('random')" class="card-dark text-left p-4 rounded-2xl transition-all group">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">Random Practice</span>
-                            <i class="fa-solid fa-shuffle text-sky-400 text-xs"></i>
+                    <!-- Random Practice -->
+                    <button onclick="app.startPracticeMode('random')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-shuffle"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Fresh mixed practice across all Core 2 topics.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Random Practice</h4>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Fresh mixed practice across all Core 2 topics.</p>
+                        </div>
                     </button>
 
-                    <button onclick="app.startPracticeMode('wrong')" class="card-dark text-left p-4 rounded-2xl transition-all group">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-rose-400 transition-colors">Wrong Questions</span>
-                            <span id="badge-wrong" class="text-[10px] px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono">0</span>
+                    <!-- Wrong Questions -->
+                    <button onclick="app.startPracticeMode('wrong')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-circle-xmark"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Retry questions you have missed.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Wrong Questions</h4>
+                                <span id="badge-wrong" class="px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-400 text-xs font-bold border border-rose-500/30">0</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Retry questions you have missed.</p>
+                        </div>
                     </button>
 
-                    <button onclick="app.startPracticeMode('weak')" class="card-dark text-left p-4 rounded-2xl transition-all group">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">Weak Areas</span>
-                            <span id="badge-weak" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">0</span>
+                    <!-- Weak Areas -->
+                    <button onclick="app.startPracticeMode('weak')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-chart-line"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Practice your lowest-performing lessons.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Weak Areas</h4>
+                                <span id="badge-weak" class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">0</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Practice your lowest-performing lessons.</p>
+                        </div>
                     </button>
 
-                    <button onclick="app.startPracticeMode('starred')" class="card-dark text-left p-4 rounded-2xl transition-all group">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">Starred Questions</span>
-                            <span id="badge-starred" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono">0</span>
+                    <!-- Starred Questions -->
+                    <button onclick="app.startPracticeMode('starred')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-300 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-star"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Review the questions you marked.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">Starred Questions</h4>
+                                <span id="badge-starred" class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-bold border border-amber-400/30">0</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Review the questions you marked.</p>
+                        </div>
                     </button>
 
-                    <button onclick="app.startPracticeMode('new')" class="card-dark text-left p-4 rounded-2xl transition-all group">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">New Questions</span>
-                            <span id="badge-new" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono">420</span>
+                    <!-- New Questions -->
+                    <button onclick="app.startPracticeMode('new')" class="glass-card p-6 rounded-2xl text-left flex items-start gap-4 group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl shrink-0 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-sparkles"></i>
                         </div>
-                        <p class="text-[11px] text-slate-400">Questions you have not answered yet.</p>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-2 mb-1">
+                                <h4 class="font-bold text-white text-base group-hover:text-brand-accent transition-colors">New Questions</h4>
+                                <span id="badge-new" class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">0</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Questions you have not answered yet.</p>
+                        </div>
                     </button>
                 </div>
             </div>
 
-            <!-- Module Challenge -->
-            <div class="card-dark rounded-2xl p-5 space-y-3">
+            <!-- Section 2: Module Challenge -->
+            <div class="glass-card p-6 rounded-2xl space-y-4">
                 <div>
-                    <h3 class="text-xs font-bold text-white">Module Challenge</h3>
-                    <p class="text-[11px] text-slate-400">Pick a 3-module range, or add one extra weak module.</p>
+                    <h3 class="text-lg font-bold text-white">Module Challenge</h3>
+                    <p class="text-xs text-slate-400">Pick a 3-module range, or add one extra weak module.</p>
                 </div>
-                <div class="flex flex-wrap items-center gap-3">
-                    <select id="rangeSelect" class="bg-[#0b0f19] border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"></select>
-                    <select id="extraModule" class="bg-[#0b0f19] border border-slate-800 text-xs rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500"></select>
-                    <button onclick="app.startChallenge()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all">
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <select id="rangeSelect" class="w-full sm:w-auto bg-slate-900 border border-slate-800 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500">
+                        <!-- Filled by JS -->
+                    </select>
+                    <select id="extraModule" class="w-full sm:w-auto bg-slate-900 border border-slate-800 text-xs text-white rounded-xl px-4 py-2.5 focus:outline-none focus:border-brand-500">
+                        <option value="">No extra module</option>
+                        <!-- Filled by JS -->
+                    </select>
+                    <button onclick="app.startChallenge()" class="w-full sm:w-auto px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs rounded-xl transition-all shadow-md">
                         Start Challenge
                     </button>
                 </div>
             </div>
 
-            <!-- Moduler Grid -->
-            <div>
-                <div class="flex items-center justify-between mb-3">
+            <!-- Section 3: Modules 11–22 Grid & Selector -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="text-sm font-bold text-white">Modules 11–22</h3>
-                        <p class="text-[11px] text-slate-400">Study by module and lesson.</p>
+                        <h3 class="text-xl font-bold text-white">Modules 11–22</h3>
+                        <p class="text-xs text-slate-400">Study by module and lesson.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400">Questions per set:</span>
-                        <select id="countSelect" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-2 py-1 text-white">
-                            <option value="10" selected>10</option>
-                            <option value="20">20</option>
-                            <option value="35">35</option>
-                            <option value="All available">All</option>
+                        <span class="text-xs text-slate-400 font-medium">Questions per set:</span>
+                        <select id="countSelect" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-xl px-3 py-1.5 focus:outline-none focus:border-brand-500">
+                            <option>10</option>
+                            <option>20</option>
+                            <option>30</option>
+                            <option>50</option>
+                            <option>100</option>
+                            <option>All available</option>
                         </select>
                     </div>
                 </div>
 
-                <div id="modulesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#111625]/50 border border-slate-800/60 text-[11px] text-slate-400">
-                <b>Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content.
-            </div>
-        </section>
-
-        <!-- VYN: FLASHCARDS -->
-        <section id="view-flashcards" class="hidden max-w-2xl mx-auto space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span id="flashcard-module-badge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold">Module</span>
-                    <h2 id="flashcard-title" class="text-lg font-bold text-white mt-1">Flashcards</h2>
+                <!-- Modules Grid -->
+                <div id="modulesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Populated dynamically -->
                 </div>
-                <select id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
             </div>
 
-            <div onclick="app.flipCard()" class="cursor-pointer min-h-[220px] card-dark rounded-3xl p-8 flex flex-col justify-between text-center relative">
-                <span class="text-[10px] text-indigo-400 font-mono uppercase tracking-wider block" id="card-type">TERM / CONCEPT</span>
-                <div id="card-content-text" class="text-lg font-bold text-white my-auto py-4">Click to start</div>
-                <div class="text-xs text-slate-500"><i class="fa-solid fa-rotate mr-1"></i> Klicka för att vända kortet</div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <button onclick="app.prevCard()" class="px-4 py-2 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-semibold text-slate-200"><i class="fa-solid fa-arrow-left mr-1"></i> Prev</button>
-                <span id="card-progress-count" class="text-xs font-mono text-slate-400">0 / 0</span>
-                <button onclick="app.nextCard()" class="px-4 py-2 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-semibold text-slate-200">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+            <!-- Source Rule Footer note -->
+            <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-400">
+                <b class="text-slate-200">Source rule:</b> This build uses only the uploaded CompTIA Student Guide and Core 2 Exam Objectives for its learning content. No outside study content is added.
             </div>
         </section>
 
-        <!-- VYN: QUIZ -->
-        <section id="view-quiz" class="hidden max-w-2xl mx-auto space-y-6">
-            <div class="flex items-center justify-between">
+        <!-- View 2: Flashcards View -->
+        <section id="view-flashcards" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
                 <div>
-                    <span id="quizLabel" class="text-xs font-bold text-indigo-400 block">Quiz</span>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span id="lessonTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#111625] text-slate-300 border border-slate-800">Lesson</span>
-                        <span id="difficultyTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#111625] text-slate-400 border border-slate-800">Core 2</span>
+                    <span id="flashcard-module-badge" class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Module 11</span>
+                    <h2 id="flashcard-title" class="text-xl font-bold text-white mt-1">Managing Support Procedures</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <select id="flashcards-module-select" onchange="app.changeFlashcardModule(this.value)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-brand-500">
+                        <!-- Options generated dynamically -->
+                    </select>
+                    <select id="flashcards-count-select" onchange="app.changeFlashcardCount(this.value)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200">
+                        <option value="10">10 cards</option><option value="20">20 cards</option><option value="30">30 cards</option><option value="50">50 cards</option><option value="100">100 cards</option><option value="200">200 cards</option><option value="300">300 cards</option><option value="all">All available</option>
+                    </select><span id="flashcards-available" class="text-[11px] text-slate-500 font-mono"></span>
+                </div>
+            </div>
+
+            <!-- Card Flip Area -->
+            <div class="max-w-2xl mx-auto">
+                <div id="flashcard-container" onclick="app.flipCard()" class="perspective-1000 h-80 sm:h-96 cursor-pointer group">
+                    <div id="flashcard-inner" class="relative w-full h-full transform-style-3d transition-transform duration-500 shadow-2xl rounded-3xl">
+                        <!-- Front Face -->
+                        <div class="absolute inset-0 backface-hidden glass-card rounded-3xl p-8 flex flex-col justify-between border-2 border-slate-800 group-hover:border-brand-500/50">
+                            <div class="flex justify-between items-center text-xs font-medium text-slate-400">
+                                <span><i class="fa-solid fa-lightbulb text-amber-400 mr-1.5"></i> TERM / CONCEPT</span>
+                                <span id="card-progress-count" class="bg-slate-900 px-2.5 py-1 rounded-full text-slate-300 font-mono">1 / 10</span>
+                            </div>
+                            <div class="text-center my-auto px-4">
+                                <h3 id="card-front-text" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Loading...</h3>
+                            </div>
+                            <div class="text-center text-xs text-slate-500 font-medium">
+                                <i class="fa-solid fa-rotate mr-1"></i> Click or press <kbd class="px-1.5 py-0.5 bg-slate-900 rounded border border-slate-800 text-slate-300">Space</kbd> to flip card
+                            </div>
+                        </div>
+
+                        <!-- Back Face -->
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-slate-900 via-brand-900/40 to-slate-900 border-2 border-brand-500/60 rounded-3xl p-8 flex flex-col justify-between">
+                            <div class="flex justify-between items-center text-xs font-medium text-slate-400">
+                                <span class="text-brand-accent font-bold"><i class="fa-solid fa-circle-check mr-1.5"></i> DEFINITION / EXPLANATION</span>
+                                <span class="text-xs text-slate-400">Core Concept</span>
+                            </div>
+                            <div class="my-auto px-2 overflow-y-auto max-h-48">
+                                <p id="card-back-text" class="text-base sm:text-lg text-slate-200 leading-relaxed font-normal">Loading definition...</p>
+                            </div>
+                            <div class="text-center text-xs text-slate-500 font-medium">
+                                Flip back anytime
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <button id="starBtn" onclick="app.toggleStarCurrentQuestion()" class="p-2 rounded-xl bg-[#111625] border border-slate-800 text-slate-400 hover:text-amber-400"></button>
-                    <span id="quizProgress" class="text-xs font-mono text-slate-400">0 / 0</span>
-                </div>
-            </div>
 
-            <div class="w-full h-1.5 bg-[#111625] rounded-full overflow-hidden">
-                <div id="progressBar" class="h-full bg-indigo-500 transition-all duration-300" style="width: 0%"></div>
-            </div>
-
-            <div class="card-dark rounded-2xl p-6">
-                <p id="questionText" class="text-sm md:text-base font-semibold text-white leading-relaxed"></p>
-            </div>
-
-            <div id="answers" class="space-y-3"></div>
-            <div id="feedback" class="hidden"></div>
-
-            <div class="flex justify-end gap-3">
-                <button id="confirmBtn" onclick="app.confirmAnswer()" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white transition-all">Submit Answer</button>
-                <button id="nextBtn" onclick="app.nextQuestion()" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white transition-all">Next Question <i class="fa-solid fa-arrow-right ml-1"></i></button>
-            </div>
-        </section>
-
-        <!-- VYN: PBQ -->
-        <section id="view-pbq" class="hidden max-w-3xl mx-auto space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-white">PBQ & CLI Simulator</h2>
-                <select id="pbq-scenario-select" onchange="app.selectPBQScenario(this.value)" class="bg-[#111625] border border-slate-800 text-xs rounded-xl px-3 py-1.5 text-white"></select>
-            </div>
-
-            <div class="card-dark rounded-2xl p-5 space-y-3">
-                <h3 id="pbq-scenario-title" class="font-bold text-white text-sm">Scenario</h3>
-                <p id="pbq-scenario-desc" class="text-xs text-slate-300 leading-relaxed"></p>
-                <div class="p-3 rounded-xl bg-[#0b0f19] border border-slate-800 text-xs text-indigo-300">
-                    <b>Objective:</b> <span id="pbq-scenario-objective"></span>
-                </div>
-            </div>
-
-            <div class="rounded-2xl border border-slate-800 bg-black font-mono text-xs overflow-hidden shadow-2xl">
-                <div class="bg-[#111625] px-4 py-2 border-b border-slate-800 flex items-center justify-between text-slate-400">
-                    <span class="text-[10px]"><i class="fa-solid fa-terminal mr-2 text-indigo-400"></i>Command Prompt</span>
-                    <button onclick="app.clearTerminal()" class="text-[10px] hover:text-white">Clear</button>
-                </div>
-                <div id="terminal-body" class="p-4 h-64 overflow-y-auto text-slate-200 space-y-1"></div>
-                <div class="px-4 py-3 bg-black border-t border-slate-900 flex items-center gap-2">
-                    <span class="text-slate-500">C:\Windows\System32&gt;</span>
-                    <input type="text" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" class="bg-transparent border-none text-white text-xs focus:outline-none flex-1 font-mono" placeholder="Type command..." />
-                    <button onclick="app.execTerminalCommand()" class="px-3 py-1 bg-indigo-600 text-white rounded text-[10px] font-bold">Run</button>
+                <!-- Controls -->
+                <div class="flex items-center justify-between mt-6 px-4">
+                    <button onclick="app.prevCard()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 font-semibold text-sm transition-all flex items-center gap-2 border border-slate-800">
+                        <i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <button onclick="app.shuffleCards()" class="px-4 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 text-xs font-medium transition-all border border-slate-800">
+                        <i class="fa-solid fa-shuffle mr-1"></i> Shuffle
+                    </button>
+                    <button onclick="app.nextCard()" class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all flex items-center gap-2 shadow-lg">
+                        Next <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- VYN: STATS -->
-        <section id="view-stats" class="hidden max-w-3xl mx-auto space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-lg font-bold text-white">Performance Analytics</h2>
-                <button onclick="app.resetProgress()" class="px-3 py-1.5 rounded-xl bg-rose-900/40 text-rose-300 text-xs border border-rose-800/50">Reset All Data</button>
+        <!-- View 3: Quiz Mode -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <!-- Top Action Header -->
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button onclick="app.navigateTo('home')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> Back
+                    </button>
+                    <div>
+                        <h3 id="quizLabel" class="font-bold text-sm text-white">Quiz Mode</h3>
+                        <p id="lessonTag" class="text-xs text-brand-accent font-mono"></p>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full sm:w-64 space-y-1">
+                    <div class="flex justify-between text-[10px] text-slate-400 font-mono">
+                        <span>PROGRESS</span>
+                        <span id="quizProgress">0 / 0</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div id="progressBar" class="bg-gradient-to-r from-brand-500 to-brand-accent h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Star Button -->
+                <button id="starBtn" onclick="app.toggleStarCurrentQuestion()" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400 transition-colors">
+                    <i class="fa-regular fa-star text-lg"></i>
+                </button>
             </div>
-            <div id="module-stats-list" class="space-y-3"></div>
+
+            <!-- Question Card -->
+            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <span id="difficultyTag" class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-800 text-slate-300 border border-slate-700">Easy</span>
+                    <h2 id="questionText" class="text-lg sm:text-xl font-bold text-white mt-3 leading-relaxed">
+                        Loading Question...
+                    </h2>
+                </div>
+
+                <!-- Options -->
+                <div id="answers" class="space-y-3">
+                    <!-- Options injected here -->
+                </div>
+
+                <!-- Feedback Area -->
+                <div id="feedback" class="hidden p-4 rounded-2xl border space-y-2">
+                    <!-- Feedback text -->
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end pt-2">
+                    <button id="confirmBtn" onclick="app.confirmAnswer()" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2">
+                        Confirm Answer
+                    </button>
+                    <button id="nextBtn" onclick="app.nextQuestion()" class="hidden px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-sm transition-all shadow-lg flex items-center gap-2">
+                        Next Question <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
         </section>
 
-        <!-- VYN: REFERENCE -->
+        <!-- View: Reference -->
         <section id="view-reference" class="hidden space-y-6">
-            <h2 class="text-lg font-bold text-white mb-4">Core 2 Quick Reference</h2>
-            <div id="reference-content" class="space-y-6"></div>
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 border border-cyan-500/20 p-6 md:p-8">
+                <span class="text-xs font-bold text-cyan-300 uppercase tracking-wider"><i class="fa-solid fa-book mr-1"></i> Core 2 Reference</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Ports, commands, standards & types</h2>
+                <p class="text-sm text-slate-400 mt-2">Only information from the uploaded Core 2 Student Guide and Core 2 Exam Objectives.</p>
+            </div>
+            <div id="reference-content" class="space-y-5"></div>
         </section>
 
-        <!-- VYN: RESULTS -->
-        <section id="view-results" class="hidden max-w-md mx-auto text-center space-y-6 py-8">
-            <div class="w-16 h-16 rounded-3xl bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-2xl mx-auto">
-                <i class="fa-solid fa-trophy"></i>
+        <!-- View 4: PBQ Terminal Lab -->
+        <section id="view-pbq" class="hidden space-y-6">
+            <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">PERFORMANCE-BASED LAB</span>
+                    <h2 class="text-xl font-bold text-white mt-1">CLI Terminal & Scenario Simulator</h2>
+                    <p class="text-xs text-slate-400">Solve practical technical scenarios by running CLI commands or taking appropriate admin actions.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="app.selectPBQScenario(0)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 1: SFC/CHKDSK</button>
+                    <button onclick="app.selectPBQScenario(1)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 2: Network Fix</button>
+                    <button onclick="app.selectPBQScenario(2)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200">Scenario 3: SOHO WPA3</button>
+                </div>
             </div>
-            <div>
-                <h2 id="resultTitle" class="text-xl font-bold text-white mb-1">Session Completed!</h2>
-                <span id="resultPct" class="text-3xl font-extrabold text-emerald-400 font-mono block my-2">0%</span>
-                <span id="resultScore" class="text-xs text-slate-400 font-mono">0/0 Correct</span>
+
+            <!-- Active Scenario Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Task Description Panel -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-4">
+                        <div class="flex items-center gap-2 text-xs font-bold text-brand-accent uppercase tracking-wider">
+                            <i class="fa-solid fa-circle-info"></i> Scenario Briefing
+                        </div>
+                        <h3 id="pbq-scenario-title" class="font-bold text-base text-white">System File Corruption Incident</h3>
+                        <p id="pbq-scenario-desc" class="text-xs text-slate-300 leading-relaxed">
+                            A Windows 11 client system is experiencing system lockups. You suspect corrupted system files.
+                        </p>
+                        <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-1">
+                            <span class="font-semibold text-amber-400">Objective:</span>
+                            <p id="pbq-scenario-objective" class="text-slate-300">Run the correct command line utility in elevated privilege mode to scan and automatically repair corrupted protected Windows system files.</p>
+                        </div>
+                        <div id="pbq-hint-box" class="p-3 bg-brand-500/10 rounded-xl border border-brand-500/20 text-xs text-brand-100 hidden">
+                            <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i> <span id="pbq-hint-text"></span>
+                        </div>
+                        <button onclick="app.togglePBQHint()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-xl transition-all">
+                            <i class="fa-solid fa-question-circle mr-1"></i> Need Hint?
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Terminal Simulator -->
+                <div class="lg:col-span-7">
+                    <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl flex flex-col h-96">
+                        <!-- Terminal Header -->
+                        <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                                <span class="ml-2 font-mono text-xs text-slate-400">Administrator: Command Prompt</span>
+                            </div>
+                            <button onclick="app.clearTerminal()" class="text-xs text-slate-500 hover:text-slate-300 font-mono">clear</button>
+                        </div>
+                        <!-- Terminal Body -->
+                        <div id="pbq-feedback" class="hidden mb-3 p-3 rounded-xl text-xs"></div>
+                        <div id="terminal-body" class="flex-1 p-4 font-mono text-xs sm:text-sm text-emerald-400 overflow-y-auto space-y-2 selection:bg-emerald-900 selection:text-emerald-100">
+                            <div>Microsoft Windows [Version 10.0.19045.3803]</div>
+                            <div>(c) Microsoft Corporation. All rights reserved.</div>
+                            <div class="text-slate-400 pb-2">Type your troubleshooting command below (e.g. sfc /scannow, chkdsk /f, ipconfig /renew):</div>
+                        </div>
+                        <!-- Terminal Input -->
+                        <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex items-center gap-2">
+                            <span class="font-mono text-xs text-emerald-400">C:\Windows\System32&gt;</span>
+                            <input type="text" id="terminal-input" onkeydown="app.handleTerminalCommand(event)" placeholder="Enter command..." class="flex-1 bg-transparent border-none outline-none font-mono text-xs sm:text-sm text-white placeholder-slate-600 focus:ring-0">
+                            <button onclick="app.execTerminalCommand()" class="px-3 py-1 bg-brand-600 hover:bg-brand-500 text-white rounded text-xs font-mono">Run</button>
+                            <button onclick="app.submitPBQ()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs">Submit</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div id="resultDetails" class="grid grid-cols-3 gap-3 text-xs"></div>
-            <div class="pt-4 flex gap-3">
-                <button onclick="app.retrySession()" class="flex-1 py-2.5 rounded-xl bg-[#111625] hover:bg-slate-800 text-xs font-bold text-white">Retry Set</button>
-                <button onclick="app.navigateTo('home')" class="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white">Back to Home</button>
+        </section>
+
+        <!-- View 5: Results View -->
+        <section id="view-results" class="hidden max-w-xl mx-auto space-y-6 text-center">
+            <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Session Complete</span>
+                <h1 id="resultTitle" class="text-2xl font-extrabold text-white">Great Job!</h1>
+                
+                <div class="w-28 h-28 mx-auto rounded-full bg-brand-600/20 border-2 border-brand-500 flex flex-col items-center justify-center">
+                    <strong id="resultScore" class="text-3xl font-black text-white">0/0</strong>
+                    <span id="resultPct" class="text-xs text-brand-accent font-bold">0%</span>
+                </div>
+
+                <div id="resultDetails" class="grid grid-cols-3 gap-3 pt-2 text-xs">
+                    <!-- Details injected dynamically -->
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                    <button onclick="app.retrySession()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-xs text-white transition-all">
+                        Retry Session
+                    </button>
+                    <button onclick="app.navigateTo('home')" class="flex-1 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 font-bold text-xs text-white transition-all">
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 6: User Progress & Stats -->
+        <section id="view-stats" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white">Your Core 2 Progress & Analytics</h2>
+                    <p class="text-xs text-slate-400">Tracking practice scores and module mastery</p>
+                </div>
+                <button onclick="app.resetProgress()" class="px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-semibold transition-all">
+                    <i class="fa-solid fa-trash-can mr-1"></i> Reset Progress
+                </button>
+            </div>
+
+            <!-- Breakdown List -->
+            <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-4">
+                <h3 class="font-bold text-base text-white">Module Mastery Breakdown</h3>
+                <div id="module-stats-list" class="space-y-3">
+                    <!-- Populated dynamically -->
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Skript -->
-    <script src="data.js?v=2.0"></script>
-    <script src="app.js?v=2.0"></script>
+    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/60 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>CompTIA A+ Core 2 (220-1202) Study & Quiz Application</p>
+            <p class="font-mono text-slate-600">Modules 11–22</p>
+        </div>
+    </footer>
+
+    <!-- Integrated Script & Embedded Questions Data -->
+    <script>
+        /**
+         * Embedded Questions & Modules Data
+         */
+        const DATA = {"modules":[{"id":11,"title":"Managing Support Procedures","lessons":["11A Documentation","11B Professional Communication","11C Operating Systems"],"icon":"fa-clipboard-list","color":"from-blue-500 to-indigo-600"},{"id":12,"title":"Configuring Windows","lessons":["12A Windows User Settings","12B Windows System Settings","12C Applications","12D Cloud Apps"],"icon":"fa-sliders","color":"from-sky-500 to-blue-600"},{"id":13,"title":"Managing Windows","lessons":["13A Management Consoles","13B Command-Line Tools","13C Windows Networking"],"icon":"fa-terminal","color":"from-emerald-500 to-teal-700"},{"id":14,"title":"Supporting Windows","lessons":["14A Network Troubleshooting","14B Remote Access","14C Performance Tools","14D OS Troubleshooting"],"icon":"fa-screwdriver-wrench","color":"from-amber-500 to-orange-600"},{"id":15,"title":"Securing Windows","lessons":["15A Logical Security","15B Windows Security Settings","15C Windows Shares"],"icon":"fa-shield-halved","color":"from-purple-500 to-indigo-700"},{"id":16,"title":"Installing Operating Systems","lessons":["16A Windows Editions","16B OS Installations & Upgrades"],"icon":"fa-hard-drive","color":"from-cyan-500 to-blue-600"},{"id":17,"title":"Supporting Other OS","lessons":["17A Linux Features","17B Package & Network Mgmt","17C macOS Features"],"icon":"fa-brands fa-linux","color":"from-amber-600 to-yellow-500"},{"id":18,"title":"Configuring SOHO Network Security","lessons":["18A Attacks & Threats","18B Wireless Security","18C SOHO Router Security"],"icon":"fa-wifi","color":"from-rose-500 to-red-600"},{"id":19,"title":"Managing Security Settings","lessons":["19A Account Security","19B Workstation Security","19C Browser Security"],"icon":"fa-key","color":"from-purple-600 to-pink-600"},{"id":20,"title":"Supporting Mobile Software","lessons":["20A Mobile OS Security","20B Mobile App Troubleshooting"],"icon":"fa-mobile-screen","color":"from-teal-500 to-emerald-600"},{"id":21,"title":"Using Data Security","lessons":["21A Data Backup & Recovery","21B Data Handling Best Practices","21C Artificial Intelligence"],"icon":"fa-database","color":"from-indigo-600 to-blue-700"},{"id":22,"title":"Implementing Operational Procedures","lessons":["22A Change Management","22B Safety & Environment","22C Scripting Basics"],"icon":"fa-code","color":"from-slate-600 to-slate-800"}],"questions":[{"id":"c2-0001","module":11,"lesson":"11A Documentation","question":"Which Core 2 term is described by the following?\n\nEmployees must understand how to use computers and networked services securely and safely and be aware of their responsibilities. To support this, the organization needs to create written policies and procedures to help staff understand and fulfill their tasks and follow best practices:","context":"Employees must understand how to use computers and networked services securely and safely and be aware of their responsibilities. To support this, the organization needs to create written policies and procedures to help staff understand and fulfill their tasks and follow best practices:","options":["Deal Appropriately with Confidential and Private Materials","Standard Operating Procedure","Escalation Levels","Professional Documentation"],"answer":1,"explanation":"Standard Operating Procedure: Employees must understand how to use computers and networked services securely and safely and be aware of their responsibilities. To support this, the organization needs to create written policies and procedures to help staff understand and fulfill their tasks and follow best practices:"},{"id":"c2-0002","module":11,"lesson":"11B Professional Communication","question":"Which concept matches this description?\n\n• Procedures for custom installation of software packages, such as verifying system requirements, validating download/installation source, confirming license validity, adding the software to change control/monitoring processes, and developing support/training documentation","context":"• Procedures for custom installation of software packages, such as verifying system requirements, validating download/installation source, confirming license validity, adding the software to change control/monitoring processes, and developing support/training documentation","options":["Professional Appearance","Typical examples of SOPs are as follows:","Set Expectations and Timeline","Support Documentation and Knowledge Base Articles"],"answer":1,"explanation":"Typical examples of SOPs are as follows:: • Procedures for custom installation of software packages, such as verifying system requirements, validating download/installation source, confirming license validity, adding the software to change control/monitoring processes, and developing support/training documentation"},{"id":"c2-0003","module":11,"lesson":"11C Operating Systems","question":"What is being described here?\n\nService level agreements (SLAs) define the level of service requirements from an internal department or external, third-party vendor. Examples of services that most likely have an SLA in place include: • Internal departments of the company that are providing resources to one another such as","context":"Service level agreements (SLAs) define the level of service requirements from an internal department or external, third-party vendor. Examples of services that most likely have an SLA in place include: • Internal departments of the company that are providing resources to one another such as","options":["Clear Written Communication","Using Proper Language","Meet Expectations and Timeline","Service Level Agreements"],"answer":3,"explanation":"Service Level Agreements: Service level agreements (SLAs) define the level of service requirements from an internal department or external, third-party vendor. Examples of services that most likely have an SLA in place include: • Internal departments of the company that are providing resources to one another such as"},{"id":"c2-0004","module":11,"lesson":"11A Documentation","question":"Which item from this module matches the description?\n\nA ticketing system manages requests, incidents, and problems. Ticketing systems can be used to support both internal end-users and external customers.","context":"A ticketing system manages requests, incidents, and problems. Ticketing systems can be used to support both internal end-users and external customers.","options":["Cultural Sensitivity","Repair and Replace Options","Knowledge Base","Incident Reporting and Ticketing Systems"],"answer":3,"explanation":"Incident Reporting and Ticketing Systems: A ticketing system manages requests, incidents, and problems. Ticketing systems can be used to support both internal end-users and external customers."},{"id":"c2-0005","module":11,"lesson":"11B Professional Communication","question":"Which Core 2 term is described by the following?\n\n1. A user contacts the help desk, perhaps by phone or email, or directly via the ticketing system.","context":"1. A user contacts the help desk, perhaps by phone or email, or directly via the ticketing system.","options":["The general process of ticket management is as follows:","Professional Communications","Follow Up","Policy Documentation"],"answer":0,"explanation":"The general process of ticket management is as follows:: 1. A user contacts the help desk, perhaps by phone or email, or directly via the ticketing system."},{"id":"c2-0006","module":11,"lesson":"11C Operating Systems","question":"Which concept matches this description?\n\nCategories Categories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis.","context":"Categories Categories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis.","options":["Active Listening","Professional Support Processes","Categories and Severity","Professional Support Delivery"],"answer":2,"explanation":"Categories and Severity: Categories Categories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis."},{"id":"c2-0007","module":11,"lesson":"11A Documentation","question":"What is being described here?\n\nCategories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis.","context":"Categories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis.","options":["Be On Time","Categories","Clarifying and Questioning Techniques","Professional Documentation"],"answer":1,"explanation":"Categories: Categories and subcategories group related tickets together. This is useful for assigning tickets to the relevant support section or technician and for reporting and analysis."},{"id":"c2-0008","module":11,"lesson":"11B Professional Communication","question":"Which item from this module matches the description?\n\nAfter opening an incident or problem ticket, the troubleshooting process is applied until the issue is resolved. At each stage, the system must track the ownership of the ticket (who is dealing with it) and its status (what has been done).","context":"After opening an incident or problem ticket, the troubleshooting process is applied until the issue is resolved. At each stage, the system must track the ownership of the ticket (who is dealing with it) and its status (what has been done).","options":["Set Expectations and Timeline","Difficult Situations","Ticket Management","Avoid Distractions"],"answer":2,"explanation":"Ticket Management: After opening an incident or problem ticket, the troubleshooting process is applied until the issue is resolved. At each stage, the system must track the ownership of the ticket (who is dealing with it) and its status (what has been done)."},{"id":"c2-0009","module":11,"lesson":"11C Operating Systems","question":"Which Core 2 term is described by the following?\n\nEscalation occurs when an agent cannot resolve the ticket. Some of the many reasons for escalation include: • The incident is related to a problem and requires analysis by senior technicians or by a third-party/warranty support service.","context":"Escalation occurs when an agent cannot resolve the ticket. Some of the many reasons for escalation include: • The incident is related to a problem and requires analysis by senior technicians or by a third-party/warranty support service.","options":["Escalation Levels","Meet Expectations and Timeline","Maintain a Positive Attitude","Deal Appropriately with Confidential and Private Materials"],"answer":0,"explanation":"Escalation Levels: Escalation occurs when an agent cannot resolve the ticket. Some of the many reasons for escalation include: • The incident is related to a problem and requires analysis by senior technicians or by a third-party/warranty support service."},{"id":"c2-0010","module":11,"lesson":"11A Documentation","question":"Which concept matches this description?\n\nIt is also useful to link an inventory record to appropriate troubleshooting and support sources.","context":"It is also useful to link an inventory record to appropriate troubleshooting and support sources.","options":["Professional Appearance","Dealing with Difficult Customers","Repair and Replace Options","Support Documentation and Knowledge Base Articles"],"answer":3,"explanation":"Support Documentation and Knowledge Base Articles: It is also useful to link an inventory record to appropriate troubleshooting and support sources."},{"id":"c2-0011","module":11,"lesson":"11B Professional Communication","question":"What is being described here?\n\nFree-form text fields allow ticket requesters and agents to add descriptive information. There are normally three fields to reflect the ticket life cycle: • Issue description records the initial request with any detail that could easily be collected at the time.","context":"Free-form text fields allow ticket requesters and agents to add descriptive information. There are normally three fields to reflect the ticket life cycle: • Issue description records the initial request with any detail that could easily be collected at the time.","options":["Identify early signs that a customer is becoming angry","Clear Written Communication","Using Proper Language","Follow Up"],"answer":1,"explanation":"Clear Written Communication: Free-form text fields allow ticket requesters and agents to add descriptive information. There are normally three fields to reflect the ticket life cycle: • Issue description records the initial request with any detail that could easily be collected at the time."},{"id":"c2-0012","module":11,"lesson":"11C Operating Systems","question":"Which item from this module matches the description?\n\nA knowledge base is a self-serve central repository for information. IT service organizations will normally house troubleshooting articles that end users can refer to when attempting to self-correct or diagnose an issue. Frequently asked questions (FAQs) may also be provided to","context":"A knowledge base is a self-serve central repository for information. IT service organizations will normally house troubleshooting articles that end users can refer to when attempting to self-correct or diagnose an issue. Frequently asked questions (FAQs) may also be provided to","options":["Knowledge Base","Do Not Post Experiences on Social Media","Cultural Sensitivity","Professional Support Delivery"],"answer":0,"explanation":"Knowledge Base: A knowledge base is a self-serve central repository for information. IT service organizations will normally house troubleshooting articles that end users can refer to when attempting to self-correct or diagnose an issue. Frequently asked questions (FAQs) may also be provided to"},{"id":"c2-0013","module":11,"lesson":"11A Documentation","question":"Which Core 2 term is described by the following?\n\nAn acceptable use policy (AUP) sets out what someone is allowed to use a particular service or resource for. Such a policy might be used in different contexts. For example, an AUP could be enforced by a business to govern how employees use equipment and services such as","context":"An acceptable use policy (AUP) sets out what someone is allowed to use a particular service or resource for. Such a policy might be used in different contexts. For example, an AUP could be enforced by a business to govern how employees use equipment and services such as","options":["1.1 Explain common operating system (OS) types and their purposes","Policy Documentation","Professional Communications","Be On Time"],"answer":1,"explanation":"Policy Documentation: An acceptable use policy (AUP) sets out what someone is allowed to use a particular service or resource for. Such a policy might be used in different contexts. For example, an AUP could be enforced by a business to govern how employees use equipment and services such as"},{"id":"c2-0014","module":11,"lesson":"11B Professional Communication","question":"Which concept matches this description?\n\nFrom the point of first contact, the support process must reassure customers that their inquiry will be handled efficiently. If the customer has already encountered a problem with a product, finding that the support process is also faulty will double their poor impression of your","context":"From the point of first contact, the support process must reassure customers that their inquiry will be handled efficiently. If the customer has already encountered a problem with a product, finding that the support process is also faulty will double their poor impression of your","options":["Professional Support Processes","Standard Operating Procedure","Avoid Distractions","Active Listening"],"answer":0,"explanation":"Professional Support Processes: From the point of first contact, the support process must reassure customers that their inquiry will be handled efficiently. If the customer has already encountered a problem with a product, finding that the support process is also faulty will double their poor impression of your"},{"id":"c2-0015","module":11,"lesson":"11C Operating Systems","question":"What is being described here?\n\nSupport contact information and hours of operation should be well-advertised so that the customer knows exactly how to open a ticket. The service should have proper documentation so the customer knows what to expect regarding supported items, how long incidents may take","context":"Support contact information and hours of operation should be well-advertised so that the customer knows exactly how to open a ticket. The service should have proper documentation so the customer knows what to expect regarding supported items, how long incidents may take","options":["Typical examples of SOPs are as follows:","Deal Appropriately with Confidential and Private Materials","Professional Documentation","Clarifying and Questioning Techniques"],"answer":2,"explanation":"Professional Documentation: Support contact information and hours of operation should be well-advertised so that the customer knows exactly how to open a ticket. The service should have proper documentation so the customer knows what to expect regarding supported items, how long incidents may take"},{"id":"c2-0016","module":11,"lesson":"11A Documentation","question":"Which item from this module matches the description?\n\nOn receiving the request (whether it is a call, email, or face-to-face contact), acknowledge the request and set expectations. For example, repeat the request back to the customer, then state the next steps and establish a timeline. For example, \"I have assigned this problem to","context":"On receiving the request (whether it is a call, email, or face-to-face contact), acknowledge the request and set expectations. For example, repeat the request back to the customer, then state the next steps and establish a timeline. For example, \"I have assigned this problem to","options":["Professional Appearance","Service Level Agreements","Set Expectations and Timeline","Difficult Situations"],"answer":2,"explanation":"Set Expectations and Timeline: On receiving the request (whether it is a call, email, or face-to-face contact), acknowledge the request and set expectations. For example, repeat the request back to the customer, then state the next steps and establish a timeline. For example, \"I have assigned this problem to"},{"id":"c2-0017","module":11,"lesson":"11B Professional Communication","question":"Which Core 2 term is described by the following?\n\nIf possible, the request should be resolved in one call. If this is not possible, the call should be dealt with as quickly as possible and escalated to a senior support team if a solution cannot be found promptly. What is important is that you drive problem acceptance and resolution, either","context":"If possible, the request should be resolved in one call. If this is not possible, the call should be dealt with as quickly as possible and escalated to a senior support team if a solution cannot be found promptly. What is important is that you drive problem acceptance and resolution, either","options":["Meet Expectations and Timeline","Using Proper Language","Maintain a Positive Attitude","Incident Reporting and Ticketing Systems"],"answer":0,"explanation":"Meet Expectations and Timeline: If possible, the request should be resolved in one call. If this is not possible, the call should be dealt with as quickly as possible and escalated to a senior support team if a solution cannot be found promptly. What is important is that you drive problem acceptance and resolution, either"},{"id":"c2-0018","module":11,"lesson":"11C Operating Systems","question":"Which concept matches this description?\n\nIf there is a product issue that cannot be solved remotely, you might offer to repair or replace the product: • Repair-—The customer will need clear instructions about how to pack and return the item to a repair center, along with a ticket-tracking number and returned-merchandise authorization","context":"If there is a product issue that cannot be solved remotely, you might offer to repair or replace the product: • Repair-—The customer will need clear instructions about how to pack and return the item to a repair center, along with a ticket-tracking number and returned-merchandise authorization","options":["The general process of ticket management is as follows:","Cultural Sensitivity","Repair and Replace Options","Dealing with Difficult Customers"],"answer":2,"explanation":"Repair and Replace Options: If there is a product issue that cannot be solved remotely, you might offer to repair or replace the product: • Repair-—The customer will need clear instructions about how to pack and return the item to a repair center, along with a ticket-tracking number and returned-merchandise authorization"},{"id":"c2-0019","module":11,"lesson":"11A Documentation","question":"What is being described here?\n\nIf you have resolved the ticket and tested that the system is operating normally again, you should give the customer a general indication of what caused the issue and what you did to fix it, along with assurance that the problem is now fixed and unlikely to reoccur. Upon leaving","context":"If you have resolved the ticket and tested that the system is operating normally again, you should give the customer a general indication of what caused the issue and what you did to fix it, along with assurance that the problem is now fixed and unlikely to reoccur. Upon leaving","options":["Follow Up","Professional Communications","Identify early signs that a customer is becoming angry","Categories and Severity"],"answer":0,"explanation":"Follow Up: If you have resolved the ticket and tested that the system is operating normally again, you should give the customer a general indication of what caused the issue and what you did to fix it, along with assurance that the problem is now fixed and unlikely to reoccur. Upon leaving"},{"id":"c2-0020","module":11,"lesson":"11B Professional Communication","question":"Which item from this module matches the description?\n\nRespect means that you treat others (and their property) as you would like to be treated.","context":"Respect means that you treat others (and their property) as you would like to be treated.","options":["Active Listening","Do Not Post Experiences on Social Media","Professional Support Delivery","Categories"],"answer":2,"explanation":"Professional Support Delivery: Respect means that you treat others (and their property) as you would like to be treated."},{"id":"c2-0021","module":11,"lesson":"11C Operating Systems","question":"Which Core 2 term is described by the following?\n\nEnsure that you are on time for each in-person appointment or contact call. If it becomes obvious that you are not going to be on time, inform the customer as soon as possible. Be accountable for your actions, both before you arrive on site and while on site. This means being","context":"Ensure that you are on time for each in-person appointment or contact call. If it becomes obvious that you are not going to be on time, inform the customer as soon as possible. Be accountable for your actions, both before you arrive on site and while on site. This means being","options":["1.1 Explain common operating system (OS) types and their purposes","Be On Time","Ticket Management","Clarifying and Questioning Techniques"],"answer":1,"explanation":"Be On Time: Ensure that you are on time for each in-person appointment or contact call. If it becomes obvious that you are not going to be on time, inform the customer as soon as possible. Be accountable for your actions, both before you arrive on site and while on site. This means being"},{"id":"c2-0022","module":11,"lesson":"11A Documentation","question":"Which concept matches this description?\n\nA distraction is anything that interrupts you from the task of resolving the ticket. Other than a genuinely critical incident taking priority, do not allow interruptions when you are working at a customer's site. Do not take calls from colleagues unless they are work-related and urgent.","context":"A distraction is anything that interrupts you from the task of resolving the ticket. Other than a genuinely critical incident taking priority, do not allow interruptions when you are working at a customer's site. Do not take calls from colleagues unless they are work-related and urgent.","options":["Standard Operating Procedure","Difficult Situations","Avoid Distractions","Escalation Levels"],"answer":2,"explanation":"Avoid Distractions: A distraction is anything that interrupts you from the task of resolving the ticket. Other than a genuinely critical incident taking priority, do not allow interruptions when you are working at a customer's site. Do not take calls from colleagues unless they are work-related and urgent."},{"id":"c2-0023","module":11,"lesson":"11B Professional Communication","question":"What is being described here?\n\nYou must also demonstrate respect for the customer's property, including any confidential or private data they might have stored on a PC or smartphone, or printed as a document: • Do not open data files, email applications, contact managers, web pages that are signed into","context":"You must also demonstrate respect for the customer's property, including any confidential or private data they might have stored on a PC or smartphone, or printed as a document: • Do not open data files, email applications, contact managers, web pages that are signed into","options":["Typical examples of SOPs are as follows:","Deal Appropriately with Confidential and Private Materials","Support Documentation and Knowledge Base Articles","Maintain a Positive Attitude"],"answer":1,"explanation":"Deal Appropriately with Confidential and Private Materials: You must also demonstrate respect for the customer's property, including any confidential or private data they might have stored on a PC or smartphone, or printed as a document: • Do not open data files, email applications, contact managers, web pages that are signed into"},{"id":"c2-0024","module":11,"lesson":"11C Operating Systems","question":"Which item from this module matches the description?\n\nThere are many things that contribute to the art of presentation. Your appearance and attire, the words you use, and respecting cultural sensitivities are particularly important.","context":"There are many things that contribute to the art of presentation. Your appearance and attire, the words you use, and respecting cultural sensitivities are particularly important.","options":["Dealing with Difficult Customers","Clear Written Communication","Professional Appearance","Service Level Agreements"],"answer":2,"explanation":"Professional Appearance: There are many things that contribute to the art of presentation. Your appearance and attire, the words you use, and respecting cultural sensitivities are particularly important."},{"id":"c2-0025","module":11,"lesson":"11A Documentation","question":"Which Core 2 term is described by the following?\n\nWhen you greet someone, you should be conscious of making a good first impression. When you arrive on site, make eye contact, greet the customer, and introduce yourself and your company. When you answer the phone, introduce yourself and your department and offer","context":"When you greet someone, you should be conscious of making a good first impression. When you arrive on site, make eye contact, greet the customer, and introduce yourself and your company. When you answer the phone, introduce yourself and your department and offer","options":["Knowledge Base","Using Proper Language","Identify early signs that a customer is becoming angry","Incident Reporting and Ticketing Systems"],"answer":1,"explanation":"Using Proper Language: When you greet someone, you should be conscious of making a good first impression. When you arrive on site, make eye contact, greet the customer, and introduce yourself and your company. When you answer the phone, introduce yourself and your department and offer"},{"id":"c2-0026","module":11,"lesson":"11B Professional Communication","question":"Which concept matches this description?\n\nCultural sensitivity means being aware of customs and habits used by other people. It is easy to associate culture simply with national elements, such as the difference between the way Americans and Japanese people greet one another. However, within each nation there are many","context":"Cultural sensitivity means being aware of customs and habits used by other people. It is easy to associate culture simply with national elements, such as the difference between the way Americans and Japanese people greet one another. However, within each nation there are many","options":["The general process of ticket management is as follows:","Cultural Sensitivity","Policy Documentation","Do Not Post Experiences on Social Media"],"answer":1,"explanation":"Cultural Sensitivity: Cultural sensitivity means being aware of customs and habits used by other people. It is easy to associate culture simply with national elements, such as the difference between the way Americans and Japanese people greet one another. However, within each nation there are many"},{"id":"c2-0027","module":11,"lesson":"11C Operating Systems","question":"What is being described here?\n\nYou must listen carefully to what is being said to you; it will give you clues to the customer's technical level, enabling you to pace and adapt your replies accordingly.","context":"You must listen carefully to what is being said to you; it will give you clues to the customer's technical level, enabling you to pace and adapt your replies accordingly.","options":["Categories and Severity","Professional Communications","Professional Support Processes","1.1 Explain common operating system (OS) types and their purposes"],"answer":1,"explanation":"Professional Communications: You must listen carefully to what is being said to you; it will give you clues to the customer's technical level, enabling you to pace and adapt your replies accordingly."},{"id":"c2-0028","module":11,"lesson":"11A Documentation","question":"Which item from this module matches the description?\n\nActive listening is the skill of listening to an individual with your full attention without arguing with, commenting on, or misinterpreting what they have said. With active listening, you make a conscious effort to keep your attention focused on what the other person is saying, as","context":"Active listening is the skill of listening to an individual with your full attention without arguing with, commenting on, or misinterpreting what they have said. With active listening, you make a conscious effort to keep your attention focused on what the other person is saying, as","options":["Professional Documentation","Categories","Standard Operating Procedure","Active Listening"],"answer":3,"explanation":"Active Listening: Active listening is the skill of listening to an individual with your full attention without arguing with, commenting on, or misinterpreting what they have said. With active listening, you make a conscious effort to keep your attention focused on what the other person is saying, as"},{"id":"c2-0029","module":11,"lesson":"11B Professional Communication","question":"Which Core 2 term is described by the following?\n\nThere will inevitably be a need to establish some technical facts with the customer. This means directing the customer to answer your questions. There are two broad types of questioning: • Open-ended—A question that invites the other person to compose a response. For example,","context":"There will inevitably be a need to establish some technical facts with the customer. This means directing the customer to answer your questions. There are two broad types of questioning: • Open-ended—A question that invites the other person to compose a response. For example,","options":["Set Expectations and Timeline","Clarifying and Questioning Techniques","Ticket Management","Typical examples of SOPs are as follows:"],"answer":1,"explanation":"Clarifying and Questioning Techniques: There will inevitably be a need to establish some technical facts with the customer. This means directing the customer to answer your questions. There are two broad types of questioning: • Open-ended—A question that invites the other person to compose a response. For example,"},{"id":"c2-0030","module":11,"lesson":"11C Operating Systems","question":"Which concept matches this description?\n\nA difficult situation occurs when either you or the customer becomes, or risks becoming, angry or upset. There are several techniques that you can use to defuse this type of tension.","context":"A difficult situation occurs when either you or the customer becomes, or risks becoming, angry or upset. There are several techniques that you can use to defuse this type of tension.","options":["Difficult Situations","Meet Expectations and Timeline","Service Level Agreements","Escalation Levels"],"answer":0,"explanation":"Difficult Situations: A difficult situation occurs when either you or the customer becomes, or risks becoming, angry or upset. There are several techniques that you can use to defuse this type of tension."},{"id":"c2-0031","module":11,"lesson":"11A Documentation","question":"What is being described here?\n\nUnderstand that an angry customer is usually frustrated that things are not working properly, or feels let down. Perhaps a technician arrived late and the customer is already irritated. Or perhaps the customer has spent a large amount of money and is now anxious that it has been","context":"Understand that an angry customer is usually frustrated that things are not working properly, or feels let down. Perhaps a technician arrived late and the customer is already irritated. Or perhaps the customer has spent a large amount of money and is now anxious that it has been","options":["Incident Reporting and Ticketing Systems","Repair and Replace Options","Support Documentation and Knowledge Base Articles","Maintain a Positive Attitude"],"answer":3,"explanation":"Maintain a Positive Attitude: Understand that an angry customer is usually frustrated that things are not working properly, or feels let down. Perhaps a technician arrived late and the customer is already irritated. Or perhaps the customer has spent a large amount of money and is now anxious that it has been"},{"id":"c2-0032","module":11,"lesson":"11B Professional Communication","question":"Which item from this module matches the description?\n\nIt is never easy to talk to someone who is unreasonable, abusive, or shouting, but it is important to be able to deal with these situations professionally.","context":"It is never easy to talk to someone who is unreasonable, abusive, or shouting, but it is important to be able to deal with these situations professionally.","options":["Clear Written Communication","Follow Up","Dealing with Difficult Customers","The general process of ticket management is as follows:"],"answer":2,"explanation":"Dealing with Difficult Customers: It is never easy to talk to someone who is unreasonable, abusive, or shouting, but it is important to be able to deal with these situations professionally."},{"id":"c2-0033","module":11,"lesson":"11C Operating Systems","question":"Which Core 2 term is described by the following?\n\nImage by Wang Tom © 123RF.com. Do Not Post Experiences on Social Media Everyone has bad days when they feel the need to get some difficult situation off their chest.","context":"Image by Wang Tom © 123RF.com. Do Not Post Experiences on Social Media Everyone has bad days when they feel the need to get some difficult situation off their chest.","options":["Identify early signs that a customer is becoming angry","Categories and Severity","Knowledge Base","Professional Support Delivery"],"answer":0,"explanation":"Identify early signs that a customer is becoming angry: Image by Wang Tom © 123RF.com. Do Not Post Experiences on Social Media Everyone has bad days when they feel the need to get some difficult situation off their chest."},{"id":"c2-0034","module":11,"lesson":"11A Documentation","question":"Which concept matches this description?\n\nEveryone has bad days when they feel the need to get some difficult situation off their chest.","context":"Everyone has bad days when they feel the need to get some difficult situation off their chest.","options":["Policy Documentation","Categories","Do Not Post Experiences on Social Media","Be On Time"],"answer":2,"explanation":"Do Not Post Experiences on Social Media: Everyone has bad days when they feel the need to get some difficult situation off their chest."},{"id":"c2-0035","module":11,"lesson":"11B Professional Communication","question":"What is being described here?\n\nLearning Outcomes As you study this lesson, please answer the following questions: • What are the four main operating systems found on computer systems?","context":"Learning Outcomes As you study this lesson, please answer the following questions: • What are the four main operating systems found on computer systems?","options":["Professional Support Processes","Avoid Distractions","1.1 Explain common operating system (OS) types and their purposes","Ticket Management"],"answer":2,"explanation":"1.1 Explain common operating system (OS) types and their purposes: Learning Outcomes As you study this lesson, please answer the following questions: • What are the four main operating systems found on computer systems?"},{"id":"c2-0036","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nAn OS is made up of kernel files and device drivers to interface with the hardware plus programs to provide a user interface and configuration tools. The earliest operating systems for PCs, such as Microsoft's Disk Operating System (DOS), used a command-line user interface","context":"An OS is made up of kernel files and device drivers to interface with the hardware plus programs to provide a user interface and configuration tools. The earliest operating systems for PCs, such as Microsoft's Disk Operating System (DOS), used a command-line user interface","options":["Windows Account Settings","Personalization Settings","Windows Interfaces","Windows Security"],"answer":2,"explanation":"Windows Interfaces: An OS is made up of kernel files and device drivers to interface with the hardware plus programs to provide a user interface and configuration tools. The earliest operating systems for PCs, such as Microsoft's Disk Operating System (DOS), used a command-line user interface"},{"id":"c2-0037","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nOne of the main functions of an OS is to provide an interface (or shell) for the user to configure and operate the computer hardware and software. Windows has several interface components designed both for general use and for more technical configuration and troubleshooting.","context":"One of the main functions of an OS is to provide an interface (or shell) for the user to configure and operate the computer hardware and software. Windows has several interface components designed both for general use and for more technical configuration and troubleshooting.","options":["Activation","Windows 10 Desktop","File Explorer","User Accounts Control Panel Applet"],"answer":1,"explanation":"Windows 10 Desktop: One of the main functions of an OS is to provide an interface (or shell) for the user to configure and operate the computer hardware and software. Windows has several interface components designed both for general use and for more technical configuration and troubleshooting."},{"id":"c2-0038","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nWindows 11 refreshes the desktop style by introducing a center-aligned taskbar, better spacing for touch control, and rounded corners. It also makes the multiple desktops feature more accessible. Multiple desktops allow the user to set up different workspaces, such as one","context":"Windows 11 refreshes the desktop style by introducing a center-aligned taskbar, better spacing for touch control, and rounded corners. It also makes the multiple desktops feature more accessible. Multiple desktops allow the user to set up different workspaces, such as one","options":["System Objects","Windows 11 Desktop","Privacy and Security Settings","Device Settings"],"answer":1,"explanation":"Windows 11 Desktop: Windows 11 refreshes the desktop style by introducing a center-aligned taskbar, better spacing for touch control, and rounded corners. It also makes the multiple desktops feature more accessible. Multiple desktops allow the user to set up different workspaces, such as one"},{"id":"c2-0039","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nThe Windows Settings app and Control Panel are the two main interfaces for administering Windows. Administering an OS means configuring options, setting up user accounts, and adding and removing devices and software. All Windows configuration data is ultimately held in","context":"The Windows Settings app and Control Panel are the two main interfaces for administering Windows. Administering an OS means configuring options, setting up user accounts, and adding and removing devices and software. All Windows configuration data is ultimately held in","options":["Drives and Folders","Display and Sound Settings","Windows Settings and Control Panel","Desktop Settings"],"answer":2,"explanation":"Windows Settings and Control Panel: The Windows Settings app and Control Panel are the two main interfaces for administering Windows. Administering an OS means configuring options, setting up user accounts, and adding and removing devices and software. All Windows configuration data is ultimately held in"},{"id":"c2-0040","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nWindows Settings is a touch-enabled interface for managing Windows. The Settings app is the preferred administrative interface. Configuration option \"pages\" are divided between a few main headings.","context":"Windows Settings is a touch-enabled interface for managing Windows. The Settings app is the preferred administrative interface. Configuration option \"pages\" are divided between a few main headings.","options":["The principal Display configuration settings are:","Windows Settings","Time and Language Settings","File Explorer Options"],"answer":1,"explanation":"Windows Settings: Windows Settings is a touch-enabled interface for managing Windows. The Settings app is the preferred administrative interface. Configuration option \"pages\" are divided between a few main headings."},{"id":"c2-0041","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nMost of the standard Windows 10 and Windows 11 configuration settings can be located within Windows Settings, but not all of them. Some options are still configured via the legacy Control Panel interface.","context":"Most of the standard Windows 10 and Windows 11 configuration settings can be located within Windows Settings, but not all of them. Some options are still configured via the legacy Control Panel interface.","options":["Power Options","Control Panel","Indexing Options","The Time and Language settings pages are used for two main purposes:"],"answer":1,"explanation":"Control Panel: Most of the standard Windows 10 and Windows 11 configuration settings can be located within Windows Settings, but not all of them. Some options are still configured via the legacy Control Panel interface."},{"id":"c2-0042","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nAccounts Settings A user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers.","context":"Accounts Settings A user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers.","options":["Apps, Programs, and Features","Tools Work Folders","Personalization Settings","System Settings"],"answer":1,"explanation":"Tools Work Folders: Accounts Settings A user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers."},{"id":"c2-0043","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nA user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers.","context":"A user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers.","options":["Windows supports several types of installable software:","Accounts Settings","File Explorer","Windows Update"],"answer":1,"explanation":"Accounts Settings: A user account controls access to the computer. Each account can be assigned rights or privileges to make OS configuration changes. Accounts can also be assigned permissions on files, folders, and printers."},{"id":"c2-0044","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nA Windows account can either be configured as a local-only account or linked to a Microsoft Account. A local account can be used to sign in on a single computer only. A Microsoft account gives access to Microsoft's cloud services and allows sign-in and syncs desktop settings and","context":"A Windows account can either be configured as a local-only account or linked to a Microsoft Account. A local account can be used to sign in on a single computer only. A Microsoft account gives access to Microsoft's cloud services and allows sign-in and syncs desktop settings and","options":["Windows Security","Windows Account Settings","System Objects","Apps Settings"],"answer":1,"explanation":"Windows Account Settings: A Windows account can either be configured as a local-only account or linked to a Microsoft Account. A local account can be used to sign in on a single computer only. A Microsoft account gives access to Microsoft's cloud services and allows sign-in and syncs desktop settings and"},{"id":"c2-0045","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nThe User Accounts Applet in Control Panel is the legacy interface. Many of its functions are obfuscated or hidden and may not readily be used to add new accounts. It does provide options for adjusting the account name and changing the account privilege level between the","context":"The User Accounts Applet in Control Panel is the legacy interface. Many of its functions are obfuscated or hidden and may not readily be used to add new accounts. It does provide options for adjusting the account name and changing the account privilege level between the","options":["Activation","Drives and Folders","Programs and Features","User Accounts Control Panel Applet"],"answer":3,"explanation":"User Accounts Control Panel Applet: The User Accounts Applet in Control Panel is the legacy interface. Many of its functions are obfuscated or hidden and may not readily be used to add new accounts. It does provide options for adjusting the account name and changing the account privilege level between the"},{"id":"c2-0046","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nPrivacy and Security Settings govern what usage data Windows is permitted to collect and what device functions are enabled and for which apps. The security settings allow a user to change antivirus, browser, and firewall settings. There are multiple settings toggles to determine what","context":"Privacy and Security Settings govern what usage data Windows is permitted to collect and what device functions are enabled and for which apps. The security settings allow a user to change antivirus, browser, and firewall settings. There are multiple settings toggles to determine what","options":["File Explorer Options","Mail","Device Settings","Privacy and Security Settings"],"answer":3,"explanation":"Privacy and Security Settings: Privacy and Security Settings govern what usage data Windows is permitted to collect and what device functions are enabled and for which apps. The security settings allow a user to change antivirus, browser, and firewall settings. There are multiple settings toggles to determine what"},{"id":"c2-0047","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nThe desktop can be configured to use local settings and personalized to adjust its appearance.","context":"The desktop can be configured to use local settings and personalized to adjust its appearance.","options":["Desktop Settings","Indexing Options","Display and Sound Settings","Gaming"],"answer":0,"explanation":"Desktop Settings: The desktop can be configured to use local settings and personalized to adjust its appearance."},{"id":"c2-0048","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nThe Time and Language settings pages are used for two main purposes: • Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup.","context":"The Time and Language settings pages are used for two main purposes: • Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup.","options":["Network Settings","Time and Language Settings","System Settings","The principal Display configuration settings are:"],"answer":1,"explanation":"Time and Language Settings: The Time and Language settings pages are used for two main purposes: • Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup."},{"id":"c2-0049","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\n• Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup.","context":"• Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup.","options":["Windows Update","Windows Interfaces","The Time and Language settings pages are used for two main purposes:","Power Options"],"answer":2,"explanation":"The Time and Language settings pages are used for two main purposes:: • Set the correct date/time and time zone. Keeping the PC synchronized to an accurate time source is important for processes such as authentication and backup."},{"id":"c2-0050","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nThe Personalization Settings allow you to select and customize themes, which set the appearance of the desktop environment. Personalization and theme settings include the desktop wallpaper, screen saver, color scheme, font, and properties for the Start menu and","context":"The Personalization Settings allow you to select and customize themes, which set the appearance of the desktop environment. Personalization and theme settings include the desktop wallpaper, screen saver, color scheme, font, and properties for the Start menu and","options":["Personalization Settings","Windows Security","Windows 10 Desktop","Apps, Programs, and Features"],"answer":0,"explanation":"Personalization Settings: The Personalization Settings allow you to select and customize themes, which set the appearance of the desktop environment. Personalization and theme settings include the desktop wallpaper, screen saver, color scheme, font, and properties for the Start menu and"},{"id":"c2-0051","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nFile management is a critical part of using a computer. As a computer support professional, you will often have to assist users with locating files. In Windows, file management is performed using the File Explorer app. File Explorer enables you to open, copy, move, rename, view, and","context":"File management is a critical part of using a computer. As a computer support professional, you will often have to assist users with locating files. In Windows, file management is performed using the File Explorer app. File Explorer enables you to open, copy, move, rename, view, and","options":["File Explorer","Activation","Windows 11 Desktop","Windows supports several types of installable software:"],"answer":0,"explanation":"File Explorer: File management is a critical part of using a computer. As a computer support professional, you will often have to assist users with locating files. In Windows, file management is performed using the File Explorer app. File Explorer enables you to open, copy, move, rename, view, and"},{"id":"c2-0052","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nIn Windows, access to data files is typically mediated by system objects. These are shown in the left-hand navigation pane in File Explorer. Some of the main system objects are: • User account- Contains personal data folders belonging to the signed-in account profile. For","context":"In Windows, access to data files is typically mediated by system objects. These are shown in the left-hand navigation pane in File Explorer. Some of the main system objects are: • User account- Contains personal data folders belonging to the signed-in account profile. For","options":["Windows Settings and Control Panel","Apps Settings","Device Settings","System Objects"],"answer":3,"explanation":"System Objects: In Windows, access to data files is typically mediated by system objects. These are shown in the left-hand navigation pane in File Explorer. Some of the main system objects are: • User account- Contains personal data folders belonging to the signed-in account profile. For"},{"id":"c2-0053","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nWhile the system objects represent logical storage areas, the actual data files are written to disk drives. Within the This PC object, drives are referred to by letters and optional labels. A \"drive\" can be a single physical disk or a partition on a disk, a shared network folder mapped to a drive","context":"While the system objects represent logical storage areas, the actual data files are written to disk drives. Within the This PC object, drives are referred to by letters and optional labels. A \"drive\" can be a single physical disk or a partition on a disk, a shared network folder mapped to a drive","options":["Windows Settings","Drives and Folders","Display and Sound Settings","Programs and Features"],"answer":1,"explanation":"Drives and Folders: While the system objects represent logical storage areas, the actual data files are written to disk drives. Within the This PC object, drives are referred to by letters and optional labels. A \"drive\" can be a single physical disk or a partition on a disk, a shared network folder mapped to a drive"},{"id":"c2-0054","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nFile Explorer has configurable options for view settings and file search.","context":"File Explorer has configurable options for view settings and file search.","options":["Mail","File Explorer Options","Control Panel","The principal Display configuration settings are:"],"answer":1,"explanation":"File Explorer Options: File Explorer has configurable options for view settings and file search."},{"id":"c2-0055","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nYou can configure file search behavior on the Search tab of the File Explorer Options dialog.","context":"You can configure file search behavior on the Search tab of the File Explorer Options dialog.","options":["Tools Work Folders","Power Options","Gaming","Indexing Options"],"answer":3,"explanation":"Indexing Options: You can configure file search behavior on the Search tab of the File Explorer Options dialog."},{"id":"c2-0056","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nThe System Settings page in the Settings app presents options for configuring input and output devices, power, remote desktop, notifications, and clipboard (data copying). There is also an About page listing key hardware and OS version information.","context":"The System Settings page in the Settings app presents options for configuring input and output devices, power, remote desktop, notifications, and clipboard (data copying). There is also an About page listing key hardware and OS version information.","options":["Accounts Settings","Network Settings","System Settings","Apps, Programs, and Features"],"answer":2,"explanation":"System Settings: The System Settings page in the Settings app presents options for configuring input and output devices, power, remote desktop, notifications, and clipboard (data copying). There is also an About page listing key hardware and OS version information."},{"id":"c2-0057","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nWindows Update hosts critical updates and security patches plus optional software and hardware device driver updates.","context":"Windows Update hosts critical updates and security patches plus optional software and hardware device driver updates.","options":["Windows Interfaces","Windows supports several types of installable software:","Windows Update","Windows Account Settings"],"answer":2,"explanation":"Windows Update: Windows Update hosts critical updates and security patches plus optional software and hardware device driver updates."},{"id":"c2-0058","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nThe Windows Security page contains shortcuts to the management pages for the built-in Windows Defender virus/threat protection and firewall product.","context":"The Windows Security page contains shortcuts to the management pages for the built-in Windows Defender virus/threat protection and firewall product.","options":["Windows Security","Apps Settings","User Accounts Control Panel Applet","Windows 10 Desktop"],"answer":0,"explanation":"Windows Security: The Windows Security page contains shortcuts to the management pages for the built-in Windows Defender virus/threat protection and firewall product."},{"id":"c2-0059","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nMicrosoft Product Activation is an anti-piracy technology that verifies that software products are legitimately purchased. You must activate Windows within a given number of days after installation. After the grace period, certain features will be disabled until the system is activated","context":"Microsoft Product Activation is an anti-piracy technology that verifies that software products are legitimately purchased. You must activate Windows within a given number of days after installation. After the grace period, certain features will be disabled until the system is activated","options":["Windows 11 Desktop","Privacy and Security Settings","Activation","Programs and Features"],"answer":2,"explanation":"Activation: Microsoft Product Activation is an anti-piracy technology that verifies that software products are legitimately purchased. You must activate Windows within a given number of days after installation. After the grace period, certain features will be disabled until the system is activated"},{"id":"c2-0060","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nMost Windows-compatible hardware devices use Plug and Play. This means that Windows automatically detects when a new device is connected, locates drivers for it, and installs and configures it with minimal user input. In some cases, you may need to install the hardware","context":"Most Windows-compatible hardware devices use Plug and Play. This means that Windows automatically detects when a new device is connected, locates drivers for it, and installs and configures it with minimal user input. In some cases, you may need to install the hardware","options":["Device Settings","Mail","Desktop Settings","Windows Settings and Control Panel"],"answer":0,"explanation":"Device Settings: Most Windows-compatible hardware devices use Plug and Play. This means that Windows automatically detects when a new device is connected, locates drivers for it, and installs and configures it with minimal user input. In some cases, you may need to install the hardware"},{"id":"c2-0061","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nThe principal Display configuration settings are: • Scale—A large high-resolution screen can use quite small font sizes for the user interface.","context":"The principal Display configuration settings are: • Scale—A large high-resolution screen can use quite small font sizes for the user interface.","options":["Windows Settings","Time and Language Settings","Display and Sound Settings","Gaming"],"answer":2,"explanation":"Display and Sound Settings: The principal Display configuration settings are: • Scale—A large high-resolution screen can use quite small font sizes for the user interface."},{"id":"c2-0062","module":12,"lesson":"12C Applications","question":"What is being described here?\n\n• Scale—A large high-resolution screen can use quite small font sizes for the user interface.","context":"• Scale—A large high-resolution screen can use quite small font sizes for the user interface.","options":["The Time and Language settings pages are used for two main purposes:","The principal Display configuration settings are:","Control Panel","Network Settings"],"answer":1,"explanation":"The principal Display configuration settings are:: • Scale—A large high-resolution screen can use quite small font sizes for the user interface."},{"id":"c2-0063","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nPower management allows Windows to selectively reduce or turn off the power supplied to hardware components. The computer can be configured to enter a power-saving mode automatically; for example, if there is no use of an input device for a set period. This is","context":"Power management allows Windows to selectively reduce or turn off the power supplied to hardware components. The computer can be configured to enter a power-saving mode automatically; for example, if there is no use of an input device for a set period. This is","options":["Tools Work Folders","Windows Interfaces","Personalization Settings","Power Options"],"answer":3,"explanation":"Power Options: Power management allows Windows to selectively reduce or turn off the power supplied to hardware components. The computer can be configured to enter a power-saving mode automatically; for example, if there is no use of an input device for a set period. This is"},{"id":"c2-0064","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nWindows supports several types of installable software: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled.","context":"Windows supports several types of installable software: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled.","options":["Windows 10 Desktop","File Explorer","Accounts Settings","Apps, Programs, and Features"],"answer":3,"explanation":"Apps, Programs, and Features: Windows supports several types of installable software: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled."},{"id":"c2-0065","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nThe Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled.","context":"The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled.","options":["Windows 11 Desktop","Windows supports several types of installable software:","Windows Account Settings","System Objects"],"answer":1,"explanation":"Windows supports several types of installable software:: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 12: Configuring Windows • Windows Features are components of the operating system that can be enabled or disabled."},{"id":"c2-0066","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nIn the Settings app, the Apps Settings group is used to view and remove installed apps and Windows Features. You can also configure which app should act as the default for opening, editing, and printing particular file types and manage which apps run at startup.","context":"In the Settings app, the Apps Settings group is used to view and remove installed apps and Windows Features. You can also configure which app should act as the default for opening, editing, and printing particular file types and manage which apps run at startup.","options":["Windows Settings and Control Panel","Drives and Folders","Apps Settings","User Accounts Control Panel Applet"],"answer":2,"explanation":"Apps Settings: In the Settings app, the Apps Settings group is used to view and remove installed apps and Windows Features. You can also configure which app should act as the default for opening, editing, and printing particular file types and manage which apps run at startup."},{"id":"c2-0067","module":12,"lesson":"12D Cloud Apps","question":"Which item from this module matches the description?\n\nThe Programs and Features Control Panel applet is the legacy software management interface.","context":"The Programs and Features Control Panel applet is the legacy software management interface.","options":["Privacy and Security Settings","File Explorer Options","Programs and Features","Windows Settings"],"answer":2,"explanation":"Programs and Features: The Programs and Features Control Panel applet is the legacy software management interface."},{"id":"c2-0068","module":12,"lesson":"12A Windows User Settings","question":"Which Core 2 term is described by the following?\n\nThe Mail Applet in Control Panel is added if the Microsoft Outlook client email application is installed on the computer. It can be used to add email accounts/profiles and manage the .OST and .PST data files used to cache and archive messages. Detailed configuration of the email","context":"The Mail Applet in Control Panel is added if the Microsoft Outlook client email application is installed on the computer. It can be used to add email accounts/profiles and manage the .OST and .PST data files used to cache and archive messages. Detailed configuration of the email","options":["Mail","Indexing Options","Control Panel","Desktop Settings"],"answer":0,"explanation":"Mail: The Mail Applet in Control Panel is added if the Microsoft Outlook client email application is installed on the computer. It can be used to add email accounts/profiles and manage the .OST and .PST data files used to cache and archive messages. Detailed configuration of the email"},{"id":"c2-0069","module":12,"lesson":"12B Windows System Settings","question":"Which concept matches this description?\n\nThe Gaming settings page is used to toggle game mode on and off. Game mode suspends Windows Update and dedicates resources to supporting the 3-D performance and frame rate of the active game app rather than other software or background services.","context":"The Gaming settings page is used to toggle game mode on and off. Game mode suspends Windows Update and dedicates resources to supporting the 3-D performance and frame rate of the active game app rather than other software or background services.","options":["System Settings","Time and Language Settings","Gaming","Tools Work Folders"],"answer":2,"explanation":"Gaming: The Gaming settings page is used to toggle game mode on and off. Game mode suspends Windows Update and dedicates resources to supporting the 3-D performance and frame rate of the active game app rather than other software or background services."},{"id":"c2-0070","module":12,"lesson":"12C Applications","question":"What is being described here?\n\nA Windows host can be configured with one or more types of network adapters. Adapter types include Ethernet, Wi-Fi, cellular radio, and virtual private network (VPN). Each adapter must be configured with Internet Protocol (IP) address information. Each network that an adapter is used","context":"A Windows host can be configured with one or more types of network adapters. Adapter types include Ethernet, Wi-Fi, cellular radio, and virtual private network (VPN). Each adapter must be configured with Internet Protocol (IP) address information. Each network that an adapter is used","options":["Network Settings","Windows Update","Accounts Settings","The Time and Language settings pages are used for two main purposes:"],"answer":0,"explanation":"Network Settings: A Windows host can be configured with one or more types of network adapters. Adapter types include Ethernet, Wi-Fi, cellular radio, and virtual private network (VPN). Each adapter must be configured with Internet Protocol (IP) address information. Each network that an adapter is used"},{"id":"c2-0071","module":13,"lesson":"13A Management Consoles","question":"Which Core 2 term is described by the following?\n\nDevice Manager (devmgmt.msc) lets you view and edit installed hardware properties, change configuration settings, update drivers, and remove or disable devices.","context":"Device Manager (devmgmt.msc) lets you view and edit installed hardware properties, change configuration settings, update drivers, and remove or disable devices.","options":["Device Manager","Editing the Registry","Local Users and Groups Console","Changing the Current Directory"],"answer":0,"explanation":"Device Manager: Device Manager (devmgmt.msc) lets you view and edit installed hardware properties, change configuration settings, update drivers, and remove or disable devices."},{"id":"c2-0072","module":13,"lesson":"13B Command-Line Tools","question":"Which concept matches this description?\n\nWindows may identify a device's type and function but fail to find a driver, resulting in an \"Unknown Device\" or a \"generic\" type with a yellow exclamation mark in Device Manager. If the device never worked, ensure compatibility of the device and driver with the OS. Manufacturers","context":"Windows may identify a device's type and function but fail to find a driver, resulting in an \"Unknown Device\" or a \"generic\" type with a yellow exclamation mark in Device Manager. If the device never worked, ensure compatibility of the device and driver with the OS. Manufacturers","options":["Updating and Troubleshooting Devices","Here are some shortcuts:","Certificate Manager","Custom Microsoft Management Consoles"],"answer":0,"explanation":"Updating and Troubleshooting Devices: Windows may identify a device's type and function but fail to find a driver, resulting in an \"Unknown Device\" or a \"generic\" type with a yellow exclamation mark in Device Manager. If the device never worked, ensure compatibility of the device and driver with the OS. Manufacturers"},{"id":"c2-0073","module":13,"lesson":"13C Windows Networking","question":"What is being described here?\n\nFor Plug and Play, hot-swappable devices, you can remove them without uninstalling. Before removing a storage device, close any active applications, click the Safely Remove Hardware icon in the taskbar, and select the option to stop or eject the device.","context":"For Plug and Play, hot-swappable devices, you can remove them without uninstalling. Before removing a storage device, close any active applications, click the Safely Remove Hardware icon in the taskbar, and select the option to stop or eject the device.","options":["Changing the Current Drive","Command Prompt","Key subfolders include:","Removing, Uninstalling, and Disabling Devices"],"answer":3,"explanation":"Removing, Uninstalling, and Disabling Devices: For Plug and Play, hot-swappable devices, you can remove them without uninstalling. Before removing a storage device, close any active applications, click the Safely Remove Hardware icon in the taskbar, and select the option to stop or eject the device."},{"id":"c2-0074","module":13,"lesson":"13A Management Consoles","question":"Which item from this module matches the description?\n\nThe disk subsystem stores all data generated by the operating system and applications. As the primary store of so much data, ensuring its reliability and performance is a critical management task.","context":"The disk subsystem stores all data generated by the operating system and applications. As the primary store of so much data, ensuring its reliability and performance is a critical management task.","options":["Disk Management Console","Group Policy Editor","Administrative Command Prompt","File Management Commands"],"answer":0,"explanation":"Disk Management Console: The disk subsystem stores all data generated by the operating system and applications. As the primary store of so much data, ensuring its reliability and performance is a critical management task."},{"id":"c2-0075","module":13,"lesson":"13B Command-Line Tools","question":"Which Core 2 term is described by the following?\n\nOf all the computer's subsystems, disk drives, and the file system probably require the most attention to keep in optimum working order. File storage is subject to three main problems: • Fragmentation: On a hard disk, files ideally occupy contiguous clusters. Over time, they","context":"Of all the computer's subsystems, disk drives, and the file system probably require the most attention to keep in optimum working order. File storage is subject to three main problems: • Fragmentation: On a hard disk, files ideally occupy contiguous clusters. Over time, they","options":["Copying Directory Structures","Disk Maintenance Tools","Command Syntax","Registry Editor"],"answer":1,"explanation":"Disk Maintenance Tools: Of all the computer's subsystems, disk drives, and the file system probably require the most attention to keep in optimum working order. File storage is subject to three main problems: • Fragmentation: On a hard disk, files ideally occupy contiguous clusters. Over time, they"},{"id":"c2-0076","module":13,"lesson":"13C Windows Networking","question":"Which concept matches this description?\n\nThe Defragment and Optimize Drives tool enhances HDD and SSD performance: • HDDs: On an HDD, defragmenting reorganizes file data into contiguous clusters, reducing the time the controller needs to seek across the disk to read a file.","context":"The Defragment and Optimize Drives tool enhances HDD and SSD performance: • HDDs: On an HDD, defragmenting reorganizes file data into contiguous clusters, reducing the time the controller needs to seek across the disk to read a file.","options":["Registry Keys","Getting Help","The command includes various switches for enhanced functionality:","Disk Defragmenter"],"answer":3,"explanation":"Disk Defragmenter: The Defragment and Optimize Drives tool enhances HDD and SSD performance: • HDDs: On an HDD, defragmenting reorganizes file data into contiguous clusters, reducing the time the controller needs to seek across the disk to read a file."},{"id":"c2-0077","module":13,"lesson":"13A Management Consoles","question":"What is being described here?\n\nThe Disk Clean-up tool identifies files safe for deletion to free up space, including those in the Recycle Bin and temporary files. Running it in administrator mode with the Clean up system files option reclaims space from caches like Windows Update and Defender.","context":"The Disk Clean-up tool identifies files safe for deletion to free up space, including those in the Recycle Bin and temporary files. Running it in administrator mode with the Clean up system files option reclaims space from caches like Windows Update and Defender.","options":["Disk Clean-up","Creating a Directory","Editing the Registry","Navigation Commands"],"answer":0,"explanation":"Disk Clean-up: The Disk Clean-up tool identifies files safe for deletion to free up space, including those in the Recycle Bin and temporary files. Running it in administrator mode with the Clean up system files option reclaims space from caches like Windows Update and Defender."},{"id":"c2-0078","module":13,"lesson":"13B Command-Line Tools","question":"Which item from this module matches the description?\n\nThe Task Scheduler automates commands and scripts, with many Windows processes having predefined schedules. Tasks can be set to run once at a future date/time or on a recurring schedule. They can involve simple applications (including switches, if necessary), batch files, or","context":"The Task Scheduler automates commands and scripts, with many Windows processes having predefined schedules. Tasks can be set to run once at a future date/time or on a recurring schedule. They can involve simple applications (including switches, if necessary), batch files, or","options":["Task Scheduler","Listing Files and Directories","Removing a Directory","Custom Microsoft Management Consoles"],"answer":0,"explanation":"Task Scheduler: The Task Scheduler automates commands and scripts, with many Windows processes having predefined schedules. Tasks can be set to run once at a future date/time or on a recurring schedule. They can involve simple applications (including switches, if necessary), batch files, or"},{"id":"c2-0079","module":13,"lesson":"13C Windows Networking","question":"Which Core 2 term is described by the following?\n\nThe Local Users and Groups console offers an advanced interface for managing user accounts, including creating, modifying, disabling, deleting, and resetting passwords.","context":"The Local Users and Groups console offers an advanced interface for managing user accounts, including creating, modifying, disabling, deleting, and resetting passwords.","options":["Disk Management Commands","Local Users and Groups Console","Changing the Current Directory","Command Prompt"],"answer":1,"explanation":"Local Users and Groups Console: The Local Users and Groups console offers an advanced interface for managing user accounts, including creating, modifying, disabling, deleting, and resetting passwords."},{"id":"c2-0080","module":13,"lesson":"13A Management Consoles","question":"Which concept matches this description?\n\nA digital certificate verifies the identity of a user, computer, or service, with validity guaranteed by the issuing certification authority (CA). The certificate manager console displays installed certificates and allows for requesting and importing new ones.","context":"A digital certificate verifies the identity of a user, computer, or service, with validity guaranteed by the issuing certification authority (CA). The certificate manager console displays installed certificates and allows for requesting and importing new ones.","options":["The diskpart Command","Administrative Command Prompt","Certificate Manager","Here are some shortcuts:"],"answer":2,"explanation":"Certificate Manager: A digital certificate verifies the identity of a user, computer, or service, with validity guaranteed by the issuing certification authority (CA). The certificate manager console displays installed certificates and allows for requesting and importing new ones."},{"id":"c2-0081","module":13,"lesson":"13B Command-Line Tools","question":"What is being described here?\n\n• Personal Folder: Stores certificates issued to the user account, used for network authentication, data encryption, and digital signatures.","context":"• Personal Folder: Stores certificates issued to the user account, used for network authentication, data encryption, and digital signatures.","options":["The format Command","Command Syntax","Key subfolders include:","Changing the Current Drive"],"answer":2,"explanation":"Key subfolders include:: • Personal Folder: Stores certificates issued to the user account, used for network authentication, data encryption, and digital signatures."},{"id":"c2-0082","module":13,"lesson":"13C Windows Networking","question":"Which item from this module matches the description?\n\nGUI tools like Settings and Control Panel modify user profiles and system configurations stored in the registry, but many registry settings aren't accessible through these tools. The Group Policy Editor offers a robust way to configure these Windows settings without directly editing","context":"GUI tools like Settings and Control Panel modify user profiles and system configurations stored in the registry, but many registry settings aren't accessible through these tools. The Group Policy Editor offers a robust way to configure these Windows settings without directly editing","options":["File Management Commands","Group Policy Editor","The chkdsk Command","Getting Help"],"answer":1,"explanation":"Group Policy Editor: GUI tools like Settings and Control Panel modify user profiles and system configurations stored in the registry, but many registry settings aren't accessible through these tools. The Group Policy Editor offers a robust way to configure these Windows settings without directly editing"},{"id":"c2-0083","module":13,"lesson":"13A Management Consoles","question":"Which Core 2 term is described by the following?\n\nThe Windows registry is a remotely accessible database for storing configuration information for the OS, devices, and applications. Use the Registry Editor (regedit.msc) to view or edit the registry.","context":"The Windows registry is a remotely accessible database for storing configuration information for the OS, devices, and applications. Use the Registry Editor (regedit.msc) to view or edit the registry.","options":["Navigation Commands","Copying Directory Structures","There are three ways to use chkdsk :","Registry Editor"],"answer":3,"explanation":"Registry Editor: The Windows registry is a remotely accessible database for storing configuration information for the OS, devices, and applications. Use the Registry Editor (regedit.msc) to view or edit the registry."},{"id":"c2-0084","module":13,"lesson":"13B Command-Line Tools","question":"Which concept matches this description?\n\nThe Registry is organized into five root keys containing computer and user databases: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 13: Managing Windows • HKEY_LOCAL_MACHINE (HKLM): Manages system-wide settings.","context":"The Registry is organized into five root keys containing computer and user databases: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 13: Managing Windows • HKEY_LOCAL_MACHINE (HKLM): Manages system-wide settings.","options":["Listing Files and Directories","Registry Keys","Device Manager","The command includes various switches for enhanced functionality:"],"answer":1,"explanation":"Registry Keys: The Registry is organized into five root keys containing computer and user databases: The Official CompTIA A+ Core 1 and Core 2 Student Guide Module 13: Managing Windows • HKEY_LOCAL_MACHINE (HKLM): Manages system-wide settings."},{"id":"c2-0085","module":13,"lesson":"13C Windows Networking","question":"What is being described here?\n\nRoot keys contain subkeys and data items called value entries, similar to folders and files. A value entry includes the name, data type (such as string or binary), and the value itself. Use the Find tool to search for keys or values.","context":"Root keys contain subkeys and data items called value entries, similar to folders and files. A value entry includes the name, data type (such as string or binary), and the value itself. Use the Find tool to search for keys or values.","options":["Editing the Registry","Creating a Directory","Changing the Current Directory","Updating and Troubleshooting Devices"],"answer":0,"explanation":"Editing the Registry: Root keys contain subkeys and data items called value entries, similar to folders and files. A value entry includes the name, data type (such as string or binary), and the value itself. Use the Find tool to search for keys or values."},{"id":"c2-0086","module":13,"lesson":"13A Management Consoles","question":"Which item from this module matches the description?\n\nA Microsoft Management Console (MMC) is a container for snap-ins like Device Manager, Disk Management, Group Policy Editor, and Certificate Manager. Use the mmc command to customize and create a console with your chosen snap-ins. Save the console as an MSC file in the","context":"A Microsoft Management Console (MMC) is a container for snap-ins like Device Manager, Disk Management, Group Policy Editor, and Certificate Manager. Use the mmc command to customize and create a console with your chosen snap-ins. Save the console as an MSC file in the","options":["Removing, Uninstalling, and Disabling Devices","Removing a Directory","Here are some shortcuts:","Custom Microsoft Management Consoles"],"answer":3,"explanation":"Custom Microsoft Management Consoles: A Microsoft Management Console (MMC) is a container for snap-ins like Device Manager, Disk Management, Group Policy Editor, and Certificate Manager. Use the mmc command to customize and create a console with your chosen snap-ins. Save the console as an MSC file in the"},{"id":"c2-0087","module":13,"lesson":"13B Command-Line Tools","question":"Which Core 2 term is described by the following?\n\nYou can execute any command from the Run dialog, but for a series of commands or viewing output, use the command shell. The command prompt processes legacy commands from early Windows versions.","context":"You can execute any command from the Run dialog, but for a series of commands or viewing output, use the command shell. The command prompt processes legacy commands from early Windows versions.","options":["Command Prompt","Disk Management Commands","Changing the Current Drive","Disk Management Console"],"answer":0,"explanation":"Command Prompt: You can execute any command from the Run dialog, but for a series of commands or viewing output, use the command shell. The command prompt processes legacy commands from early Windows versions."},{"id":"c2-0088","module":13,"lesson":"13C Windows Networking","question":"Which concept matches this description?\n\nSome commands require elevated privileges. If a command needs elevation, you'll see \"The requested operation requires elevation.\" To run as administrator, right-click the Command Prompt shortcut, select \"Run as administrator,\" and confirm the UAC prompt. Alternatively,","context":"Some commands require elevated privileges. If a command needs elevation, you'll see \"The requested operation requires elevation.\" To run as administrator, right-click the Command Prompt shortcut, select \"Run as administrator,\" and confirm the UAC prompt. Alternatively,","options":["File Management Commands","Administrative Command Prompt","The diskpart Command","Disk Maintenance Tools"],"answer":1,"explanation":"Administrative Command Prompt: Some commands require elevated privileges. If a command needs elevation, you'll see \"The requested operation requires elevation.\" To run as administrator, right-click the Command Prompt shortcut, select \"Run as administrator,\" and confirm the UAC prompt. Alternatively,"},{"id":"c2-0089","module":13,"lesson":"13A Management Consoles","question":"What is being described here?\n\nEnter commands at the prompt (>) using the command name, switches, and arguments with proper syntax. Press ENTER to execute the command. Required and optional arguments and switches are listed in the command syntax. Switches are usually preceded by a forward slash. If","context":"Enter commands at the prompt (>) using the command name, switches, and arguments with proper syntax. Press ENTER to execute the command. Required and optional arguments and switches are listed in the command syntax. Switches are usually preceded by a forward slash. If","options":["The format Command","Disk Defragmenter","Command Syntax","Copying Directory Structures"],"answer":2,"explanation":"Command Syntax: Enter commands at the prompt (>) using the command name, switches, and arguments with proper syntax. Press ENTER to execute the command. Required and optional arguments and switches are listed in the command syntax. Switches are usually preceded by a forward slash. If"},{"id":"c2-0090","module":13,"lesson":"13B Command-Line Tools","question":"Which item from this module matches the description?\n\nThe command prompt includes a basic help system. Type help and then press ENTER at the command prompt to see available commands or type help Command for syntax and switches used for the command. Use the /? switch for command-specific","context":"The command prompt includes a basic help system. Type help and then press ENTER at the command prompt to see available commands or type help Command for syntax and switches used for the command. Use the /? switch for command-specific","options":["Getting Help","Listing Files and Directories","The chkdsk Command","Disk Defragmenter"],"answer":0,"explanation":"Getting Help: The command prompt includes a basic help system. Type help and then press ENTER at the command prompt to see available commands or type help Command for syntax and switches used for the command. Use the /? switch for command-specific"}
+        ]};
+        
+        // Key application logic and state
+        const app = {
+            currentView: 'home',
+            questions: DATA.questions || [],
+            modules: DATA.modules || [],
+            userStats: JSON.parse(localStorage.getItem('c2_stats') || '{"wrong":[], "starred":[], "completed":{}}'),
+            
+            init() {
+                this.renderModules();
+                this.updateHomeStats();
+            },
+            
+            navigateTo(viewId) {
+                document.querySelectorAll('main > section').forEach(el => el.classList.add('hidden'));
+                const target = document.getElementById(`view-${viewId}`);
+                if (target) target.classList.remove('hidden');
+                this.currentView = viewId;
+            },
+            
+            renderModules() {
+                const grid = document.getElementById('modulesGrid');
+                if (!grid) return;
+                grid.innerHTML = this.modules.map(m => `
+                    <div class="glass-card rounded-2xl p-5 border border-slate-800 space-y-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${m.color} flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                <i class="fa-solid ${m.icon}"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] font-bold text-brand-accent uppercase tracking-wider">Module ${m.id}</span>
+                                <h4 class="font-bold text-sm text-white">${m.title}</h4>
+                            </div>
+                        </div>
+                        <div class="space-y-1">
+                            ${m.lessons.map(l => `<div class="text-xs text-slate-400 font-mono">· ${l}</div>`).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            },
+            
+            updateHomeStats() {
+                document.getElementById('stat-total-q').textContent = this.questions.length;
+                document.getElementById('badge-wrong').textContent = this.userStats.wrong.length;
+                document.getElementById('badge-starred').textContent = this.userStats.starred.length;
+            },
+            
+            startPracticeMode(mode) {
+                alert(`Starting ${mode} practice mode with ${this.questions.length} questions available.`);
+                this.navigateTo('quiz');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
 </body>
 </html>
