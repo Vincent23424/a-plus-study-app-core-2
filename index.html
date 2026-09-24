@@ -128,9 +128,22 @@
 
             <!-- Section 1: Practice Cards (ChatGPT Style) -->
             <div class="space-y-3">
-                <div>
-                    <h3 class="text-xl font-bold text-white">Practice</h3>
-                    <p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
+                <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Practice</h3>
+                        <p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-400 font-medium">Questions:</span>
+                        <button type="button" data-practice-count="10" onclick="app.setPracticeCount(10)"
+                            class="px-4 py-2 rounded-xl border text-xs font-bold transition-all">
+                            10
+                        </button>
+                        <button type="button" data-practice-count="20" onclick="app.setPracticeCount(20)"
+                            class="px-4 py-2 rounded-xl border text-xs font-bold transition-all">
+                            20
+                        </button>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Final Test -->

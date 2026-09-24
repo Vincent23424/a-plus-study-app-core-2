@@ -22,6 +22,7 @@
                 this.selectedOption = null;
                 this.isAnswered = false;
                 this.currentModeLabel = '';
+                this.practiceCount = Number(localStorage.getItem('c2_practice_count')) || 10;
 
                 // Flashcard State
                 this.selectedModuleId = 11;
@@ -42,6 +43,7 @@
                 this.populatePBQDropdown();
                 this.renderReference();
                 this.updateReadiness();
+                this.setPracticeCount(this.practiceCount);
             }
 
             updateReadiness() {
@@ -220,6 +222,21 @@
                 });
             }
 
+            setPracticeCount(count) {
+                this.practiceCount = Number(count) === 20 ? 20 : 10;
+                localStorage.setItem('c2_practice_count', String(this.practiceCount));
+
+                document.querySelectorAll('[data-practice-count]').forEach(btn => {
+                    const active = Number(btn.dataset.practiceCount) === this.practiceCount;
+                    btn.classList.toggle('bg-brand-600', active);
+                    btn.classList.toggle('text-white', active);
+                    btn.classList.toggle('border-brand-500', active);
+                    btn.classList.toggle('bg-slate-800', !active);
+                    btn.classList.toggle('text-slate-300', !active);
+                    btn.classList.toggle('border-slate-700', !active);
+                });
+            }
+
             startPracticeMode(mode) {
                 let pool = [];
                 let label = '';
@@ -250,7 +267,7 @@
                     return;
                 }
 
-                this.startSession(pool, label);
+                this.startSession(pool, label, this.practiceCount);
             }
 
             startChallenge() {
@@ -274,9 +291,11 @@
                 this.startSession(pool, `Module ${modId}: ${mod.title}`);
             }
 
-            startSession(pool, label) {
-                const countVal = document.getElementById('countSelect').value;
-                const requested = countVal === 'All available' ? pool.length : parseInt(countVal);
+            startSession(pool, label, countOverride = null) {
+                const countVal = document.getElementById('countSelect')?.value || '10';
+                const requested = countOverride !== null
+                    ? Math.min(Number(countOverride), pool.length)
+                    : (countVal === 'All available' ? pool.length : parseInt(countVal));
 
                 // Shuffle pool
                 const shuffled = [...pool].sort(() => Math.random() - 0.5);
