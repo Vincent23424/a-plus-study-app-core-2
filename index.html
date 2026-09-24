@@ -134,15 +134,16 @@
                         <p class="text-xs text-slate-400">Choose exactly what you want to train.</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs text-slate-400 font-medium">Questions:</span>
-                        <button type="button" data-practice-count="10" onclick="app.setPracticeCount(10)"
-                            class="px-4 py-2 rounded-xl border text-xs font-bold transition-all">
-                            10
-                        </button>
-                        <button type="button" data-practice-count="20" onclick="app.setPracticeCount(20)"
-                            class="px-4 py-2 rounded-xl border text-xs font-bold transition-all">
-                            20
-                        </button>
+                        <label for="practiceCountSelect" class="text-xs text-slate-400 font-medium whitespace-nowrap">Questions:</label>
+                        <select id="practiceCountSelect" onchange="app.setPracticeCount(this.value)"
+                            class="bg-slate-800 border border-slate-700 text-white text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:border-brand-500 cursor-pointer">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="all">All available</option>
+                        </select>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

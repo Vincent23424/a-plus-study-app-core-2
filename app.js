@@ -22,7 +22,7 @@
                 this.selectedOption = null;
                 this.isAnswered = false;
                 this.currentModeLabel = '';
-                this.practiceCount = Number(localStorage.getItem('c2_practice_count')) || 10;
+                this.practiceCount = localStorage.getItem('c2_practice_count') || '10';
 
                 // Flashcard State
                 this.selectedModuleId = 11;
@@ -223,18 +223,11 @@
             }
 
             setPracticeCount(count) {
-                this.practiceCount = Number(count) === 20 ? 20 : 10;
-                localStorage.setItem('c2_practice_count', String(this.practiceCount));
-
-                document.querySelectorAll('[data-practice-count]').forEach(btn => {
-                    const active = Number(btn.dataset.practiceCount) === this.practiceCount;
-                    btn.classList.toggle('bg-brand-600', active);
-                    btn.classList.toggle('text-white', active);
-                    btn.classList.toggle('border-brand-500', active);
-                    btn.classList.toggle('bg-slate-800', !active);
-                    btn.classList.toggle('text-slate-300', !active);
-                    btn.classList.toggle('border-slate-700', !active);
-                });
+                const allowed = ['10','20','30','50','100','all'];
+                this.practiceCount = allowed.includes(String(count)) ? String(count) : '10';
+                localStorage.setItem('c2_practice_count', this.practiceCount);
+                const select = document.getElementById('practiceCountSelect');
+                if (select) select.value = this.practiceCount;
             }
 
             startPracticeMode(mode) {
@@ -294,7 +287,7 @@
             startSession(pool, label, countOverride = null) {
                 const countVal = document.getElementById('countSelect')?.value || '10';
                 const requested = countOverride !== null
-                    ? Math.min(Number(countOverride), pool.length)
+                    ? (String(countOverride) === 'all' ? pool.length : Math.min(Number(countOverride), pool.length))
                     : (countVal === 'All available' ? pool.length : parseInt(countVal));
 
                 // Shuffle pool
@@ -605,7 +598,7 @@
                     this.saveState();
                 } else if (cmd.toLowerCase() === 'help') {
                     respLine.className = "text-amber-300 font-mono my-1";
-                    respLine.textContent = "Available CLI commands: sfc, chkdsk, ipconfig, netstat, wpa3, clear.";
+                    respLine.textContent = "Available CLI commands: cd, dir, md, rmdir, ipconfig, ping, netstat, nslookup, tracert, pathping, chkdsk, diskpart, robocopy, hostname, net user, winver, whoami, gpupdate, gpresult, sfc, clear.";
                 } else {
                     respLine.className = "text-rose-400 font-mono my-1";
                     respLine.textContent = `'${cmd}' is not recognized as a command for this scenario. Try again or check hint.`;
