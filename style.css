@@ -97,3 +97,28 @@ body.light-mode .theme-toggle:hover { background: #eef1f6 !important; }
 body.light-mode .bg-gradient-to-r.from-brand-900 { background-image: linear-gradient(to right,#eef2ff,#ffffff,#ffffff) !important; }
 body.light-mode ::-webkit-scrollbar-track { background: #eef1f6; }
 body.light-mode ::-webkit-scrollbar-thumb { background: #c2cad8; }
+
+/* Mobile navigation */
+.mobile-nav { scrollbar-width: none; }
+.mobile-nav::-webkit-scrollbar { display: none; }
+.mobile-nav-btn { transition: background .2s, color .2s; }
+
+/* Light-mode fixes for reference hero and flashcard back */
+body.light-mode .reference-hero {
+    background-image: linear-gradient(to right, #e8f7fb, #ffffff, #ffffff) !important;
+    border-color: #b9dfe8 !important;
+}
+body.light-mode .reference-hero .text-cyan-300 { color: #087f9b !important; }
+body.light-mode .reference-hero .text-white { color: #172033 !important; }
+body.light-mode .flashcard-back {
+    background-image: linear-gradient(135deg, #ffffff, #f0f5ff, #ffffff) !important;
+    border-color: #9aa8d8 !important;
+}
+body.light-mode .flashcard-back .text-slate-200 { color: #344054 !important; }
+body.light-mode .flashcard-back .text-slate-400 { color: #667085 !important; }
+body.light-mode .flashcard-back .text-slate-500 { color: #667085 !important; }
+
+@media (max-width: 767px) {
+    header.sticky { padding-top: .65rem; padding-bottom: .65rem; }
+    .mobile-nav { margin-top: .65rem; }
+}

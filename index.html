@@ -77,6 +77,17 @@
                 </button>
             </nav>
 
+            <!-- Mobile navigation: horizontally scrollable so all sections remain available on phones -->
+            <div class="mobile-nav md:hidden mt-3 -mx-4 px-4 overflow-x-auto">
+                <nav class="flex items-center gap-1 min-w-max bg-slate-900/60 p-1 rounded-xl border border-slate-800 w-max">
+                    <button onclick="app.navigateTo('home')" id="mobile-nav-home" class="mobile-nav-btn active px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-white bg-brand-600">Practice & Modules</button>
+                    <button onclick="app.navigateTo('flashcards')" id="mobile-nav-flashcards" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Flashcards</button>
+                    <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ & Lab</button>
+                    <button onclick="app.navigateTo('stats')" id="mobile-nav-stats" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Stats</button>
+                    <button onclick="app.navigateTo('reference')" id="mobile-nav-reference" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Reference</button>
+                </nav>
+            </div>
+
             <div class="flex items-center gap-2 sm:gap-3">
                 <button id="themeToggle" onclick="app.toggleTheme()" aria-label="Toggle dark and light mode" class="theme-toggle flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
@@ -308,7 +319,7 @@
                         </div>
 
                         <!-- Back Face -->
-                        <div class="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-slate-900 via-brand-900/40 to-slate-900 border-2 border-brand-500/60 rounded-3xl p-8 flex flex-col justify-between">
+                        <div class="flashcard-back absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-slate-900 via-brand-900/40 to-slate-900 border-2 border-brand-500/60 rounded-3xl p-8 flex flex-col justify-between">
                             <div class="flex justify-between items-center text-xs font-medium text-slate-400">
                                 <span class="text-brand-accent font-bold"><i class="fa-solid fa-circle-check mr-1.5"></i> DEFINITION / EXPLANATION</span>
                                 <span class="text-xs text-slate-400">Core Concept</span>
@@ -403,7 +414,7 @@
 
         <!-- View: Reference -->
         <section id="view-reference" class="hidden space-y-6">
-            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 border border-cyan-500/20 p-6 md:p-8">
+            <div class="reference-hero relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-950 via-slate-900 to-slate-900 border border-cyan-500/20 p-6 md:p-8">
                 <span class="text-xs font-bold text-cyan-300 uppercase tracking-wider"><i class="fa-solid fa-book mr-1"></i> Core 2 Reference</span>
                 <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-2">Ports, commands, standards & types</h2>
                 <p class="text-sm text-slate-400 mt-2">Only information from the uploaded Core 2 Student Guide and Core 2 Exam Objectives.</p>

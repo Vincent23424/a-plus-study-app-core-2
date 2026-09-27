@@ -10,7 +10,7 @@ A free CompTIA A+ Core 2 (220-1202) study PWA covering Modules 11–22.
 - Random Practice
 - New Questions, Weak Areas, Wrong Questions and Starred Questions
 - Flashcard Review
-- PBQ & Lab terminal exercises
+- PBQ & Lab terminal exercises with 37 practical scenarios
 - Reference section for ports, protocols, commands, security, backups, scripting and other Core 2 topics
 - 3-Module Challenge
 - Randomized questions and answer choices
