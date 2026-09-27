@@ -4,25 +4,30 @@ A free CompTIA A+ Core 2 (220-1202) study PWA covering Modules 11–22.
 
 ## Current Build
 
-- **700+ source-grounded questions**
+- **798 unique questions**
 - Module and All Modules quizzes
-- Final Test, Random Practice, New, Wrong, Weak and Starred Questions
-- Multiple question styles for the same concepts
-- Flashcard Review with module and question-count selection
+- **Final Test — 75-question exam mode**
+- Random Practice
+- New Questions, Weak Areas, Wrong Questions and Starred Questions
+- Flashcard Review
 - PBQ & Lab terminal exercises
-- Reference section
-- Study Readiness 0–100%
+- Reference section for ports, protocols, commands, security, backups, scripting and other Core 2 topics
+- 3-Module Challenge
+- Randomized questions and answer choices
+- Explanations after every normal practice question
+- Study Readiness and module statistics
 - LocalStorage progress tracking
-- Responsive design with Dark/Light mode
+- Responsive design
+- **Dark mode by default + Light mode toggle**
 
 ## Source Scope
 
-Based only on the supplied:
+Based on the supplied:
 
 - **CompTIA A+ Core 1 and Core 2 Student Guide — Modules 11–22**
 - **CompTIA A+ 220-1202 Exam Objectives, Version 4.0**
 
-The question bank was expanded to cover the Core 2 lesson objectives and to include alternate question styles such as identifying a concept from a description and identifying the description/behavior of a named concept.
+All study content in the app is based on the supplied Core 2 source material.
 
 ## Technology
 

@@ -63,6 +63,8 @@
                 this.selectedOption = null;
                 this.isAnswered = false;
                 this.currentModeLabel = '';
+                this.isFinalExam = false;
+                this.finalExamWrong = [];
                 this.practiceCount = localStorage.getItem('c2_practice_count') || '10';
 
                 // Flashcard State
@@ -77,6 +79,7 @@
             }
 
             init() {
+                this.initTheme();
                 this.buildHomeControls();
                 this.renderModulesGrid();
                 this.updateGlobalStats();
@@ -205,6 +208,27 @@
                 document.getElementById('badge-new').textContent = DATA.questions.filter(q => !this.state.answered[q.id]).length;
             }
 
+            initTheme() {
+                const saved = localStorage.getItem('c2_theme') || 'dark';
+                document.body.classList.toggle('light-mode', saved === 'light');
+                this.updateThemeButton();
+            }
+
+            toggleTheme() {
+                const light = !document.body.classList.contains('light-mode');
+                document.body.classList.toggle('light-mode', light);
+                localStorage.setItem('c2_theme', light ? 'light' : 'dark');
+                this.updateThemeButton();
+            }
+
+            updateThemeButton() {
+                const light = document.body.classList.contains('light-mode');
+                const icon = document.getElementById('themeIcon');
+                const label = document.getElementById('themeLabel');
+                if (icon) icon.className = light ? 'fa-solid fa-moon text-indigo-500' : 'fa-solid fa-sun text-amber-400';
+                if (label) label.textContent = light ? 'Dark' : 'Light';
+            }
+
             buildHomeControls() {
                 const rs = document.getElementById('rangeSelect');
                 const em = document.getElementById('extraModule');
@@ -272,12 +296,16 @@
             }
 
             startPracticeMode(mode) {
+                this.isFinalExam = false;
+                this.finalExamWrong = [];
                 let pool = [];
                 let label = '';
 
                 if (mode === 'final') {
                     pool = [...DATA.questions];
                     label = 'Final Test (Modules 11–22)';
+                    this.isFinalExam = true;
+                    this.finalExamWrong = [];
                 } else if (mode === 'random') {
                     pool = [...DATA.questions];
                     label = 'Random Practice';
@@ -327,9 +355,11 @@
 
             startSession(pool, label, countOverride = null) {
                 const countVal = document.getElementById('countSelect')?.value || '10';
-                const requested = countOverride !== null
-                    ? (String(countOverride) === 'all' ? pool.length : Math.min(Number(countOverride), pool.length))
-                    : (countVal === 'All available' ? pool.length : parseInt(countVal));
+                const requested = this.isFinalExam
+                    ? Math.min(75, pool.length)
+                    : (countOverride !== null
+                        ? (String(countOverride) === 'all' ? pool.length : Math.min(Number(countOverride), pool.length))
+                        : (countVal === 'All available' ? pool.length : parseInt(countVal)));
 
                 // Shuffle pool
                 const shuffled = [...pool].sort(() => Math.random() - 0.5);
@@ -355,6 +385,7 @@
                 this.isAnswered = false;
 
                 document.getElementById('quizLabel').textContent = this.currentModeLabel;
+                document.getElementById('examModeTag').classList.toggle('hidden', !this.isFinalExam);
                 document.getElementById('lessonTag').textContent = q.lesson;
                 document.getElementById('difficultyTag').textContent = q.difficulty || 'Core 2';
                 document.getElementById('questionText').textContent = q.question;
@@ -419,6 +450,7 @@
                 const isCorrect = (this.selectedOption === q.answer);
 
                 this.sessionAnswers[this.sessionIndex] = isCorrect;
+                if (this.isFinalExam && !isCorrect) this.finalExamWrong.push(q.id);
 
                 // Update Local Storage stats
                 if (!this.state.stats[q.lesson]) this.state.stats[q.lesson] = { c: 0, w: 0 };
@@ -433,25 +465,31 @@
 
                 this.saveState();
 
-                // Highlight Options
-                const ansDiv = document.getElementById('answers');
-                Array.from(ansDiv.children).forEach((child, i) => {
-                    if (i === q.answer) {
-                        child.className = "w-full text-left p-4 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 text-sm font-medium text-emerald-200 flex items-center justify-between";
-                    } else if (i === this.selectedOption && !isCorrect) {
-                        child.className = "w-full text-left p-4 rounded-xl bg-rose-500/20 border-2 border-rose-500 text-sm font-medium text-rose-200 flex items-center justify-between";
-                    }
-                });
+                // Highlight answers only in normal practice. Final Test keeps the answer hidden.
+                if (!this.isFinalExam) {
+                    const ansDiv = document.getElementById('answers');
+                    Array.from(ansDiv.children).forEach((child, i) => {
+                        if (i === q.answer) {
+                            child.className = "w-full text-left p-4 rounded-xl bg-emerald-500/20 border-2 border-emerald-500 text-sm font-medium text-emerald-200 flex items-center justify-between";
+                        } else if (i === this.selectedOption && !isCorrect) {
+                            child.className = "w-full text-left p-4 rounded-xl bg-rose-500/20 border-2 border-rose-500 text-sm font-medium text-rose-200 flex items-center justify-between";
+                        }
+                    });
+                }
 
-                // Show Feedback
+                // Show explanation for normal practice; Final Test keeps answers hidden until the end.
                 const fb = document.getElementById('feedback');
-                fb.classList.remove('hidden');
-                if (isCorrect) {
-                    fb.className = "p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200 space-y-1";
-                    fb.innerHTML = `<b class="text-emerald-400 text-sm block"><i class="fa-solid fa-circle-check"></i> Correct!</b> ${q.explanation}`;
+                if (this.isFinalExam) {
+                    fb.className = 'hidden p-4 rounded-2xl border space-y-2';
                 } else {
-                    fb.className = "p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-xs text-slate-200 space-y-1";
-                    fb.innerHTML = `<b class="text-rose-400 text-sm block"><i class="fa-solid fa-circle-xmark"></i> Incorrect. Correct: (${String.fromCharCode(65 + q.answer)}) ${q.options[q.answer]}</b> ${q.explanation}`;
+                    fb.classList.remove('hidden');
+                    if (isCorrect) {
+                        fb.className = "p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-sm text-slate-200 space-y-2";
+                        fb.innerHTML = `<b class="text-emerald-400 text-sm block"><i class="fa-solid fa-circle-check mr-1"></i> Correct!</b><div><span class="font-semibold">Correct answer:</span> ${q.options[q.answer]}</div><div><span class="font-semibold">Why:</span> ${q.explanation || 'The supplied Core 2 material identifies this as the correct answer.'}</div>`;
+                    } else {
+                        fb.className = "p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-sm text-slate-200 space-y-2";
+                        fb.innerHTML = `<b class="text-rose-400 text-sm block"><i class="fa-solid fa-circle-xmark mr-1"></i> Incorrect</b><div><span class="font-semibold">Correct answer:</span> ${q.options[q.answer]}</div><div><span class="font-semibold">Why:</span> ${q.explanation || 'Review the supplied Core 2 material for this concept.'}</div>`;
+                    }
                 }
 
                 document.getElementById('confirmBtn').classList.add('hidden');
@@ -490,9 +528,12 @@
 
                 this.navigateTo('results');
 
-                document.getElementById('resultTitle').textContent = pct >= 80 ? "Session Completed! Excellent Work!" : "Session Completed! Keep Training!";
+                document.getElementById('resultTitle').textContent = this.isFinalExam ? 'Final Test Complete' : (pct >= 80 ? 'Session Completed! Excellent Work!' : 'Session Completed! Keep Training!');
                 document.getElementById('resultScore').textContent = `${correctCount}/${total}`;
                 document.getElementById('resultPct').textContent = `${pct}% Score`;
+
+                const reviewWrongBtn = document.getElementById('reviewWrongResultBtn');
+                if (reviewWrongBtn) reviewWrongBtn.classList.toggle('hidden', !(this.isFinalExam && this.finalExamWrong.length));
 
                 document.getElementById('resultDetails').innerHTML = `
                     <div class="bg-slate-900 p-3 rounded-xl border border-slate-800">
@@ -507,6 +548,7 @@
                         <b class="text-amber-400 text-base block">${this.state.starred.length}</b>
                         <span class="text-slate-400">Starred Total</span>
                     </div>
+                    ${this.isFinalExam ? `<div class="col-span-full text-center text-xs text-slate-400 mt-1">Final Test uses 75 questions from Modules 11–22. Review your Wrong Questions to see what to repeat.</div>` : ''}
                 `;
             }
 
