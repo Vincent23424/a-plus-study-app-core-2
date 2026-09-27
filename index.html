@@ -47,12 +47,13 @@
 
     <!-- Top Navigation Header -->
     <header class="sticky top-0 z-50 glass-panel border-b border-slate-800 px-4 lg:px-8 py-3">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="app.navigateTo('home')">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 cursor-pointer min-w-0" onclick="app.navigateTo('home')">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-accent flex items-center justify-center shadow-lg shadow-brand-500/20 font-extrabold text-white text-lg">
                     A+
                 </div>
-                <div>
+                <div class="brand-copy min-w-0">
                     <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">CompTIA A+ Core 2</h1>
                     <p class="text-xs text-brand-accent font-medium">Modules 11–22 Study Hub</p>
                 </div>
@@ -77,27 +78,27 @@
                 </button>
             </nav>
 
-            <!-- Mobile navigation: horizontally scrollable so all sections remain available on phones -->
-            <div class="mobile-nav md:hidden mt-3 -mx-4 px-4 overflow-x-auto">
-                <nav class="flex items-center gap-1 min-w-max bg-slate-900/60 p-1 rounded-xl border border-slate-800 w-max">
-                    <button onclick="app.navigateTo('home')" id="mobile-nav-home" class="mobile-nav-btn active px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-white bg-brand-600">Practice & Modules</button>
-                    <button onclick="app.navigateTo('flashcards')" id="mobile-nav-flashcards" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Flashcards</button>
-                    <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ & Lab</button>
-                    <button onclick="app.navigateTo('stats')" id="mobile-nav-stats" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Stats</button>
-                    <button onclick="app.navigateTo('reference')" id="mobile-nav-reference" class="mobile-nav-btn px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Reference</button>
-                </nav>
-            </div>
-
             <div class="flex items-center gap-2 sm:gap-3">
                 <button id="themeToggle" onclick="app.toggleTheme()" aria-label="Toggle dark and light mode" class="theme-toggle flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-400"></i>
                     <span id="themeLabel" class="hidden sm:inline">Light</span>
                 </button>
-                <button onclick="app.startPracticeMode('final')" class="flex items-center gap-2 bg-gradient-to-r from-brand-accent to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md active:scale-95">
-                    <i class="fa-solid fa-bolt"></i> Final Test
+                <button onclick="app.startPracticeMode('final')" class="final-test-btn flex items-center gap-2 bg-gradient-to-r from-brand-accent to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm transition-all shadow-md active:scale-95">
+                    <i class="fa-solid fa-bolt"></i><span class="final-test-label">Final Test</span>
                 </button>
             </div>
-        </div>
+            </div>
+
+            <!-- Mobile navigation: separate full-width row so it never overlaps the theme/final-test controls -->
+            <div class="mobile-nav md:hidden mt-3 -mx-4 px-4 overflow-x-auto" aria-label="Mobile navigation">
+                <nav class="mobile-nav-inner flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800 w-max min-w-full">
+                    <button onclick="app.navigateTo('home')" id="mobile-nav-home" class="mobile-nav-btn active px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-white bg-brand-600">Practice & Modules</button>
+                    <button onclick="app.navigateTo('flashcards')" id="mobile-nav-flashcards" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Flashcards</button>
+                    <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ & Lab</button>
+                    <button onclick="app.navigateTo('stats')" id="mobile-nav-stats" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Stats</button>
+                    <button onclick="app.navigateTo('reference')" id="mobile-nav-reference" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Reference</button>
+                </nav>
+            </div>        </div>
     </header>
 
     <!-- Main Content Area -->

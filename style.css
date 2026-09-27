@@ -122,3 +122,36 @@ body.light-mode .flashcard-back .text-slate-500 { color: #667085 !important; }
     header.sticky { padding-top: .65rem; padding-bottom: .65rem; }
     .mobile-nav { margin-top: .65rem; }
 }
+
+
+/* Mobile header/navigation polish */
+html, body { overflow-x: hidden; }
+.mobile-nav {
+    width: calc(100% + 2rem);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    padding-bottom: 2px;
+}
+.mobile-nav-inner {
+    min-width: max-content;
+    width: max-content;
+}
+.mobile-nav-btn {
+    flex: 0 0 auto;
+    min-height: 40px;
+    touch-action: manipulation;
+}
+@media (max-width: 767px) {
+    header.sticky { padding-top: .65rem; padding-bottom: .7rem; }
+    .brand-copy { min-width: 0; }
+    .brand-copy h1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+    .brand-copy p { white-space: nowrap; }
+    .theme-toggle { flex: 0 0 auto; }
+    .final-test-btn { flex: 0 0 auto; }
+}
+@media (max-width: 420px) {
+    .brand-copy { display: none; }
+    .final-test-label { display: none; }
+    .final-test-btn { padding-left: .7rem !important; padding-right: .7rem !important; }
+    .theme-toggle { padding-left: .7rem !important; padding-right: .7rem !important; }
+}

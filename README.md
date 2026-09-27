@@ -40,3 +40,13 @@ Built with **AI-assisted development** as a personal CompTIA A+ study project.
 This is an independent personal project and is not affiliated with, sponsored by, or endorsed by CompTIA.
 
 The app is intended as a study aid and should be used alongside the official CompTIA exam objectives and study materials.
+
+
+## Recent UI Improvements
+
+- Mobile navigation is now a dedicated full-width horizontal row and no longer competes with the theme or Final Test controls.
+- Mobile navigation buttons have larger touch targets and horizontal scrolling on narrow screens.
+- Header controls are compacted on very small screens to prevent overflow.
+- Dark mode remains the default, with Light mode available.
+- Light-mode styling covers the Reference hero and flashcard back.
+- Final Test remains a 75-question all-module exam mode with no explanations during the test.
