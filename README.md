@@ -12,6 +12,7 @@ A free CompTIA A+ Core 2 (220-1202) study PWA covering Modules 11–22.
 - Flashcard Review
 - PBQ & Lab terminal exercises with 37 practical scenarios
 - Reference section for ports, protocols, commands, security, backups, scripting and other Core 2 topics
+- **Commands Quiz** with command → function and function → command practice
 - 3-Module Challenge
 - Randomized questions and answer choices
 - Explanations after every normal practice question
@@ -41,6 +42,12 @@ This is an independent personal project and is not affiliated with, sponsored by
 
 The app is intended as a study aid and should be used alongside the official CompTIA exam objectives and study materials.
 
+
+## Commands Quiz
+
+- Dedicated quiz for Core 2 Windows commands and management tools.
+- Tests both command-to-function and function-to-command recall.
+- Uses only commands/tools already represented in the supplied Core 2 study material.
 
 ## Recent UI Improvements
 

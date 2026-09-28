@@ -1,3 +1,63 @@
+        // Core 2 command/tool quiz. Terms and functions are limited to the supplied Core 2 material.
+        const commandQuizBase = [
+            ['ipconfig','Windows IP configuration and DHCP-related network configuration commands'],
+            ['ping','Tests basic network connectivity/reachability'],
+            ['netstat','Displays network connection and status information'],
+            ['nslookup','Queries DNS information'],
+            ['tracert','Traces the route to a destination'],
+            ['pathping','Provides network path and packet-loss information'],
+            ['chkdsk','Checks a disk/file system and can request repairs'],
+            ['diskpart','Manages disk partitions'],
+            ['robocopy','Copies files and directories'],
+            ['gpupdate','Updates Group Policy settings'],
+            ['gpresult','Displays resulting Group Policy settings'],
+            ['sfc','Checks protected Windows system files and can attempt repair'],
+            ['whoami','Displays the currently logged-on user'],
+            ['hostname','Displays the computer host name'],
+            ['winver','Displays Windows version information'],
+            ['cd','Changes the current directory'],
+            ['dir','Lists directory contents'],
+            ['md','Creates a directory'],
+            ['rmdir','Removes a directory'],
+            ['eventvwr.msc','Opens Event Viewer'],
+            ['diskmgmt.msc','Opens Disk Management'],
+            ['taskschd.msc','Opens Task Scheduler'],
+            ['devmgmt.msc','Opens Device Manager'],
+            ['certmgr.msc','Opens Certificate Manager'],
+            ['lusrmgr.msc','Opens Local Users and Groups'],
+            ['perfmon.msc','Opens Performance Monitor'],
+            ['gpedit.msc','Opens Group Policy Editor'],
+            ['msinfo32.exe','Opens System Information'],
+            ['resmon.exe','Opens Resource Monitor'],
+            ['msconfig.exe','Opens System Configuration'],
+            ['cleanmgr.exe','Opens Disk Cleanup'],
+            ['dfrgui.exe','Opens the disk defragmentation tool'],
+            ['regedit.exe','Opens Registry Editor']
+        ];
+
+        const commandQuizQuestions = (() => {
+            const qs = [];
+            const pool = commandQuizBase;
+            pool.forEach(([cmd, desc], i) => {
+                const distractors = [1,2,3].map(n => pool[(i+n) % pool.length][1]);
+                const q1Options=[desc,distractors[0],distractors[1],distractors[2]].sort(()=>Math.random()-0.5);
+                qs.push({
+                    id:`cmd-${i}-what`, lesson:'Commands Quiz', difficulty:'Core 2 Commands',
+                    question:`What is ${cmd} used for?`,
+                    options:q1Options, answer:q1Options.indexOf(desc),
+                    explanation:`${cmd} is used to ${desc.charAt(0).toLowerCase()+desc.slice(1)}.`
+                });
+                const commandOptions = [cmd, pool[(i+1)%pool.length][0], pool[(i+2)%pool.length][0], pool[(i+3)%pool.length][0]].sort(()=>Math.random()-0.5);
+                qs.push({
+                    id:`cmd-${i}-which`, lesson:'Commands Quiz', difficulty:'Core 2 Commands',
+                    question:`Which command or tool matches this function: ${desc}?`,
+                    options:commandOptions, answer:commandOptions.indexOf(cmd),
+                    explanation:`The matching command/tool is ${cmd}: ${desc}.`
+                });
+            });
+            return qs;
+        })();
+
         // PBQ scenarios grounded in the Core 2 Student Guide / 220-1202 objectives.
         const pbqScenarios = [
             {title:'System File Check',desc:'A Windows system is suspected of having corrupted protected system files. Run the appropriate repair command.',objective:'Use System File Checker to scan and repair protected Windows system files.',hint:'Use the System File Checker command with its scan option.',expected:['sfc /scannow'],success:'Correct. SFC /scannow scans protected system files and attempts repair.',failure:'Use the SFC scan command: sfc /scannow.'},
@@ -295,6 +355,13 @@
                 if (select) select.value = this.practiceCount;
             }
 
+            startCommandsQuiz() {
+                this.isFinalExam = false;
+                this.finalExamWrong = [];
+                const count = this.practiceCount === 'all' ? commandQuizQuestions.length : Math.min(Number(this.practiceCount || 10), commandQuizQuestions.length);
+                this.startSession(commandQuizQuestions, 'Commands Quiz', count);
+            }
+
             startPracticeMode(mode) {
                 this.isFinalExam = false;
                 this.finalExamWrong = [];
@@ -310,17 +377,17 @@
                     pool = [...DATA.questions];
                     label = 'Random Practice';
                 } else if (mode === 'wrong') {
-                    pool = DATA.questions.filter(q => this.state.wrong.includes(q.id));
+                    pool = [...DATA.questions, ...commandQuizQuestions].filter(q => this.state.wrong.includes(q.id));
                     label = 'Wrong Questions Practice';
                 } else if (mode === 'weak') {
                     const weak = this.getWeakLessons();
                     pool = DATA.questions.filter(q => weak.includes(q.lesson));
                     label = 'Weak Areas Practice';
                 } else if (mode === 'starred') {
-                    pool = DATA.questions.filter(q => this.state.starred.includes(q.id));
+                    pool = [...DATA.questions, ...commandQuizQuestions].filter(q => this.state.starred.includes(q.id));
                     label = 'Starred Questions Review';
                 } else if (mode === 'new') {
-                    pool = DATA.questions.filter(q => !this.state.answered[q.id]);
+                    pool = [...DATA.questions, ...commandQuizQuestions].filter(q => !this.state.answered[q.id]);
                     label = 'New Unanswered Questions';
                 }
 
