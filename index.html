@@ -70,6 +70,9 @@
                 <button onclick="app.navigateTo('pbq')" id="nav-pbq" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
                     <i class="fa-solid fa-terminal text-amber-400 mr-2"></i>PBQ & Lab
                 </button>
+                <button onclick="app.navigateTo('mock')" id="nav-mock" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i class="fa-solid fa-stopwatch text-emerald-400 mr-2"></i>Mock Exam
+                </button>
                 <button onclick="app.navigateTo('stats')" id="nav-stats" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
                     <i class="fa-solid fa-chart-line text-purple-400 mr-2"></i>Stats
                 </button>
@@ -95,6 +98,7 @@
                     <button onclick="app.navigateTo('home')" id="mobile-nav-home" class="mobile-nav-btn active px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-white bg-brand-600">Practice & Modules</button>
                     <button onclick="app.navigateTo('flashcards')" id="mobile-nav-flashcards" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Flashcards</button>
                     <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ & Lab</button>
+                    <button onclick="app.navigateTo('mock')" id="mobile-nav-mock" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Mock Exam</button>
                     <button onclick="app.navigateTo('stats')" id="mobile-nav-stats" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Stats</button>
                     <button onclick="app.navigateTo('reference')" id="mobile-nav-reference" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Reference</button>
                 </nav>
@@ -426,6 +430,15 @@
 
         <!-- View 4: PBQ Terminal Lab -->
         <section id="view-pbq" class="hidden space-y-6">
+            <a href="pbq-simulator.html" class="block p-4 rounded-2xl border border-brand-500/40 bg-brand-600/10 hover:bg-brand-600/20 transition-all">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <b class="text-white text-sm"><i class="fa-solid fa-flask text-brand-accent mr-2"></i>PBQ Simulator (new)</b>
+                        <p class="text-xs text-slate-300 mt-1">19 hands-on tasks with realistic tools: router admin, Event Viewer, terminals, permissions and more. Includes a full Core 2 mock exam with PBQs. Each answer has a page reference.</p>
+                    </div>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i>
+                </div>
+            </a>
             <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                     <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">PERFORMANCE-BASED LAB</span>
@@ -498,6 +511,8 @@
         </section>
 
         <!-- View 5: Results View -->
+        <section id="view-mock" class="hidden space-y-6"></section>
+
         <section id="view-results" class="hidden max-w-xl mx-auto space-y-6 text-center">
             <div class="glass-card rounded-3xl p-8 space-y-6 border border-slate-800">
                 <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-accent uppercase tracking-wider">Session Complete</span>
@@ -559,4 +574,5 @@
     <!-- Integrated Script & Embedded Questions Data -->
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="extras.js"></script>
 </body>
