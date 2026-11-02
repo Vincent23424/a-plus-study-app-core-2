@@ -8,10 +8,11 @@ A free CompTIA A+ Core 2 (220-1202) study PWA covering Modules 11–22.
 - Module and All Modules quizzes
 - **Final Test — 75-question exam mode**
 - **Mock Exam**: domain-weighted (OS 28%, Security 28%, Software Troubleshooting 23%, Operational Procedures 21%), timer (120/90 min or none), flag for review, review grid, estimated 100–900 score, per-domain results and full answer review
-- **PBQ tab**: the PBQ simulator (`pbq-simulator.html`) is shown directly inside the tab, with 19 realistic Core 2 performance-based tasks and a Core 2 mock exam that includes PBQs
+- **PBQ Simulator** (`pbq-simulator.html`): 19 realistic Core 2 performance-based tasks and a Core 2 mock exam that includes PBQs
 - Random Practice
 - New Questions, Weak Areas, Wrong Questions and Starred Questions
 - Flashcard Review
+- PBQ & Lab terminal exercises with 37 practical scenarios
 - Reference section for ports, protocols, commands, security, backups, scripting and other Core 2 topics
 - **Commands Quiz** with command → function and function → command practice
 - 3-Module Challenge
@@ -63,7 +64,7 @@ The app is intended as a study aid and should be used alongside the official Com
 
 - `index.html`, `style.css`, `app.js`, `data.js`: the main app
 - `extras.js`: Mock Exam, shuffled answers, per-answer explanations and page references
-- `pbq-simulator.html`: the PBQ simulator, loaded inside the PBQ tab (PBQ practice + Mock exam only; works offline, no network requests)
+- `pbq-simulator.html`: stand-alone PBQ simulator (works offline, no network requests)
 
 ## Known issues in the Student Guide
 

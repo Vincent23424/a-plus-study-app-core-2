@@ -58,6 +58,47 @@
             return qs;
         })();
 
+        // PBQ scenarios grounded in the Core 2 Student Guide / 220-1202 objectives.
+        const pbqScenarios = [
+            {title:'System File Check',desc:'A Windows system is suspected of having corrupted protected system files. Run the appropriate repair command.',objective:'Use System File Checker to scan and repair protected Windows system files.',hint:'Use the System File Checker command with its scan option.',expected:['sfc /scannow'],success:'Correct. SFC /scannow scans protected system files and attempts repair.',failure:'Use the SFC scan command: sfc /scannow.'},
+            {title:'Disk Check',desc:'A workstation reports file-system or disk errors. Run the appropriate Windows disk-checking command.',objective:'Use CHKDSK with a repair option.',hint:'The command begins with chkdsk.',expected:['chkdsk /f','chkdsk /f c:','chkdsk c: /f'],success:'Correct. CHKDSK can check the file system and /f requests repair.',failure:'Try chkdsk /f.'},
+            {title:'Renew DHCP Lease',desc:'A Windows client has lost its DHCP configuration. Request a new lease.',objective:'Use the Windows IP configuration utility to renew the DHCP lease.',hint:'Use ipconfig with the renew switch.',expected:['ipconfig /renew'],success:'Correct. ipconfig /renew requests a new DHCP lease.',failure:'Use ipconfig /renew.'},
+            {title:'Release DHCP Lease',desc:'Before renewing the client address, release the current DHCP lease.',objective:'Release the current DHCP configuration.',hint:'Use ipconfig with the release switch.',expected:['ipconfig /release'],success:'Correct. ipconfig /release releases the current DHCP lease.',failure:'Use ipconfig /release.'},
+            {title:'Flush DNS Cache',desc:'A workstation is resolving an old DNS record. Clear the local DNS resolver cache.',objective:'Flush the Windows DNS resolver cache.',hint:'Use ipconfig with the flushdns switch.',expected:['ipconfig /flushdns'],success:'Correct. The command flushes the local DNS resolver cache.',failure:'Use ipconfig /flushdns.'},
+            {title:'Test Connectivity',desc:'A user cannot reach a known host. Perform a basic network connectivity test.',objective:'Use the Windows connectivity testing command.',hint:'The command is four letters and sends echo requests.',expected:['ping'],success:'Correct. ping is used to test network reachability.',failure:'Use ping followed by the host or IP address.'},
+            {title:'Query DNS',desc:'A hostname is not resolving as expected. Query the DNS server directly.',objective:'Use the Windows DNS query utility.',hint:'The command begins with ns.',expected:['nslookup'],success:'Correct. nslookup queries DNS information.',failure:'Use nslookup followed by the hostname.'},
+            {title:'Trace Network Route',desc:'A connection is failing somewhere along the path. Trace the route to the destination.',objective:'Use the Windows route-tracing utility.',hint:'The command starts with trac.',expected:['tracert'],success:'Correct. tracert traces the route to a destination.',failure:'Use tracert followed by the destination.'},
+            {title:'Path and Packet Loss',desc:'You need route information together with packet-loss statistics.',objective:'Use the Windows utility that combines route tracing and packet-loss information.',hint:'It starts with path.',expected:['pathping'],success:'Correct. pathping provides path and packet-loss information.',failure:'Use pathping.'},
+            {title:'Network Connections',desc:'You need to inspect active network connections and listening ports.',objective:'Use the Windows network statistics command.',hint:'It begins with net.',expected:['netstat'],success:'Correct. netstat displays network connection and status information.',failure:'Use netstat.'},
+            {title:'Update Group Policy',desc:'A workstation needs its current Group Policy settings refreshed.',objective:'Use the Group Policy update command.',hint:'The command begins with gp.',expected:['gpupdate','gpupdate /force'],success:'Correct. gpupdate refreshes Group Policy settings.',failure:'Use gpupdate (gpupdate /force is also accepted).'},
+            {title:'View Resulting Group Policy',desc:'You need to inspect the Group Policy settings that apply to the workstation/user.',objective:'Use the command that reports resulting Group Policy settings.',hint:'It begins with gp and ends with result.',expected:['gpresult','gpresult /r'],success:'Correct. gpresult displays resulting Group Policy settings.',failure:'Use gpresult.'},
+            {title:'Identify User',desc:'You need to display the currently logged-on Windows user.',objective:'Use the Windows command for identifying the current user.',hint:'The command starts with who.',expected:['whoami'],success:'Correct. whoami identifies the current user.',failure:'Use whoami.'},
+            {title:'Identify Host',desc:'You need to display the workstation computer name.',objective:'Use the command that displays the host name.',hint:'The command contains the word host.',expected:['hostname'],success:'Correct. hostname displays the computer name.',failure:'Use hostname.'},
+            {title:'Windows Version',desc:'You need a quick command-line check of the Windows version.',objective:'Use the Windows version utility.',hint:'The command begins with win.',expected:['winver'],success:'Correct. winver displays Windows version information.',failure:'Use winver.'},
+            {title:'Change Directory',desc:'You are at a command prompt and need to move to another directory.',objective:'Use the Windows directory navigation command.',hint:'It is a two-letter command.',expected:['cd'],success:'Correct. cd changes the current directory.',failure:'Use cd followed by the directory path.'},
+            {title:'List Directory Contents',desc:'You need to display the files and folders in the current directory.',objective:'Use the Windows directory listing command.',hint:'It is a three-letter command.',expected:['dir'],success:'Correct. dir lists directory contents.',failure:'Use dir.'},
+            {title:'Create Directory',desc:'You need to create a new directory from the command prompt.',objective:'Use the Windows directory creation command.',hint:'The command is md.',expected:['md'],success:'Correct. md creates a directory.',failure:'Use md followed by the directory name.'},
+            {title:'Remove Directory',desc:'You need to remove an empty directory from the command prompt.',objective:'Use the Windows directory removal command.',hint:'The command starts with rmdir.',expected:['rmdir'],success:'Correct. rmdir removes a directory.',failure:'Use rmdir followed by the directory name.'},
+            {title:'Copy Files',desc:'You need to copy files while preserving the functionality provided by the Windows file-copy utility.',objective:'Use the Windows robust file-copy command.',hint:'The command starts with robo.',expected:['robocopy'],success:'Correct. robocopy is the Windows robust file-copy utility.',failure:'Use robocopy.'},
+            {title:'Manage Disk Partitions',desc:'You need to work with disks and partitions from an elevated command prompt.',objective:'Launch the Windows disk partition management utility.',hint:'The command starts with disk.',expected:['diskpart'],success:'Correct. diskpart is the Windows disk partition management utility.',failure:'Use diskpart.'},
+            {title:'Remote Desktop',desc:'A user needs to connect to a Windows workstation using Remote Desktop.',objective:'Identify the default TCP port associated with RDP.',hint:'It is the well-known RDP port listed in the reference material.',expected:['3389'],success:'Correct. RDP uses TCP port 3389 in the supplied Core 2 reference.',failure:'The expected port is 3389.'},
+            {title:'Secure Shell',desc:'You need a remote command-line connection using Secure Shell.',objective:'Identify the port associated with SSH.',hint:'SSH uses the standard port listed in the reference material.',expected:['22'],success:'Correct. SSH uses port 22.',failure:'The expected port is 22.'},
+            {title:'HTTPS',desc:'A browser connection must use the secure HTTP service.',objective:'Identify the standard HTTPS port.',hint:'It is the common secure web port.',expected:['443'],success:'Correct. HTTPS uses port 443.',failure:'The expected port is 443.'},
+            {title:'HTTP',desc:'A browser connection is using standard unencrypted HTTP.',objective:'Identify the standard HTTP port.',hint:'It is the common web port.',expected:['80'],success:'Correct. HTTP uses port 80.',failure:'The expected port is 80.'},
+            {title:'DNS Port',desc:'A troubleshooting task requires identifying the standard DNS service port.',objective:'Identify the standard DNS port.',hint:'It is a two-digit port in the supplied reference.',expected:['53'],success:'Correct. DNS uses port 53.',failure:'The expected port is 53.'},
+            {title:'DHCP Ports',desc:'You need the standard client/server UDP ports associated with DHCP.',objective:'Identify the DHCP port pair.',hint:'The pair is 67 and 68.',expected:['67','68','67/68'],success:'Correct. DHCP uses UDP ports 67 and 68.',failure:'The expected DHCP ports are 67/68.'},
+            {title:'SMB Port',desc:'A Windows file-sharing connection is being checked.',objective:'Identify the standard SMB/CIFS port.',hint:'It is the Windows file-sharing port listed in the reference.',expected:['445'],success:'Correct. SMB/CIFS uses port 445.',failure:'The expected port is 445.'},
+            {title:'WPA3 / SAE',desc:'Configure a wireless network using WPA3 with the authentication mechanism named in the Core 2 material.',objective:'Identify the authentication mechanism used with WPA3.',hint:'It is a four-letter acronym beginning with S.',expected:['sae','wpa3-sae','wpa3'],success:'Correct. SAE is the authentication mechanism associated with WPA3 in the supplied material.',failure:'Use WPA3 with SAE.'},
+            {title:'PowerShell Script',desc:'A Windows administrator needs to identify the file extension used for a PowerShell script.',objective:'Provide the PowerShell script extension.',hint:'It starts with a dot and contains ps.',expected:['.ps1','ps1'],success:'Correct. .ps1 is the PowerShell script file extension.',failure:'Use .ps1.'},
+            {title:'Batch Script',desc:'A Windows administrator needs to identify the file extension for a batch script.',objective:'Provide the batch script extension.',hint:'It starts with a dot and contains bat.',expected:['.bat','bat'],success:'Correct. .bat is the batch script extension.',failure:'Use .bat.'},
+            {title:'Python Script',desc:'Identify the file extension used for a standard Python script.',objective:'Provide the Python script extension.',hint:'It starts with a dot and contains py.',expected:['.py','py'],success:'Correct. .py is the Python script extension.',failure:'Use .py.'},
+            {title:'JavaScript File',desc:'Identify the common file extension used for JavaScript.',objective:'Provide the JavaScript file extension.',hint:'It starts with a dot and contains js.',expected:['.js','js'],success:'Correct. .js is the JavaScript file extension.',failure:'Use .js.'},
+            {title:'Differential Backup',desc:'A backup task needs a backup containing changes made since the last full backup.',objective:'Identify the appropriate backup type.',hint:'Think about the reference point being the last full backup.',expected:['differential'],success:'Correct. A differential backup contains changes since the last full backup.',failure:'The expected backup type is differential.'},
+            {title:'Incremental Backup',desc:'A backup task needs a backup containing changes since the most recent backup.',objective:'Identify the appropriate backup type.',hint:'It uses the most recent backup as its reference point.',expected:['incremental'],success:'Correct. An incremental backup contains changes since the last backup.',failure:'The expected backup type is incremental.'},
+            {title:'Full Backup',desc:'A backup task needs a copy of all selected data.',objective:'Identify the appropriate backup type.',hint:'This backup does not depend on a previous backup for what it copies.',expected:['full'],success:'Correct. A full backup copies all selected data.',failure:'The expected backup type is full.'},
+            {title:'Change Advisory Board',desc:'A planned change needs formal review by the designated change board.',objective:'Identify the group responsible for reviewing and approving changes.',hint:'The acronym is CAB.',expected:['cab','change advisory board'],success:'Correct. CAB stands for Change Advisory Board.',failure:'The expected answer is CAB / Change Advisory Board.'}
+        ];
+
         /**
          * Embedded Questions & Modules Data
          */
@@ -68,7 +109,8 @@
                     wrong: [],
                     starred: [],
                     stats: {},
-                    cardsViewed: 0
+                    cardsViewed: 0,
+                    pbqSolved: 0
                 };
 
                 this.currentView = 'home';
@@ -90,6 +132,9 @@
                 this.cardIndex = 0;
                 this.isCardFlipped = false;
 
+                // PBQ State
+                this.currentPBQIndex = 0;
+
                 this.init();
             }
 
@@ -99,6 +144,7 @@
                 this.renderModulesGrid();
                 this.updateGlobalStats();
                 this.populateFlashcardDropdown();
+                this.populatePBQDropdown();
                 this.renderReference();
                 this.updateReadiness();
                 this.setPracticeCount(this.practiceCount);
@@ -139,6 +185,16 @@
                 const av=document.getElementById('flashcards-available');if(av)av.textContent=`${all.length} available`;
                 this.renderCard();
             }
+            populatePBQDropdown(){
+                const existing=document.getElementById('pbq-scenario-select');if(!existing)return;
+                existing.innerHTML=pbqScenarios.map((s,i)=>`<option value="${i}">Scenario ${i+1}: ${s.title}</option>`).join('');
+            }
+            submitPBQ(){
+                const input=document.getElementById('terminal-input'),cmd=(input.value||'').trim().toLowerCase(),sc=pbqScenarios[this.currentPBQIndex];if(!cmd)return;
+                const ok=sc.expected.some(x=>cmd===x.toLowerCase()||cmd.includes(x.toLowerCase())); const fb=document.getElementById('pbq-feedback');
+                if(fb){fb.className=`mb-3 p-3 rounded-xl text-xs border ${ok?'bg-emerald-950/40 border-emerald-800 text-emerald-300':'bg-rose-950/40 border-rose-800 text-rose-300'}`;fb.innerHTML=ok?`<b>✓ Correct</b><div class="mt-1">${sc.success}</div>`:`<b>✗ Not correct</b><div class="mt-1">${sc.failure}</div><div class="mt-1 text-slate-500">Use the hint if needed and submit again.</div>`;}
+                if(ok){const key=`pbq-${this.currentPBQIndex}`;this.state.pbqCompleted=this.state.pbqCompleted||{};if(!this.state.pbqCompleted[key]){this.state.pbqCompleted[key]=true;this.state.pbqSolved=(this.state.pbqSolved||0)+1;this.saveState();}}
+            }
             renderReference(){
                 const data={"Ports & Protocols":[["22","SSH — Secure Shell"],["23","Telnet"],["25","SMTP"],["53","DNS"],["67/68","DHCP"],["80","HTTP"],["110","POP3"],["143","IMAP"],["137–139","NetBIOS/NetBT"],["389","LDAP"],["443","HTTPS"],["445","SMB/CIFS"],["3389","RDP"],["5900","VNC"]],"Windows / Security":[["NTFS","New Technology File System"],["ReFS","Resilient File System"],["BitLocker","Windows drive encryption"],["EFS","Encrypting File System"],["UAC","User Account Control"],["WPA2","Wireless security protocol"],["WPA3","Wireless security protocol"],["SAE","Simultaneous Authentication of Equals"],["RADIUS","Remote Authentication Dial-In User Service"],["AES","Advanced Encryption Standard"],["MDM","Mobile Device Management"]],"Script & File Types":[[".ps1","PowerShell script"],[".bat","Batch file"],[".vbs","VBScript"],[".js","JavaScript"],[".py","Python"],[".pyw","Python windowed script"],[".exe","Windows executable"],[".msi","Windows installer package"]],"Windows Commands & Tools":[["ipconfig","Windows IP configuration"],["ping","Network connectivity test"],["netstat","Network connection/status information"],["nslookup","DNS query tool"],["tracert","Route tracing tool"],["pathping","Network path and packet-loss information"],["chkdsk","Disk/file-system checking tool"],["diskpart","Disk partition management tool"],["robocopy","File copying tool"],["gpupdate","Updates Group Policy settings"],["gpresult","Displays resulting Group Policy settings"],["sfc","System File Checker"],["eventvwr.msc","Event Viewer"],["diskmgmt.msc","Disk Management"],["taskschd.msc","Task Scheduler"],["devmgmt.msc","Device Manager"],["certmgr.msc","Certificate Manager"],["lusrmgr.msc","Local Users and Groups"],["perfmon.msc","Performance Monitor"],["gpedit.msc","Group Policy Editor"],["msinfo32.exe","System Information"],["resmon.exe","Resource Monitor"],["msconfig.exe","System Configuration"],["cleanmgr.exe","Disk Cleanup"],["dfrgui.exe","Disk Defragment"],["regedit.exe","Registry Editor"]],"Wireless / Connectivity":[["2.4 GHz","Wi-Fi frequency band"],["5 GHz","Wi-Fi frequency band"],["6 GHz","Wi-Fi frequency band"],["802.11","IEEE wireless LAN standard"],["NFC","Near Field Communication"],["RFID","Radio Frequency Identification"]],"Backup & Operations":[["Full backup","Copies all selected data"],["Incremental backup","Copies changes since the last backup"],["Differential backup","Copies changes since the last full backup"],["GFS","Grandfather-Father-Son backup rotation"],["3-2-1","Backup rule described in Core 2 objectives"],["CAB","Change board / change review"],["Risk analysis","Evaluation of risk associated with a change"]]}; const root=document.getElementById('reference-content');if(!root)return;
                 root.innerHTML=Object.entries(data).map(([title,items])=>`<div class="glass-card rounded-2xl p-5 border border-slate-800"><h3 class="font-bold text-white mb-3">${title}</h3><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">${items.map(x=>`<div class="p-3 rounded-xl bg-slate-900 border border-slate-800"><div class="font-mono font-bold text-cyan-300 text-xs">${x[0]}</div><div class="text-xs text-slate-300 mt-1">${x[1]}</div></div>`).join('')}</div></div>`).join('');
@@ -169,7 +225,7 @@
                 }
 
                 if (viewId === 'flashcards') this.loadFlashcards(this.selectedModuleId);
-                if (viewId === 'pbq') this.loadPBQFrame();
+                if (viewId === 'pbq') this.loadPBQScenario(this.currentPBQIndex);
                 if (viewId === 'stats') this.renderStatsView();
                 if (viewId === 'reference') this.renderReference();
 
@@ -642,10 +698,72 @@
                 this.renderCard();
             }
 
-            /* PBQ tab: the PBQ simulator is shown directly inside the tab (loaded the first time the tab is opened) */
-            loadPBQFrame() {
-                const f = document.getElementById('pbq-frame');
-                if (f && !f.getAttribute('src')) f.setAttribute('src', f.dataset.src);
+            /* PBQ Terminal logic */
+            loadPBQScenario(index) {
+                this.currentPBQIndex = index;
+                const sc = pbqScenarios[index];
+                document.getElementById('pbq-scenario-title').textContent = sc.title;
+                document.getElementById('pbq-scenario-desc').textContent = sc.desc;
+                document.getElementById('pbq-scenario-objective').textContent = sc.objective;
+                document.getElementById('pbq-hint-text').textContent = sc.hint;
+                document.getElementById('pbq-hint-box').classList.add('hidden');
+
+                const body = document.getElementById('terminal-body');
+                body.innerHTML = `
+                    <div>Microsoft Windows [Version 10.0.19045.3803]</div>
+                    <div>(c) Microsoft Corporation. All rights reserved.</div>
+                    <div class="text-slate-400 pb-2">Type your command below to execute scenario task:</div>
+                `;
+            }
+
+            selectPBQScenario(idx) {
+                this.loadPBQScenario(idx);
+            }
+
+            togglePBQHint() {
+                document.getElementById('pbq-hint-box').classList.toggle('hidden');
+            }
+
+            handleTerminalCommand(e) {
+                if (e.key === 'Enter') this.execTerminalCommand();
+            }
+
+            execTerminalCommand() {
+                const input = document.getElementById('terminal-input');
+                const cmd = input.value.trim();
+                if (!cmd) return;
+
+                const body = document.getElementById('terminal-body');
+                const cmdLine = document.createElement('div');
+                cmdLine.innerHTML = `<span class="text-slate-400">C:\\Windows\\System32&gt;</span> ${cmd}`;
+                body.appendChild(cmdLine);
+
+                const sc = pbqScenarios[this.currentPBQIndex];
+                const respLine = document.createElement('div');
+
+                if (sc.expected.some(c => cmd.toLowerCase().includes(c.toLowerCase()))) {
+                    respLine.className = "text-emerald-300 font-mono whitespace-pre-line my-1 p-2 bg-emerald-950/40 rounded border border-emerald-800/50";
+                    respLine.textContent = sc.success;
+                    this.state.pbqSolved = (this.state.pbqSolved || 0) + 1;
+                    this.saveState();
+                } else if (cmd.toLowerCase() === 'help') {
+                    respLine.className = "text-amber-300 font-mono my-1";
+                    respLine.textContent = "Available CLI commands: cd, dir, md, rmdir, ipconfig, ping, netstat, nslookup, tracert, pathping, chkdsk, diskpart, robocopy, hostname, net user, winver, whoami, gpupdate, gpresult, sfc, clear.";
+                } else {
+                    respLine.className = "text-rose-400 font-mono my-1";
+                    respLine.textContent = `'${cmd}' is not recognized as a command for this scenario. Try again or check hint.`;
+                }
+
+                body.appendChild(respLine);
+                input.value = '';
+                body.scrollTop = body.scrollHeight;
+            }
+
+            clearTerminal() {
+                document.getElementById('terminal-body').innerHTML = `
+                    <div>Microsoft Windows [Version 10.0.19045.3803]</div>
+                    <div class="text-slate-400 pb-2">Terminal cleared.</div>
+                `;
             }
 
             /* Render Stats Page */
@@ -686,7 +804,7 @@
 
             resetProgress() {
                 if (confirm("Are you sure you want to reset all quiz progress and stats?")) {
-                    this.state = { answered: {}, wrong: [], starred: [], stats: {}, cardsViewed: 0 };
+                    this.state = { answered: {}, wrong: [], starred: [], stats: {}, cardsViewed: 0, pbqSolved: 0 };
                     this.saveState();
                     this.renderStatsView();
                 }
@@ -701,7 +819,9 @@
         MainApp.prototype.loadFlashcards=function(v){const all=v==='all'?Object.values(DATA.flashcards).flat():[...(DATA.flashcards[String(v)]||[])];const n=this.flashcardCount||20;this.currentCards=[...all].sort(()=>Math.random()-.5).slice(0,n==='all'?all.length:Math.min(n,all.length));this.cardIndex=0;this.isCardFlipped=false;const m=DATA.modules.find(x=>x.id===Number(v));document.getElementById('flashcard-module-badge').textContent=v==='all'?'All Modules':`Module ${m.id}`;document.getElementById('flashcard-title').textContent=v==='all'?'Core 2 — Modules 11–22':m.title;const av=document.getElementById('flashcards-available');if(av)av.textContent=`${all.length} available`;this.renderCard();};
         MainApp.prototype.updateReadiness=function(){let c=0,a=0;Object.values(this.state.stats).forEach(s=>{c+=s.c||0;a+=(s.c||0)+(s.w||0);});const coverage=DATA.questions.length?Math.min(Object.keys(this.state.answered).length,DATA.questions.length)/DATA.questions.length:0;const accuracy=a?c/a:0;let sum=0,n=0;DATA.modules.forEach(m=>{let mc=0,mt=0;m.lessons.forEach(l=>{const s=this.state.stats[l];if(s){mc+=s.c||0;mt+=(s.c||0)+(s.w||0);}});if(mt){sum+=mc/mt;n++;}});const consistency=n?sum/n:0;const r=Math.round((coverage*.30+accuracy*.50+consistency*.20)*100);const v=document.getElementById('readiness-value'),b=document.getElementById('readiness-bar');if(v)v.textContent=r+'%';if(b)b.style.width=r+'%';};
         MainApp.prototype.startAllModules=function(){const val=document.getElementById('all-module-count')?.value||'20';const pool=[...DATA.questions].sort(()=>Math.random()-.5);const n=val==='all'?pool.length:Math.min(Number(val),pool.length);this.startSession(pool.slice(0,n),`All Modules — ${n} Questions`);};
-        MainApp.prototype.navigateTo=function(viewId){this.currentView=viewId;['home','flashcards','quiz','pbq','results','stats','reference'].forEach(v=>{const e=document.getElementById(`view-${v}`);if(e)e.classList.add('hidden');const n=document.getElementById(`nav-${v}`);if(n){n.classList.remove('bg-brand-600','text-white');n.classList.add('text-slate-400');}const mn=document.getElementById(`mobile-nav-${v}`);if(mn){mn.classList.remove('bg-brand-600','text-white');mn.classList.add('text-slate-400');}});const e=document.getElementById(`view-${viewId}`);if(e)e.classList.remove('hidden');const n=document.getElementById(`nav-${viewId}`);if(n){n.classList.add('bg-brand-600','text-white');n.classList.remove('text-slate-400');}const mn=document.getElementById(`mobile-nav-${viewId}`);if(mn){mn.classList.add('bg-brand-600','text-white');mn.classList.remove('text-slate-400');}if(viewId==='flashcards')this.loadFlashcards(this.selectedModuleId);if(viewId==='pbq')this.loadPBQFrame();if(viewId==='stats')this.renderStatsView();if(viewId==='reference')this.renderReference();window.scrollTo({top:0,behavior:'smooth'});};
+        MainApp.prototype.navigateTo=function(viewId){this.currentView=viewId;['home','flashcards','quiz','pbq','results','stats','reference'].forEach(v=>{const e=document.getElementById(`view-${v}`);if(e)e.classList.add('hidden');const n=document.getElementById(`nav-${v}`);if(n){n.classList.remove('bg-brand-600','text-white');n.classList.add('text-slate-400');}const mn=document.getElementById(`mobile-nav-${v}`);if(mn){mn.classList.remove('bg-brand-600','text-white');mn.classList.add('text-slate-400');}});const e=document.getElementById(`view-${viewId}`);if(e)e.classList.remove('hidden');const n=document.getElementById(`nav-${viewId}`);if(n){n.classList.add('bg-brand-600','text-white');n.classList.remove('text-slate-400');}const mn=document.getElementById(`mobile-nav-${viewId}`);if(mn){mn.classList.add('bg-brand-600','text-white');mn.classList.remove('text-slate-400');}if(viewId==='flashcards')this.loadFlashcards(this.selectedModuleId);if(viewId==='pbq')this.loadPBQScenario(this.currentPBQIndex);if(viewId==='stats')this.renderStatsView();if(viewId==='reference')this.renderReference();window.scrollTo({top:0,behavior:'smooth'});};
+        MainApp.prototype.populatePBQDropdown=function(){const s=document.getElementById('pbq-scenario-select');if(!s)return;s.innerHTML=pbqScenarios.map((x,i)=>`<option value="${i}">Scenario ${i+1}: ${x.title}</option>`).join('');};
+        MainApp.prototype.submitPBQ=function(){const input=document.getElementById('terminal-input'),cmd=(input?.value||'').trim().toLowerCase(),sc=pbqScenarios[this.currentPBQIndex];if(!cmd)return;const ok=sc.expected.some(x=>cmd===x.toLowerCase()||cmd.includes(x.toLowerCase()));const fb=document.getElementById('pbq-feedback');if(fb){fb.className=`mb-3 p-3 rounded-xl text-xs border ${ok?'bg-emerald-950/40 border-emerald-800 text-emerald-300':'bg-rose-950/40 border-rose-800 text-rose-300'}`;fb.innerHTML=ok?`<b>✓ Correct</b><div class="mt-1">${sc.success}</div>`:`<b>✗ Not correct</b><div class="mt-1">${sc.failure}</div><div class="mt-1 text-slate-500">Use the hint if needed and submit again.</div>`;}if(ok){const key=`pbq-${this.currentPBQIndex}`;this.state.pbqCompleted=this.state.pbqCompleted||{};if(!this.state.pbqCompleted[key]){this.state.pbqCompleted[key]=true;this.state.pbqSolved=(this.state.pbqSolved||0)+1;this.saveState();}}input.value='';};
         let app;
         window.onload = function() {
             app = new MainApp();

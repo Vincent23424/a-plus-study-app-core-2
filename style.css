@@ -155,6 +155,3 @@ html, body { overflow-x: hidden; }
     .final-test-btn { padding-left: .7rem !important; padding-right: .7rem !important; }
     .theme-toggle { padding-left: .7rem !important; padding-right: .7rem !important; }
 }
-
-/* PBQ tab: simulator embedded directly in the tab */
-.pbq-frame{display:block;width:100%;height:calc(100vh - 10rem);height:calc(100dvh - 10rem);min-height:560px;border:1px solid #334155;border-radius:1rem;background:#101722}

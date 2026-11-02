@@ -68,7 +68,7 @@
                     <i class="fa-solid fa-clone text-brand-accent mr-2"></i>Flashcards
                 </button>
                 <button onclick="app.navigateTo('pbq')" id="nav-pbq" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
-                    <i class="fa-solid fa-flask text-amber-400 mr-2"></i>PBQ
+                    <i class="fa-solid fa-terminal text-amber-400 mr-2"></i>PBQ & Lab
                 </button>
                 <button onclick="app.navigateTo('mock')" id="nav-mock" class="px-4 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800">
                     <i class="fa-solid fa-stopwatch text-emerald-400 mr-2"></i>Mock Exam
@@ -97,7 +97,7 @@
                 <nav class="mobile-nav-inner flex items-center gap-1 bg-slate-900/60 p-1 rounded-xl border border-slate-800 w-max min-w-full">
                     <button onclick="app.navigateTo('home')" id="mobile-nav-home" class="mobile-nav-btn active px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-white bg-brand-600">Practice & Modules</button>
                     <button onclick="app.navigateTo('flashcards')" id="mobile-nav-flashcards" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Flashcards</button>
-                    <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ</button>
+                    <button onclick="app.navigateTo('pbq')" id="mobile-nav-pbq" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">PBQ & Lab</button>
                     <button onclick="app.navigateTo('mock')" id="mobile-nav-mock" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Mock Exam</button>
                     <button onclick="app.navigateTo('stats')" id="mobile-nav-stats" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Stats</button>
                     <button onclick="app.navigateTo('reference')" id="mobile-nav-reference" class="mobile-nav-btn px-3.5 py-2.5 rounded-lg text-xs font-medium whitespace-nowrap text-slate-400">Reference</button>
@@ -428,9 +428,16 @@
             <div id="reference-content" class="space-y-5"></div>
         </section>
 
-        <!-- View 4: PBQ (PBQ simulator shown directly in the tab) -->
-        <section id="view-pbq" class="hidden">
-            <iframe id="pbq-frame" class="pbq-frame" title="PBQ Simulator" data-src="pbq-simulator.html"></iframe>
+        <!-- View 4: PBQ Terminal Lab -->
+        <section id="view-pbq" class="hidden space-y-4">
+            <div class="flex items-center justify-between gap-3 flex-wrap">
+                <div>
+                    <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">PERFORMANCE-BASED LAB</span>
+                    <h2 class="text-xl font-bold text-white mt-1">Core 2 PBQ practice</h2>
+                    <p class="text-xs text-slate-400">19 hands-on tasks with realistic tools. Each answer has a Study Guide page reference.</p>
+                </div>
+            </div>
+            <iframe src="pbq-simulator.html" title="PBQ practice" class="w-full rounded-2xl border border-slate-700 bg-darkbg" style="height:calc(100vh - 170px);min-height:720px"></iframe>
         </section>
 
         <!-- View 5: Results View -->
