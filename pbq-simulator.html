@@ -671,7 +671,13 @@ button:hover:not(:disabled){filter:brightness(1.12)}
 <div class="wrap">
   <header class="top">
     <div class="brand">CompTIA A+ Practice<small id="modTitle"></small></div>
-    <button class="btn-ghost btn-small hidden" id="homeBtn" type="button">Home</button>
+    <div class="row" style="justify-content:flex-end">
+      <div class="seg hidden" id="subTabs" role="group" aria-label="Section">
+        <button type="button" id="tabPbq" aria-pressed="true">PBQ practice</button>
+        <button type="button" id="tabMock" aria-pressed="false">Mock exam</button>
+      </div>
+      <button class="btn-ghost btn-small hidden" id="homeBtn" type="button">Home</button>
+    </div>
   </header>
   <div id="storageNotice" class="notice hidden" role="status">Your browser is blocking local storage, so progress will only last until this tab is closed.</div>
   <main id="app"></main>
@@ -778,10 +784,19 @@ function askConfirm({title, text, ok = "OK", cancel = "Cancel", danger = false})
     wrap.querySelector(danger ? "#cfCancel" : "#cfOk").focus();
   });
 }
+/* PBQ / Mock exam tabs in the header (only visible on the two home screens) */
+function showSubTabs(which){
+  const t = document.getElementById("subTabs");
+  t.classList.toggle("hidden", !which);
+  document.getElementById("tabPbq").setAttribute("aria-pressed", which === "pbq");
+  document.getElementById("tabMock").setAttribute("aria-pressed", which === "mock");
+}
+document.getElementById("tabPbq").addEventListener("click", () => { clearInterval(mockTick); renderPbqHome(); });
+document.getElementById("tabMock").addEventListener("click", () => { clearInterval(pbqTick); renderMockHome(); });
 homeBtn.addEventListener("click", async () => {
   const v = homeBtn.dataset.view;
-  if(v === "pbqhome"){ ui.module = null; saveUi(); clearInterval(pbqTick); renderModules(); return; }
-  if(v === "mockhome"){ ui.module = null; saveUi(); clearInterval(mockTick); renderModules(); return; }
+  if(v === "pbqhome"){ clearInterval(pbqTick); renderPbqHome(); return; }
+  if(v === "mockhome"){ clearInterval(mockTick); renderMockHome(); return; }
   if(v === "mockexam" || v === "mockresults"){
     if(v === "mockexam" && !(await askConfirm({title:"Leave the mock exam?", text:"Your answers are kept and you can resume from the mock exam home screen, but the clock keeps running while you're away.", ok:"Leave", cancel:"Keep working"}))) return;
     clearInterval(mockTick); renderMockHome(); return;
@@ -2001,9 +2016,10 @@ function pbqMissed(){ return PBQ_TASKS.filter(t => { const s = pbqStatus(t.id); 
 function pbqCompletion(){ const right = PBQ_TASKS.filter(t => { const s = pbqStatus(t.id); return s && s.lastScore === s.lastMax; }).length; return {right, total:PBQ_TASKS.length, pct: Math.floor(100*right/PBQ_TASKS.length), unit:"tasks fully correct"}; }
 function pbqHeader(view, sub){
   document.getElementById("modTitle").textContent = "Performance-based questions" + (sub ? "" : "");
-  homeBtn.classList.remove("hidden");
-  homeBtn.textContent = view === "pbqhome" ? "All modules" : "PBQ home";
+  homeBtn.classList.toggle("hidden", view === "pbqhome");
+  homeBtn.textContent = "PBQ home";
   homeBtn.dataset.view = view;
+  showSubTabs(view === "pbqhome" ? "pbq" : null);
 }
 
 function renderPbqHome(){
@@ -4623,9 +4639,10 @@ function mockScore(s){
 
 function mockHeader(view){
   document.getElementById("modTitle").textContent = "Mock exams";
-  homeBtn.classList.remove("hidden");
-  homeBtn.textContent = view === "mockhome" ? "All modules" : "Mock exam home";
+  homeBtn.classList.toggle("hidden", view === "mockhome");
+  homeBtn.textContent = "Mock exam home";
   homeBtn.dataset.view = view;
+  showSubTabs(view === "mockhome" ? "mock" : null);
 }
 
 function renderMockHome(){
@@ -4803,7 +4820,8 @@ document.addEventListener("keydown", e => {
 
 /* Boot: reopen the last module used, or show the module list. Older saves (before the module list) belong to Module 20. */
 if(state.current && !state.current.module) state.current.module = "20";
-if(ui.module === "PBQ") renderPbqHome(); else if(ui.module === "MOCK") renderMockHome(); else if(ui.module && isReady(ui.module)) openModule(ui.module); else renderModules();
+/* This page is PBQ-only: it opens on the PBQ home, or on the mock exam home if that was the last tab used. */
+if(ui.module === "MOCK") renderMockHome(); else renderPbqHome();
 </script>
 </body>
 </html>

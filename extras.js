@@ -119,7 +119,7 @@
             </div>
             <button onclick="app.mockStart()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-brand-accent to-emerald-500 text-slate-950 font-bold text-sm">
               <i class="fa-solid fa-play mr-2"></i>Start mock exam</button>`}
-            <p class="text-[11px] text-slate-400">This mock has multiple-choice questions only. For performance-based practice use the PBQ &amp; Lab tab. The score is an <b>estimate</b>: CompTIA does not publish how raw scores become the 100–900 scale. Pass mark is 700.</p>
+            <p class="text-[11px] text-slate-400">This mock has multiple-choice questions only. For performance-based questions, and a mock exam that includes PBQs, use the PBQ tab. The score is an <b>estimate</b>: CompTIA does not publish how raw scores become the 100–900 scale. Pass mark is 700.</p>
           </div>
           ${st.length ? `<div class="glass-card rounded-3xl p-6 space-y-3">
             <h3 class="font-bold text-white text-sm">Previous attempts <span class="text-slate-400 font-normal">(best estimate: ${best})</span></h3>
@@ -320,7 +320,7 @@
     const e = document.getElementById(`view-${viewId}`); if (e) e.classList.remove('hidden');
     ['nav-', 'mobile-nav-'].forEach(p => { const n = document.getElementById(p + viewId); if (n) { n.classList.add('bg-brand-600', 'text-white'); n.classList.remove('text-slate-400'); } });
     if (viewId === 'flashcards') this.loadFlashcards(this.selectedModuleId);
-    if (viewId === 'pbq') this.loadPBQScenario(this.currentPBQIndex);
+    if (viewId === 'pbq') this.loadPBQFrame();
     if (viewId === 'stats') this.renderStatsView();
     if (viewId === 'reference') this.renderReference();
     if (viewId === 'mock') {
