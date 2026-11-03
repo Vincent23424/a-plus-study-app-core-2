@@ -335,3 +335,141 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 })();
+
+/* =====================================================================
+   Statistics backup: download and upload the progress as a JSON file.
+   The file contains the same data that is kept in this browser
+   (answers, wrong questions, stars, lesson stats, mock exam history).
+   ===================================================================== */
+(function () {
+  'use strict';
+  const FILE_APP = 'aplus-core2';
+  const esc2 = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  function validate(obj) {
+    if (!obj || obj.app !== FILE_APP || typeof obj.state !== 'object' || obj.state === null) return 'This file is not a statistics file from this app.';
+    const s = obj.state;
+    if (s.answered && typeof s.answered !== 'object') return 'The file has an invalid "answered" section.';
+    if (s.wrong && !Array.isArray(s.wrong)) return 'The file has an invalid "wrong" section.';
+    if (s.starred && !Array.isArray(s.starred)) return 'The file has an invalid "starred" section.';
+    if (s.stats) {
+      if (typeof s.stats !== 'object') return 'The file has an invalid "stats" section.';
+      for (const k of Object.keys(s.stats)) {
+        const v = s.stats[k];
+        if (!v || typeof v.c !== 'number' || typeof v.w !== 'number') return 'The file has invalid lesson statistics.';
+      }
+    }
+    if (s.mockAttempts && !Array.isArray(s.mockAttempts)) return 'The file has an invalid "mockAttempts" section.';
+    return null;
+  }
+
+  function summary(s) {
+    const answered = Object.keys(s.answered || {}).length;
+    const wrong = (s.wrong || []).length;
+    const starred = (s.starred || []).length;
+    const mocks = (s.mockAttempts || []).length;
+    return `${answered} answered, ${wrong} wrong, ${starred} starred, ${mocks} mock exams`;
+  }
+
+  function merge(cur, imp) {
+    const out = Object.assign({}, cur);
+    out.answered = Object.assign({}, cur.answered || {}, imp.answered || {});
+    out.wrong = Array.from(new Set([...(cur.wrong || []), ...(imp.wrong || [])]));
+    out.starred = Array.from(new Set([...(cur.starred || []), ...(imp.starred || [])]));
+    const stats = Object.assign({}, cur.stats || {});
+    Object.keys(imp.stats || {}).forEach(k => {
+      const a = stats[k] || { c: 0, w: 0 }, b = imp.stats[k];
+      stats[k] = { c: (a.c || 0) + (b.c || 0), w: (a.w || 0) + (b.w || 0) };
+    });
+    out.stats = stats;
+    out.cardsViewed = Math.max(cur.cardsViewed || 0, imp.cardsViewed || 0);
+    out.pbqSolved = Math.max(cur.pbqSolved || 0, imp.pbqSolved || 0);
+    out.pbqCompleted = Object.assign({}, cur.pbqCompleted || {}, imp.pbqCompleted || {});
+    const seen = new Map();
+    [...(cur.mockAttempts || []), ...(imp.mockAttempts || [])].forEach(a => seen.set(String(a.date), a));
+    out.mockAttempts = Array.from(seen.values()).sort((x, y) => x.date - y.date).slice(-30);
+    return out;
+  }
+
+  MainApp.prototype.downloadStats = function () {
+    const payload = { app: FILE_APP, version: 1, exported: new Date().toISOString(), state: this.state };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const d = new Date().toISOString().slice(0, 10);
+    a.href = url; a.download = `aplus-core2-stats-${d}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
+  MainApp.prototype.renderStatsIO = function () {
+    const list = document.getElementById('module-stats-list');
+    if (!list || document.getElementById('stats-io')) return;
+    const panel = document.createElement('div');
+    panel.id = 'stats-io';
+    panel.className = 'glass-card rounded-2xl p-5 space-y-3 mb-4';
+    panel.innerHTML = `
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h3 class="font-bold text-white text-sm">Back up your progress</h3>
+          <p class="text-xs text-slate-400">Progress is saved in this browser only. Download a file to keep a copy or move to another device.</p>
+        </div>
+        <button id="stats-download" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold"><i class="fa-solid fa-download mr-1"></i>Download statistics</button>
+      </div>
+      <div class="border-t border-slate-800 pt-3 space-y-2">
+        <label class="block text-xs text-slate-300">Upload a statistics file
+          <input id="stats-file" type="file" accept="application/json,.json" class="block w-full text-xs text-slate-300 mt-1"></label>
+        <div id="stats-preview" class="text-xs text-slate-400"></div>
+        <div id="stats-actions" class="hidden flex flex-wrap gap-2">
+          <button id="stats-merge" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">Merge with my progress</button>
+          <button id="stats-replace" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold">Replace my progress</button>
+          <button id="stats-cancel" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Cancel</button>
+        </div>
+        <div id="stats-msg" class="text-xs"></div>
+      </div>`;
+    list.parentNode.insertBefore(panel, list);
+
+    let pending = null;
+    const msg = (t, ok) => { const m = document.getElementById('stats-msg'); m.textContent = t; m.className = 'text-xs ' + (ok ? 'text-emerald-400' : 'text-rose-400'); };
+    const hideActions = () => { document.getElementById('stats-actions').classList.add('hidden'); pending = null; };
+
+    document.getElementById('stats-download').onclick = () => this.downloadStats();
+    document.getElementById('stats-file').onchange = (ev) => {
+      const file = ev.target.files && ev.target.files[0];
+      hideActions(); document.getElementById('stats-msg').textContent = '';
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        let obj;
+        try { obj = JSON.parse(reader.result); } catch (e) { msg('That file is not valid JSON.', false); return; }
+        const err = validate(obj);
+        if (err) { msg(err, false); return; }
+        pending = obj.state;
+        document.getElementById('stats-preview').innerHTML = `File from ${esc2(obj.exported ? new Date(obj.exported).toLocaleString() : 'unknown date')}: ${esc2(summary(obj.state))}.`;
+        document.getElementById('stats-actions').classList.remove('hidden');
+      };
+      reader.onerror = () => msg('The file could not be read.', false);
+      reader.readAsText(file);
+    };
+    document.getElementById('stats-merge').onclick = () => {
+      if (!pending) return;
+      this.state = merge(this.state, pending);
+      this.saveState(); this.renderStatsView();
+      hideActions(); msg('Statistics merged.', true);
+    };
+    document.getElementById('stats-replace').onclick = () => {
+      if (!pending) return;
+      if (!confirm('This replaces all progress in this browser with the file. Continue?')) return;
+      this.state = Object.assign({ answered: {}, wrong: [], starred: [], stats: {}, cardsViewed: 0, pbqSolved: 0 }, pending);
+      this.saveState(); this.renderStatsView();
+      hideActions(); msg('Statistics replaced with the file.', true);
+    };
+    document.getElementById('stats-cancel').onclick = () => { hideActions(); document.getElementById('stats-file').value = ''; document.getElementById('stats-preview').textContent = ''; };
+  };
+
+  const origRender = MainApp.prototype.renderStatsView;
+  MainApp.prototype.renderStatsView = function () {
+    origRender.call(this);
+    this.renderStatsIO();
+  };
+})();

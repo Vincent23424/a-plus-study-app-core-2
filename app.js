@@ -658,16 +658,28 @@
             }
 
             renderCard() {
+                document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+                this.isCardFlipped = false;
+                const card = this.currentCards[this.cardIndex];
+                const ft = document.getElementById('card-front-text'), bt = document.getElementById('card-back-text');
+                ft.textContent = card.term; bt.textContent = card.def;
+                [ft, bt].forEach(el => { el.classList.remove('flashcard-text-in'); void el.offsetWidth; el.classList.add('flashcard-text-in'); });
+                document.getElementById('card-progress-count').textContent = `${this.cardIndex + 1} / ${this.currentCards.length}`;
+            }
+
+            // Flip back first, wait for the rotation to finish, then change the text.
+            // This stops the old or new text from showing through during the turn.
+            changeCard(update) {
                 const inner = document.getElementById('flashcard-inner');
                 if (this.isCardFlipped) {
                     inner.classList.remove('rotate-y-180');
                     this.isCardFlipped = false;
+                    clearTimeout(this._flipTimer);
+                    this._flipTimer = setTimeout(() => { update(); this.renderCard(); }, 620);
+                } else {
+                    update();
+                    this.renderCard();
                 }
-
-                const card = this.currentCards[this.cardIndex];
-                document.getElementById('card-front-text').textContent = card.term;
-                document.getElementById('card-back-text').textContent = card.def;
-                document.getElementById('card-progress-count').textContent = `${this.cardIndex + 1} / ${this.currentCards.length}`;
             }
 
             flipCard() {
@@ -683,19 +695,15 @@
             }
 
             nextCard() {
-                this.cardIndex = (this.cardIndex + 1) % this.currentCards.length;
-                this.renderCard();
+                this.changeCard(() => { this.cardIndex = (this.cardIndex + 1) % this.currentCards.length; });
             }
 
             prevCard() {
-                this.cardIndex = (this.cardIndex - 1 + this.currentCards.length) % this.currentCards.length;
-                this.renderCard();
+                this.changeCard(() => { this.cardIndex = (this.cardIndex - 1 + this.currentCards.length) % this.currentCards.length; });
             }
 
             shuffleCards() {
-                this.currentCards.sort(() => Math.random() - 0.5);
-                this.cardIndex = 0;
-                this.renderCard();
+                this.changeCard(() => { this.currentCards.sort(() => Math.random() - 0.5); this.cardIndex = 0; });
             }
 
             /* PBQ Terminal logic */
