@@ -473,3 +473,64 @@
     this.renderStatsIO();
   };
 })();
+
+/* =====================================================================
+   Keyboard shortcuts for the quiz: 1–4 choose an answer, Enter confirms
+   the chosen answer, and Enter again goes to the next question.
+   Only active while the quiz is on screen and no text field has focus.
+   ===================================================================== */
+(function () {
+  'use strict';
+  function getQuizApp() {
+    try { return app; } catch (e) { return null; }
+  }
+  const isTyping = el => el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+  const quizVisible = () => {
+    const v = document.getElementById('view-quiz');
+    return v && !v.classList.contains('hidden');
+  };
+
+  document.addEventListener('keydown', function (e) {
+    if (!quizVisible() || isTyping(document.activeElement)) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const app = getQuizApp();
+    if (!app || !app.session || !app.session.length) return;
+
+    const key = e.key;
+    const choice = { '1': 0, '2': 1, '3': 2, '4': 3, 'Numpad1': 0, 'Numpad2': 1, 'Numpad3': 2, 'Numpad4': 3 }[key] ??
+                   { 'Digit1': 0, 'Digit2': 1, 'Digit3': 2, 'Digit4': 3 }[e.code];
+
+    if (choice !== undefined) {
+      const q = app.session[app.sessionIndex];
+      if (!q || app.isAnswered || choice >= q.options.length) return;
+      e.preventDefault();
+      app.selectOption(choice);
+      return;
+    }
+
+    if (key === 'Enter') {
+      const nextBtn = document.getElementById('nextBtn');
+      const confirmBtn = document.getElementById('confirmBtn');
+      if (app.isAnswered && nextBtn && !nextBtn.classList.contains('hidden')) {
+        e.preventDefault();
+        app.nextQuestion();
+      } else if (!app.isAnswered && app.selectedOption !== null && confirmBtn && !confirmBtn.classList.contains('hidden')) {
+        e.preventDefault();
+        app.confirmAnswer();
+      }
+    }
+  });
+
+  /* Small hint under the answers so the shortcuts are visible */
+  const origRender = MainApp.prototype.renderQuizQuestion;
+  MainApp.prototype.renderQuizQuestion = function () {
+    origRender.call(this);
+    const ans = document.getElementById('answers');
+    if (!ans || document.getElementById('kb-hint')) return;
+    const hint = document.createElement('p');
+    hint.id = 'kb-hint';
+    hint.className = 'text-[11px] text-slate-500 mt-2';
+    hint.innerHTML = 'Keyboard: <kbd class="px-1 rounded bg-slate-800 border border-slate-700">1</kbd>–<kbd class="px-1 rounded bg-slate-800 border border-slate-700">4</kbd> choose, <kbd class="px-1 rounded bg-slate-800 border border-slate-700">Enter</kbd> confirm, then <kbd class="px-1 rounded bg-slate-800 border border-slate-700">Enter</kbd> for next.';
+    ans.parentNode.insertBefore(hint, ans.nextSibling);
+  };
+})();
