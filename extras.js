@@ -84,19 +84,68 @@
   const scaled = pct => Math.round(100 + 800 * pct);
 
   /* ---------- Mock Exam ---------- */
+  const PBQ_IDS = ['PBQ-01','PBQ-02','PBQ-02B','PBQ-03','PBQ-04','PBQ-05','PBQ-06','PBQ-07','PBQ-08','PBQ-08B','PBQ-09','PBQ-10','PBQ-11','PBQ-12','PBQ-13','PBQ-14','PBQ-15','PBQ-16','PBQ-17'];
+  const PBQ_PTS = 3;
+
+  /* Ask one embedded PBQ frame for its score. Resolves to {score, max}; 0 if it cannot answer in time. */
+  function requestPbqScore(it) {
+    return new Promise(resolve => {
+      const win = it.frame && it.frame.contentWindow;
+      if (!win) return resolve({score: 0, max: 1});
+      let done = false;
+      const onMsg = e => {
+        const d = e.data || {};
+        if (d.type !== 'pbq-score' || d.id !== it.id || done) return;
+        done = true; window.removeEventListener('message', onMsg);
+        resolve({score: d.score || 0, max: d.max || 1});
+      };
+      window.addEventListener('message', onMsg);
+      setTimeout(() => { if (!done) { done = true; window.removeEventListener('message', onMsg); resolve({score: 0, max: 1}); } }, 1200);
+      try { win.postMessage({type: 'pbq-score-request', id: it.id}, '*'); } catch (e) { done = true; resolve({score: 0, max: 1}); }
+    });
+  }
+
+  function mockInstantFeedback(q, sel) {
+    const right = sel === q.answer;
+    const good = q.options[q.answer], mine = q.options[sel];
+    const why = q.optionWhy ? q.optionWhy[sel] : '';
+    const ref = q.optionRefs && q.optionRefs[q.answer] ? q.optionRefs[q.answer] : (q.ref || '');
+    return `<div class="rounded-xl border p-4 text-sm ${right ? 'border-emerald-600/60 bg-emerald-500/10' : 'border-rose-600/60 bg-rose-500/10'}">
+      <div class="font-bold ${right ? 'text-emerald-300' : 'text-rose-300'}">${right ? 'Correct.' : 'Not quite.'}</div>
+      <div class="text-slate-200 mt-1">Correct answer: ${esc(good.t || good)}</div>
+      ${right ? '' : `<div class="text-slate-300 mt-1">Your answer: ${esc(mine.t || mine)}${why ? '. ' + esc(why) : ''}</div>`}
+      <div class="text-slate-300 mt-2">${esc(q.explanation || q.explain || '')}</div>
+      ${ref ? `<div class="font-mono text-[11px] text-amber-300 mt-2">Study Guide: ${esc(ref)}</div>` : ''}
+    </div>`;
+  }
+
+  MainApp.prototype.mockShell = function () {
+    const el = this.mockEl();
+    if (!document.getElementById('mockShell')) {
+      el.innerHTML = `<div id="mockShell" class="max-w-3xl mx-auto space-y-4">
+        <div id="mockBarArea"></div>
+        <div id="mockPbqHost" class="space-y-3"></div>
+        <div id="mockMcArea"></div>
+        <div id="mockNavArea"></div></div>`;
+    }
+    return document.getElementById('mockShell');
+  };
+
   Object.assign(MainApp.prototype, {
     mockEl() { return document.getElementById('view-mock'); },
 
     renderMockHome() {
       const el = this.mockEl();
+      el.innerHTML = '';
       const st = this.state.mockAttempts || [];
       const m = this.mock && !this.mock.finished ? this.mock : null;
       const best = st.length ? Math.max(...st.map(a => a.scaled)) : null;
+      const pbqOn = this.mockPbq !== false;
       el.innerHTML = `
         <div class="max-w-3xl mx-auto space-y-6">
           <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-4">
             <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-stopwatch text-amber-400 mr-2"></i>Mock Exam (220-1202)</h2>
-            <p class="text-sm text-slate-300">Timed, multiple-choice practice exam. Questions are drawn so each domain gets the same share as the official exam objectives. Answers and explanations stay hidden until you submit.</p>
+            <p class="text-sm text-slate-300">Timed practice exam. Questions are drawn so each domain gets the same share as the official exam objectives. Answers and explanations stay hidden until you submit.</p>
             <ul class="text-xs text-slate-300 grid sm:grid-cols-2 gap-1.5">
               ${DOMAINS.map(d => `<li class="bg-slate-900/70 border border-slate-800 rounded-lg px-3 py-2 flex justify-between"><span>${d.name}</span><b class="text-brand-accent">${d.w}%</b></li>`).join('')}
             </ul>
@@ -117,15 +166,17 @@
                   <option value="0">No time limit</option>
                 </select></label>
             </div>
+            <label class="flex items-center gap-2 text-sm text-slate-200"><input id="mockPbqOn" type="checkbox" class="accent-indigo-500" ${pbqOn ? 'checked' : ''}> Start with 5 performance-based tasks (PBQ), 3 points each with partial credit</label>
+            <label class="flex items-center gap-2 text-sm text-slate-200"><input id="mockInstantOn" type="checkbox" class="accent-indigo-500" ${this.mockInstantOn ? 'checked' : ''}> Show results instantly: correct answer and explanation after each answer</label>
             <button onclick="app.mockStart()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-brand-accent to-emerald-500 text-slate-950 font-bold text-sm">
               <i class="fa-solid fa-play mr-2"></i>Start mock exam</button>`}
-            <p class="text-[11px] text-slate-400">This mock has multiple-choice questions only. For performance-based practice use the PBQ &amp; Lab tab. The score is an <b>estimate</b>: CompTIA does not publish how raw scores become the 100–900 scale. Pass mark is 700.</p>
+            <p class="text-[11px] text-slate-400">The score is an <b>estimate</b>: CompTIA does not publish how raw scores become the 100–900 scale. Pass mark is 700.</p>
           </div>
           ${st.length ? `<div class="glass-card rounded-3xl p-6 space-y-3">
             <h3 class="font-bold text-white text-sm">Previous attempts <span class="text-slate-400 font-normal">(best estimate: ${best})</span></h3>
             <div class="overflow-x-auto"><table class="w-full text-xs text-left">
               <thead class="text-slate-400"><tr><th class="py-1 pr-3">Date</th><th class="pr-3">Questions</th><th class="pr-3">Correct</th><th class="pr-3">Est. score</th><th>Time</th></tr></thead>
-              <tbody>${st.slice(-8).reverse().map(a => `<tr class="border-t border-slate-800"><td class="py-1.5 pr-3">${new Date(a.date).toLocaleDateString()}</td><td class="pr-3">${a.total}</td><td class="pr-3">${a.correct} (${Math.round(100 * a.correct / a.total)}%)</td><td class="pr-3 ${a.scaled >= 700 ? 'text-emerald-400' : 'text-rose-400'}">${a.scaled}</td><td>${fmtTime(a.secs)}</td></tr>`).join('')}</tbody>
+              <tbody>${st.slice(-8).reverse().map(a => `<tr class="border-t border-slate-800"><td class="py-1.5 pr-3">${new Date(a.date).toLocaleDateString()}</td><td class="pr-3">${a.total}${a.pbq ? ` (${a.pbq} PBQ)` : ''}</td><td class="pr-3">${a.correct} (${Math.round(100 * a.correct / a.total)}%)</td><td class="pr-3 ${a.scaled >= 700 ? 'text-emerald-400' : 'text-rose-400'}">${a.scaled}</td><td>${fmtTime(a.secs)}</td></tr>`).join('')}</tbody>
             </table></div></div>` : ''}
         </div>`;
     },
@@ -133,23 +184,40 @@
     mockStart() {
       const lenV = document.getElementById('mockLen').value;
       const mins = Number(document.getElementById('mockTime').value);
+      const pbqBox = document.getElementById('mockPbqOn');
+      const instBox = document.getElementById('mockInstantOn');
+      this.mockInstantOn = instBox ? instBox.checked : false;
+      this.mockPbq = pbqBox ? pbqBox.checked : true;
       const n = lenV === 'rand' ? 75 + Math.floor(Math.random() * 16) : Number(lenV);
       const alloc = allocate(n);
-      const items = [];
+      const mc = [];
       DOMAINS.forEach(d => {
         const pool = shuffle(DATA.questions.filter(q => domainOf(q) === d.id));
-        pool.slice(0, alloc[d.id]).forEach(q => items.push({ q: withShuffledOptions(q), dom: d.id }));
+        pool.slice(0, alloc[d.id]).forEach(q => mc.push({kind: 'mc', q: withShuffledOptions(q), dom: d.id, a: null}));
       });
+      const pbqItems = this.mockPbq ? shuffle(PBQ_IDS).slice(0, 5).map(id => ({kind: 'pbq', id, frame: null, wrap: null})) : [];
       this.mock = {
-        items: shuffle(items), answers: [], flags: {}, idx: 0, finished: false, review: 'all',
-        started: Date.now(), limit: mins * 60, tick: null,
+        items: pbqItems.concat(shuffle(mc)), answers: [], flags: {}, idx: 0, finished: false, review: 'all',
+        started: Date.now(), limit: mins * 60, tick: null, pbqCount: pbqItems.length,
       };
-      this.mock.items.forEach((_, i) => this.mock.answers[i] = null);
+      this.mock.items.forEach((it, i) => { this.mock.answers[i] = it.kind === 'mc' ? null : null; });
+      this.mockShell();
+      const host = document.getElementById('mockPbqHost');
+      host.innerHTML = '';
+      this.mock.items.forEach((it, i) => {
+        if (it.kind !== 'pbq') return;
+        const wrap = document.createElement('div');
+        wrap.className = 'hidden';
+        wrap.innerHTML = `<div class="text-xs text-slate-400 mb-2">Performance-based task · ${PBQ_PTS} points, partial credit. Answer in the frame, then press Next.</div>
+          <iframe src="pbq-simulator.html#embed=${it.id}" title="PBQ ${it.id}" style="width:100%;height:75vh;min-height:560px;border:1px solid #334155;border-radius:16px;background:#0f172a"></iframe>`;
+        host.appendChild(wrap);
+        it.wrap = wrap; it.frame = wrap.querySelector('iframe');
+      });
       this.mockRunTimer();
       this.mockRenderQ();
     },
 
-    mockResume() { this.mockRenderQ(); },
+    mockResume() { this.mockShell(); this.mockRenderQ(); },
 
     mockRunTimer() {
       const m = this.mock; if (m.tick) clearInterval(m.tick);
@@ -166,17 +234,23 @@
     },
 
     mockRenderQ() {
-      const m = this.mock, el = this.mockEl();
-      const it = m.items[m.idx], q = it.q, sel = m.answers[m.idx];
-      const answered = m.answers.filter(a => a !== null).length;
+      const m = this.mock; this.mockShell();
+      const it = m.items[m.idx];
+      const answered = m.items.filter(x => x.kind === 'mc' ? x.a !== null : x.touched).length;
       const flagged = Object.keys(m.flags).filter(k => m.flags[k]).length;
       const left = m.limit ? m.limit - (Date.now() - m.started) / 1000 : (Date.now() - m.started) / 1000;
-      el.innerHTML = `
-        <div class="max-w-3xl mx-auto space-y-4">
+      document.getElementById('mockBarArea').innerHTML = `
           <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <span class="text-slate-300">Question <b class="text-white">${m.idx + 1}</b> / ${m.items.length} · answered ${answered} · flagged ${flagged}</span>
+            <span class="text-slate-300">Item <b class="text-white">${m.idx + 1}</b> / ${m.items.length} · answered ${answered} · flagged ${flagged}</span>
             <span><i class="fa-regular fa-clock mr-1 text-slate-400"></i><span id="mockClock" class="font-mono font-bold text-amber-300">${fmtTime(left)}</span></span>
-          </div>
+          </div>`;
+      // PBQ frames stay in the DOM so answers are kept; only the current one is shown.
+      m.items.forEach(x => { if (x.kind === 'pbq' && x.wrap) x.wrap.classList.toggle('hidden', x !== it); });
+      const mcArea = document.getElementById('mockMcArea');
+      if (it.kind === 'mc') {
+        const q = it.q, sel = it.a;
+        const fb = this.mockInstantOn && sel !== null ? mockInstantFeedback(q, sel) : '';
+        mcArea.innerHTML = `
           <div class="glass-card rounded-3xl p-6 sm:p-8 space-y-5">
             <div class="flex items-start justify-between gap-3">
               <h2 class="text-base sm:text-lg font-bold text-white leading-relaxed whitespace-pre-line">${esc(q.question)}</h2>
@@ -185,66 +259,87 @@
             </div>
             <div class="space-y-3">
               ${q.options.map((o, i) => `<button onclick="app.mockPick(${i})" class="w-full text-left p-4 rounded-xl text-sm font-medium flex gap-3 items-start border-2 ${sel === i ? 'bg-brand-600/20 border-brand-500 text-white' : 'bg-slate-800/80 border-slate-700/80 text-slate-200 hover:bg-slate-700'}">
-                <span class="w-6 h-6 shrink-0 rounded-lg bg-slate-900 text-slate-300 flex items-center justify-center font-mono text-xs">${LETTERS[i]}</span><span>${esc(o)}</span></button>`).join('')}
-            </div>
-            <div class="flex flex-wrap justify-between gap-2 pt-1">
-              <button onclick="app.mockGo(${m.idx - 1})" ${m.idx === 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold disabled:opacity-40"><i class="fa-solid fa-chevron-left mr-1"></i>Previous</button>
-              <button onclick="app.mockOverview()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"><i class="fa-solid fa-table-cells mr-1"></i>Review grid</button>
-              ${m.idx < m.items.length - 1
-                ? `<button onclick="app.mockGo(${m.idx + 1})" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">Next<i class="fa-solid fa-chevron-right ml-1"></i></button>`
-                : `<button onclick="app.mockOverview()" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">Finish &amp; review</button>`}
+                <span class="w-6 h-6 shrink-0 rounded-lg bg-slate-900 text-slate-300 flex items-center justify-center font-mono text-xs">${LETTERS[i]}</span><span>${esc(o.t || o)}</span></button>`).join('')}
             </div>
           </div>
-        </div>`;
+            ${fb}
+          </div>`;
+      } else {
+        mcArea.innerHTML = '';
+      }
+      const pbqCheck = (this.mockInstantOn && it.kind === 'pbq') ? `<div class="flex flex-wrap items-center gap-3"><button id="mockPbqCheck" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">Check my PBQ score</button><span id="mockPbqMsg" class="text-xs text-slate-300">${it.checkMsg || ''}</span></div>` : '';
+      document.getElementById('mockNavArea').innerHTML = pbqCheck + `
+          <div class="flex flex-wrap justify-between gap-2 pt-1">
+            <button onclick="app.mockGo(${m.idx - 1})" ${m.idx === 0 ? 'disabled' : ''} class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold disabled:opacity-40"><i class="fa-solid fa-chevron-left mr-1"></i>Previous</button>
+            <button onclick="app.mockOverview()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold"><i class="fa-solid fa-table-cells mr-1"></i>Review grid</button>
+            ${m.idx < m.items.length - 1
+              ? `<button onclick="app.mockGo(${m.idx + 1})" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">Next<i class="fa-solid fa-chevron-right ml-1"></i></button>`
+              : `<button onclick="app.mockOverview()" class="px-4 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">Finish &amp; review</button>`}
+          </div>`;
+      const pc = document.getElementById('mockPbqCheck');
+      if (pc) pc.addEventListener('click', async () => {
+        pc.disabled = true; pc.textContent = 'Checking…';
+        const r = await requestPbqScore(it);
+        it.checkMsg = `Score so far: ${(PBQ_PTS * r.score / r.max).toFixed(1)} of ${PBQ_PTS}. Full review is in the PBQ practice tab.`;
+        this.mockRenderQ();
+      });
+      window.scrollTo({top: 0});
     },
 
-    mockPick(i) { this.mock.answers[this.mock.idx] = i; this.mockRenderQ(); },
+    mockPick(i) { const it = this.mock.items[this.mock.idx]; if (it.kind !== 'mc') return; it.a = i; this.mockRenderQ(); },
     mockFlag() { this.mock.flags[this.mock.idx] = !this.mock.flags[this.mock.idx]; this.mockRenderQ(); },
-    mockGo(i) { const m = this.mock; if (i < 0 || i >= m.items.length) return; m.idx = i; this.mockRenderQ(); window.scrollTo({ top: 0 }); },
+    mockGo(i) { const m = this.mock; if (i < 0 || i >= m.items.length) return; m.idx = i; this.mockRenderQ(); },
 
     mockOverview() {
-      const m = this.mock, el = this.mockEl();
-      const un = m.answers.filter(a => a === null).length;
+      const m = this.mock; this.mockShell();
+      const un = m.items.filter(x => x.kind === 'mc' ? x.a === null : !x.touched).length;
       const fl = Object.keys(m.flags).filter(k => m.flags[k]).length;
-      el.innerHTML = `
-        <div class="max-w-3xl mx-auto space-y-4">
+      document.getElementById('mockBarArea').innerHTML = '';
+      m.items.forEach(x => { if (x.kind === 'pbq' && x.wrap) x.wrap.classList.add('hidden'); });
+      document.getElementById('mockMcArea').innerHTML = `
           <div class="glass-card rounded-3xl p-6 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <h2 class="text-lg font-bold text-white">Review grid</h2>
               <span class="text-xs">Time left: <b id="mockClock" class="font-mono text-amber-300">${m.limit ? fmtTime(m.limit - (Date.now() - m.started) / 1000) : fmtTime((Date.now() - m.started) / 1000)}</b></span>
             </div>
-            <p class="text-xs text-slate-300">${un} unanswered · ${fl} flagged. Tap a number to go back to that question.</p>
+            <p class="text-xs text-slate-300">${un} unanswered · ${fl} flagged. Tap a number to go back to that item.</p>
             <div class="grid grid-cols-6 sm:grid-cols-10 gap-2">
-              ${m.items.map((_, i) => {
-        const a = m.answers[i] !== null, f = m.flags[i];
-        return `<button onclick="app.mockGo(${i})" class="relative py-2 rounded-lg text-xs font-bold border ${a ? 'bg-brand-600/30 border-brand-500 text-white' : 'bg-slate-800 border-slate-600 text-slate-300'}">${i + 1}${f ? '<i class="fa-solid fa-flag text-amber-400 absolute -top-1 -right-1 text-[10px]"></i>' : ''}</button>`;
-      }).join('')}
+              ${m.items.map((x, i) => {
+                const a = x.kind === 'mc' ? x.a !== null : x.touched, f = m.flags[i];
+                return `<button onclick="app.mockGo(${i})" class="relative py-2 rounded-lg text-xs font-bold border ${a ? 'bg-brand-600/30 border-brand-500 text-white' : 'bg-slate-800 border-slate-600 text-slate-300'}">${x.kind === 'pbq' ? 'P' + (i + 1) : i + 1}${f ? '<i class="fa-solid fa-flag text-amber-400 absolute -top-1 -right-1 text-[10px]"></i>' : ''}</button>`;
+              }).join('')}
             </div>
             <div class="flex flex-wrap gap-2 text-[11px] text-slate-400">
               <span><span class="inline-block w-3 h-3 rounded bg-brand-600/40 border border-brand-500 align-middle"></span> answered</span>
               <span><span class="inline-block w-3 h-3 rounded bg-slate-800 border border-slate-600 align-middle"></span> unanswered</span>
               <span><i class="fa-solid fa-flag text-amber-400"></i> flagged</span>
+              <span>P = performance-based task</span>
             </div>
             <div class="flex flex-wrap justify-between gap-2 pt-2">
-              <button onclick="app.mockGo(${m.idx})" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Back to question</button>
+              <button onclick="app.mockGo(${m.idx})" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold">Back to item</button>
               <button onclick="app.mockFinish(false)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-accent to-emerald-500 text-slate-950 text-xs font-bold">Submit exam</button>
             </div>
-          </div>
-        </div>`;
+          </div>`;
+      document.getElementById('mockNavArea').innerHTML = '';
     },
 
-    mockFinish(auto) {
+    async mockFinish(auto) {
       const m = this.mock; if (!m || m.finished) return;
-      const un = m.answers.filter(a => a === null).length;
-      if (!auto && un && !confirm(`${un} question${un > 1 ? 's are' : ' is'} unanswered and will count as wrong. Submit anyway?`)) return;
+      const un = m.items.filter(x => x.kind === 'mc' ? x.a === null : !x.touched).length;
+      if (!auto && un && !confirm(`${un} item${un > 1 ? 's are' : ' is'} unanswered and will count as zero. Submit anyway?`)) return;
       m.finished = true; m.auto = !!auto; clearInterval(m.tick);
       m.secs = Math.min((Date.now() - m.started) / 1000, m.limit || Infinity);
-      // Score + update the same stats the practice modes use (so Weak Areas stay accurate)
+      // Score the PBQ tasks (asks each frame for its score)
+      const pbqs = m.items.filter(x => x.kind === 'pbq');
+      const got = await Promise.all(pbqs.map(x => requestPbqScore(x)));
+      pbqs.forEach((x, i) => { x.pts = PBQ_PTS * got[i].score / got[i].max; x.touched = got[i].score > 0; });
       const dom = {}; DOMAINS.forEach(d => dom[d.id] = { c: 0, t: 0 });
-      let correct = 0;
+      let correct = 0, mcTotal = 0, earned = 0, possible = 0;
       m.items.forEach((it, i) => {
-        const ok = m.answers[i] === it.q.answer;
-        dom[it.dom].t++; if (ok) { dom[it.dom].c++; correct++; }
+        if (it.kind === 'pbq') { earned += it.pts; possible += PBQ_PTS; return; }
+        mcTotal++; possible += 1;
+        const ok = it.a === it.q.answer;
+        dom[it.dom].t++; if (ok) { dom[it.dom].c++; correct++; earned += 1; }
         const q = it.q, L = q.lesson;
         if (!this.state.stats[L]) this.state.stats[L] = { c: 0, w: 0 };
         this.state.stats[L][ok ? 'c' : 'w']++;
@@ -252,9 +347,10 @@
         if (!ok && !this.state.wrong.includes(q.id)) this.state.wrong.push(q.id);
         else if (ok) this.state.wrong = this.state.wrong.filter(x => x !== q.id);
       });
-      m.dom = dom; m.correct = correct;
-      m.pct = correct / m.items.length; m.scaled = scaled(m.pct);
-      this.state.mockAttempts = (this.state.mockAttempts || []).concat([{ date: Date.now(), total: m.items.length, correct, scaled: m.scaled, secs: m.secs }]).slice(-30);
+      m.dom = dom; m.correct = correct; m.mcTotal = mcTotal; m.earned = earned; m.possible = possible;
+      m.pct = possible ? earned / possible : 0; m.scaled = scaled(m.pct);
+      m.pbqPts = pbqs.reduce((s, x) => s + x.pts, 0);
+      this.state.mockAttempts = (this.state.mockAttempts || []).concat([{ date: Date.now(), total: m.items.length, correct, scaled: m.scaled, secs: m.secs, pbq: pbqs.length }]).slice(-30);
       this.saveState();
       this.updateReadiness && this.updateReadiness();
       this.mockRenderResults();
@@ -268,21 +364,23 @@
         return `<div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-200">${d.name} <span class="text-slate-500">(${d.w}% of exam)</span></span><span class="font-mono text-slate-300">${x.c}/${x.t} · ${p}%</span></div>
           <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden"><div class="h-full ${p >= 70 ? 'bg-emerald-500' : (p >= 50 ? 'bg-amber-500' : 'bg-rose-500')}" style="width:${p}%"></div></div></div>`;
       }).join('');
+      const pbqBar = m.pbqCount ? `<div class="space-y-1"><div class="flex justify-between text-xs"><span class="text-slate-200">Performance-based tasks <span class="text-slate-500">(${m.pbqCount} tasks, ${PBQ_PTS} points each)</span></span><span class="font-mono text-slate-300">${m.pbqPts.toFixed(1)} / ${m.pbqCount * PBQ_PTS}</span></div>
+          <div class="h-2.5 rounded-full bg-slate-800 overflow-hidden"><div class="h-full bg-indigo-500" style="width:${Math.round(100 * m.pbqPts / (m.pbqCount * PBQ_PTS))}%"></div></div></div>` : '';
       const mode = m.review;
-      const rows = m.items.map((it, i) => ({ it, i, ok: m.answers[i] === it.q.answer }))
-        .filter(r => mode === 'all' || (mode === 'wrong' && !r.ok) || (mode === 'flag' && m.flags[r.i]))
-        .map(({ it, i, ok }) => {
-          const q = it.q, a = m.answers[i];
+      const rows = m.items.map((it, i) => ({ it, i }))
+        .filter(({it, i}) => it.kind === 'mc' && (mode === 'all' || (mode === 'wrong' && it.a !== it.q.answer) || (mode === 'flag' && m.flags[i])))
+        .map(({ it, i }) => {
+          const q = it.q, a = it.a, ok = a === q.answer;
           return `<details class="rounded-xl border ${ok ? 'border-emerald-700/50' : 'border-rose-700/60'} bg-slate-900/60 p-3">
             <summary class="cursor-pointer text-sm text-slate-100"><span class="${ok ? 'text-emerald-400' : 'text-rose-400'} font-bold mr-2">${ok ? '✓' : '✗'} ${i + 1}.</span>${esc(q.question.length > 140 ? q.question.slice(0, 140) + '…' : q.question)}${m.flags[i] ? ' <i class="fa-solid fa-flag text-amber-400 ml-1"></i>' : ''}</summary>
             <div class="mt-3 text-xs space-y-1.5">
               <div class="text-slate-200 whitespace-pre-line mb-2">${esc(q.question)}</div>
               ${q.options.map((o, k) => {
-            const good = k === q.answer, mine = k === a;
-            return `<div class="p-2 rounded-lg ${good ? 'bg-emerald-500/15 text-emerald-200' : (mine ? 'bg-rose-500/15 text-rose-200' : 'text-slate-300')}">
-                  <b>${LETTERS[k]}.</b> ${esc(o)}${good ? ' <b>(correct)</b>' : ''}${mine && !good ? ' <b>(your answer)</b>' : ''}
+                const good = k === q.answer, mine = k === a;
+                return `<div class="p-2 rounded-lg ${good ? 'bg-emerald-500/15 text-emerald-200' : (mine ? 'bg-rose-500/15 text-rose-200' : 'text-slate-300')}">
+                  <b>${LETTERS[k]}.</b> ${esc(o.t || o)}${good ? ' <b>(correct)</b>' : ''}${mine && !good ? ' <b>(your answer)</b>' : ''}
                   ${q.optionWhy ? `<div class="mt-1 opacity-90">${esc(q.optionWhy[k])}${q.optionRefs && q.optionRefs[k] ? ` <span class="font-mono text-[10px] text-slate-400">[${esc(q.optionRefs[k])}]</span>` : ''}</div>` : ''}</div>`;
-          }).join('')}
+              }).join('')}
               ${a === null ? '<div class="text-amber-300">You did not answer this question.</div>' : ''}
               <div class="text-slate-300 mt-2"><b>Explanation:</b> ${esc(q.explanation)}</div>
               ${q.ref ? `<div class="text-amber-300 font-mono text-[11px]">Study Guide: ${esc(q.ref)}</div>` : ''}
@@ -294,12 +392,13 @@
             <div class="text-xs uppercase tracking-wider text-slate-400">Estimated score${m.auto ? ' · time ran out, auto-submitted' : ''}</div>
             <div class="text-6xl font-extrabold ${pass ? 'text-emerald-400' : 'text-rose-400'}">${m.scaled}</div>
             <div class="text-sm font-bold ${pass ? 'text-emerald-300' : 'text-rose-300'}">${pass ? 'Would pass (estimate)' : 'Would not pass yet (estimate)'} · pass mark 700 of 900</div>
-            <div class="text-xs text-slate-400">${m.correct} of ${m.items.length} correct (${Math.round(100 * m.pct)}%) · ${fmtTime(m.secs)}. This is a simple linear estimate, not an official CompTIA score.</div>
+            <div class="text-xs text-slate-400">${m.correct} of ${m.mcTotal} multiple-choice correct${m.pbqCount ? ` · PBQ ${m.pbqPts.toFixed(1)} of ${m.pbqCount * PBQ_PTS} points` : ''} · ${fmtTime(m.secs)}. This is a simple estimate, not an official CompTIA score.</div>
           </div>
-          <div class="glass-card rounded-3xl p-6 space-y-3"><h3 class="font-bold text-white text-sm">By domain</h3>${bars}</div>
+          <div class="glass-card rounded-3xl p-6 space-y-3"><h3 class="font-bold text-white text-sm">By domain</h3>${pbqBar}${bars}</div>
           <div class="glass-card rounded-3xl p-6 space-y-3">
             <div class="flex flex-wrap items-center justify-between gap-2"><h3 class="font-bold text-white text-sm">Answer review</h3>
               <div class="flex gap-1 text-xs">${[['all', 'All'], ['wrong', 'Wrong'], ['flag', 'Flagged']].map(([k, l]) => `<button onclick="app.mockReviewFilter('${k}')" class="px-3 py-1.5 rounded-lg font-semibold ${mode === k ? 'bg-brand-600 text-white' : 'bg-slate-800 text-slate-300'}">${l}</button>`).join('')}</div></div>
+            ${m.pbqCount ? '<p class="text-xs text-slate-400">PBQ tasks are scored by the task checker. Open the PBQ practice tab to review them in full.</p>' : ''}
             <div class="space-y-2">${rows}</div>
           </div>
           <div class="flex gap-2"><button onclick="app.mock=null;app.renderMockHome()" class="px-5 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold">New mock exam</button>
@@ -308,7 +407,6 @@
     },
     mockReviewFilter(k) { this.mock.review = k; this.mockRenderResults(); },
   });
-
 
   /* PBQ practice now lives in an embedded simulator; the old scenario selector is gone. */
   MainApp.prototype.loadPBQScenario = function () {};
@@ -330,6 +428,7 @@
     if (viewId === 'reference') this.renderReference();
     if (viewId === 'mock') {
       if (this.mock && this.mock.finished) this.mockRenderResults();
+      else if (this.mock && document.getElementById('mockShell')) this.mockRenderQ();
       else this.renderMockHome();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });

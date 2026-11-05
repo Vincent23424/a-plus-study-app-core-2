@@ -740,9 +740,9 @@ function makeOrder(){ return shuffle([0,1,2,3]); }
 
 /* ===== State ===== */
 let state = loadState();
-let ui = { module:null, lesson:"all", instant:false, tier2:false, pbqTimer:false, pbqStudy:false, reviewFilter:"all" };
+let ui = { module:null, lesson:"all", instant:false, mockInstant:false, tier2:false, pbqTimer:false, pbqStudy:false, reviewFilter:"all" };
 try{ const p = JSON.parse(localStorage.getItem(STORE_KEY+"-ui")||"null"); if(p) ui = Object.assign(ui,p,{reviewFilter:"all"}); }catch(e){}
-function saveUi(){ try{ localStorage.setItem(STORE_KEY+"-ui", JSON.stringify({module:ui.module, lesson:ui.lesson, instant:ui.instant, tier2:ui.tier2, pbqTimer:ui.pbqTimer, pbqStudy:ui.pbqStudy, mockMinutes:ui.mockMinutes})); }catch(e){} }
+function saveUi(){ try{ localStorage.setItem(STORE_KEY+"-ui", JSON.stringify({module:ui.module, lesson:ui.lesson, instant:ui.instant, mockInstant:ui.mockInstant, tier2:ui.tier2, pbqTimer:ui.pbqTimer, pbqStudy:ui.pbqStudy, mockMinutes:ui.mockMinutes})); }catch(e){} }
 let MOD = null;
 const app = document.getElementById("app");
 const homeBtn = document.getElementById("homeBtn");
@@ -2152,6 +2152,32 @@ function renderPbqResults(s){
   document.getElementById("pbqHome").addEventListener("click", renderPbqHome);
   window.scrollTo({top:0});
 }
+
+/* ---- Embed mode: the main app's Mock Exam opens one task per frame as #embed=PBQ-xx.
+   In this mode nothing is saved to this browser's PBQ progress, and the parent asks for
+   the score with a postMessage. ---- */
+(function(){
+  const em = /^#embed=(PBQ-[0-9A-Z]+)$/.exec(location.hash || "");
+  if(!em) return;
+  const id = em[1];
+  saveState = function(){};
+  document.body.classList.add("embed");
+  const css = document.createElement("style");
+  css.textContent = ".embed header, .embed nav, .embed .topbar, .embed .sidebar, .embed #topbar { display:none !important; } .embed { padding-top:0 !important; }";
+  document.head.appendChild(css);
+  window.addEventListener("message", function(e){
+    const d = e.data || {};
+    if(d.type !== "pbq-score-request" || d.id !== id) return;
+    const cur = PBQ_STORE().current;
+    let score = 0, max = 1;
+    if(cur && cur.inst && cur.inst[id]){
+      const r = pbqGrade(pbqTask(id), cur.inst[id], cur.ans[id]);
+      score = r.score; max = r.max;
+    }
+    e.source.postMessage({type:"pbq-score", id, score, max}, "*");
+  });
+  window.addEventListener("load", function(){ setTimeout(function(){ pbqStart([id]); }, 0); });
+})();
 
 
 /* ---------- Task PBQ-15: Windows command line, multi-step ----------
@@ -4598,7 +4624,7 @@ function mockQuota(n, domains, pbqPts){
   return q;
 }
 function mockBuild(core, minutes){
-  const C = MOCK_CFG[core], total = 75 + rand(16), nPbq = 4 + rand(4);
+  const C = MOCK_CFG[core], total = 75 + rand(16), nPbq = 5;
   const pbqIds = shuffle(Object.keys(C.pbqDomain).filter(id => pbqTask(id))).slice(0, nPbq);
   const pbqPts = {}; pbqIds.forEach(id => pbqPts[C.pbqDomain[id]] = (pbqPts[C.pbqDomain[id]] || 0) + MOCK_PBQ_PTS);
   const quota = mockQuota(total - pbqIds.length, C.domains, pbqPts), pool = mockPool(core);
@@ -4655,6 +4681,7 @@ function renderMockHome(){
         <li><b>Estimated score on the 100–900 scale.</b></li>
       </ul>
       ${cur ? `<div class="notice">You have a ${esc(MOCK_CFG[cur.core].name)} mock exam in progress: ${cur.items.length} items, ${Math.max(0, Math.ceil(mockLeft(cur) / 60000))} minutes left. The clock keeps running while you're away. <button class="btn-small" id="mockResume" type="button">Resume</button></div>` : ""}
+      <label class="toggle"><input type="checkbox" id="mockInstant" ${ui.mockInstant ? "checked" : ""}> Show results instantly: correct answer and explanation after each answer, and a Check button for PBQs</label>
       <fieldset class="mock-time"><legend class="label">Time</legend>
         <label class="toggle"><input type="radio" name="mockMin" value="120" ${mins === 120 ? "checked" : ""}> 120 minutes (90 + 30 extra time)</label>
         <label class="toggle"><input type="radio" name="mockMin" value="90" ${mins === 90 ? "checked" : ""}> 90 minutes (standard exam time)</label>
@@ -4665,6 +4692,8 @@ function renderMockHome(){
     ${st.attempts.length ? `<div class="card"><h2>History</h2><table class="hist"><thead><tr><th>When</th><th>Exam</th><th>Items</th><th>Estimated score</th><th>Time</th></tr></thead><tbody>
       ${st.attempts.slice(-10).reverse().map(a => `<tr><td>${fmtDate(a.date)}</td><td>${esc(MOCK_CFG[a.core].name)}</td><td>${a.items} (${a.pbqs} PBQ)</td><td>${a.scaled} · ${a.pass ? "Pass" : "Fail"}</td><td>${fmtDur(a.ms)}</td></tr>`).join("")}</tbody></table></div>` : ""}
   </div>`;
+  const mi = document.getElementById("mockInstant");
+  if(mi) mi.addEventListener("change", () => { ui.mockInstant = mi.checked; saveUi(); });
   app.querySelectorAll('input[name="mockMin"]').forEach(r => r.addEventListener("change", () => { ui.mockMinutes = +r.value; saveUi(); }));
   app.querySelectorAll("[data-mstart]").forEach(b => b.addEventListener("click", async () => {
     if(cur && !(await askConfirm({title:"Discard the exam in progress?", text:"Starting a new mock exam will discard the one you haven't submitted.", ok:"Discard and start", cancel:"Cancel", danger:true}))) return;
@@ -4689,6 +4718,16 @@ function mockBar(s){
   return `<div class="mock-bar"><span>${esc(MOCK_CFG[s.core].name)} · ${s.review ? "Review" : `Item ${s.idx + 1} of ${n}`}</span><span class="muted">${done} answered</span><span class="mock-time-left">Time left <b id="mockClock" class="clock"></b></span></div>`;
 }
 
+function mockFeedback(q, picked){
+  const right = picked === 0, good = q.options[0], mine = q.options[picked];
+  return `<div class="notice" style="margin-top:12px;border-left:4px solid ${right ? "var(--ok,#34d399)" : "var(--bad,#f87171)"}">
+    <div><b>${right ? "Correct." : "Not quite."}</b> The correct answer is: ${esc(good.t)}</div>
+    ${right ? "" : `<div class="muted" style="margin-top:4px">Your answer: ${esc(mine.t)}. ${esc(mine.why)}</div>`}
+    <div style="margin-top:6px">${esc(q.explain)}</div>
+    ${good.ref ? `<div class="muted" style="font-size:12px;margin-top:4px">Study Guide: ${esc(good.ref)}</div>` : ""}
+  </div>`;
+}
+
 function renderMockItem(){
   mockHeader("mockexam");
   const s = MOCK_STORE().current; if(!s || s.finished){ renderMockHome(); return; }
@@ -4698,11 +4737,12 @@ function renderMockItem(){
   let body = "";
   if(it.kind === "pbq"){
     const t = pbqTask(it.id);
-    body = `<div class="row" style="justify-content:space-between"><h2 style="margin:6px 0">${esc(t.title)}</h2><span class="tag">PBQ · ${MOCK_PBQ_PTS} points</span></div><div id="mockPbq">${pbqRenderTask(t, it.inst, it.ans, false)}</div>`;
+    body = `<div class="row" style="justify-content:space-between"><h2 style="margin:6px 0">${esc(t.title)}</h2><span class="tag">PBQ · ${MOCK_PBQ_PTS} points</span></div><div id="mockPbq">${pbqRenderTask(t, it.inst, it.ans, !!(ui.mockInstant && it.checked))}</div>${ui.mockInstant && !it.checked ? `<div class="row" style="margin-top:8px"><button type="button" class="btn-small" id="mockCheckPbq">Check task</button></div>` : ""}`;
   } else {
     const q = qById(it.m, it.id);
     body = `<div class="qtext" id="qtext">${esc(q.q)}</div>
-      <div class="opts" role="radiogroup" aria-labelledby="qtext">${it.order.map((oi, pos) => `<button type="button" class="opt" role="radio" aria-checked="${it.a === oi}" data-moi="${oi}"><span class="key">${LETTERS[pos]}</span><span>${esc(q.options[oi].t)}</span></button>`).join("")}</div>`;
+      <div class="opts" role="radiogroup" aria-labelledby="qtext">${it.order.map((oi, pos) => `<button type="button" class="opt" role="radio" aria-checked="${it.a === oi}" data-moi="${oi}"><span class="key">${LETTERS[pos]}</span><span>${esc(q.options[oi].t)}</span></button>`).join("")}</div>
+      ${ui.mockInstant && it.a !== null ? mockFeedback(q, it.a) : ""}`;
   }
   app.innerHTML = `<div class="card">${mockBar(s)}
     <div class="row" style="justify-content:flex-end;margin-top:8px"><button type="button" class="btn-small ${flagged ? "btn-primary" : ""}" id="mockFlag" aria-pressed="${flagged}">${flagged ? "⚑ Flagged" : "⚐ Flag for review"}</button></div>
@@ -4724,7 +4764,8 @@ function renderMockItem(){
   else { const t = pbqTask(it.id), box = document.getElementById("mockPbq");
     const save = () => { it.touched = true; saveState(); };
     const rerender = () => { const y = window.scrollY; renderMockItem(); window.scrollTo({top:y}); };
-    pbqBind(box, t, it.inst, it.ans, save, rerender); }
+    pbqBind(box, t, it.inst, it.ans, save, rerender);
+    const ck = document.getElementById("mockCheckPbq"); if(ck) ck.addEventListener("click", () => { it.checked = true; saveState(); renderMockItem(); }); }
   mockClock();
 }
 
